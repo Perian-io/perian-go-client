@@ -1,0 +1,4819 @@
+openapi: 3.1.0
+info:
+  title: FastAPI
+  version: 0.2.8
+servers:
+- url: /
+paths:
+  /instance-type/{instance_type_id}:
+    get:
+      description: Endpoint to get an instance type by its ID.
+      operationId: get_instance_type_by_id
+      parameters:
+      - explode: false
+        in: path
+        name: instance_type_id
+        required: true
+        schema:
+          format: uuid
+          title: Instance Type Id
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetInstanceTypesSuccess'
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response_400_Get_Instance_Type_By_Id'
+          description: Possible client errors
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultServerError'
+          description: Possible server errors
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Instance Type By Id
+      tags:
+      - instance-type
+  /instance-type:
+    post:
+      description: Endpoint to get instance types based on a query.
+      operationId: get_instance_type_by_requirements
+      parameters:
+      - description: Limit the number of instance types to return
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 25
+          description: Limit the number of instance types to return
+          title: Limit
+          type: integer
+        style: form
+      - description: Number of requested result page
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Number of requested result page
+          title: Page
+          type: integer
+        style: form
+      - description: "Select a specific criterion to optimize for. Currently available\
+          \ options: PRICE"
+        explode: true
+        in: query
+        name: criterion
+        required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/OptimizationCriterion'
+          default: PRICE
+          description: "Select a specific criterion to optimize for. Currently available\
+            \ options: PRICE"
+          title: Criterion
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetInstanceTypeRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetInstanceTypesSuccess'
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response_400_Get_Instance_Type_By_Requirements'
+          description: Possible client errors
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultServerError'
+          description: Possible server errors
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Instance Type By Requirements
+      tags:
+      - instance-type
+  /instance-type/zones/available:
+    get:
+      description: Returns all active regions within a location.
+      operationId: get_available_instance_zones_instance_type_zones_available_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: object
+                title: Response Get Available Instance Zones Instance Type Zones Available
+                  Get
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultClientError'
+          description: Possible client errors
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultServerError'
+          description: Possible server errors
+      summary: Get Available Instance Zones
+      tags:
+      - instance-type
+  /job:
+    get:
+      description: |-
+        Endpoint for fetching all Jobs for an organization.
+
+        Args:
+            limit(int): page size limit for returned Jobs,
+            page(int): page number.
+            organization(Organization): authenticated organization.
+
+        Returns:
+            GetJobsSuccess: a list of paginated Jobs.
+      operationId: get_all_jobs
+      parameters:
+      - description: Limit the number of jobs to return
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 25
+          description: Limit the number of jobs to return
+          title: Limit
+          type: integer
+        style: form
+      - description: Number of requested result page
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Number of requested result page
+          title: Page
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetJobsSuccess'
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultClientError'
+          description: Possible client errors
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultServerError'
+          description: Possible server errors
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get All Jobs
+      tags:
+      - job
+    post:
+      description: |-
+        Endpoint for creating a new Job.
+
+        Args:
+            organization: Authenticated organization.
+            job_request(CreateJobRequest): parameters of the Job needed to be created,
+
+        Returns:
+            CreateJobSuccess: if the Job is created successfully
+
+        Raises:
+            IncorrectCreateJobParameterError: if there is a missing parameter,
+            InsufficientCreditError: if organization's credit is insufficient,
+            InstanceTypeNotFoundError: if the Instance type is not found.
+      operationId: create_job
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateJobRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateJobSuccess'
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response_400_Create_Job'
+          description: Possible client errors
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultServerError'
+          description: Possible server errors
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create Job
+      tags:
+      - job
+  /job/{job_id}:
+    get:
+      description: |-
+        Endpoint for fetching a Job by its id.
+
+        Args:
+            organization: Authenticated organization.
+            job_id(UUID): Job id to be fetched
+
+        Returns:
+            GetJobsSuccess: Job requested by user
+
+        Raises:
+            NoJobFoundError: if the job id is not found,
+            NoParameterError: if no job_id is provided.
+      operationId: get_job_by_id
+      parameters:
+      - explode: false
+        in: path
+        name: job_id
+        required: true
+        schema:
+          format: uuid
+          title: Job Id
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetJobsSuccess'
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response_400_Get_Job_By_Id'
+          description: Possible client errors
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultServerError'
+          description: Possible server errors
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Job By Id
+      tags:
+      - job
+  /job/{job_id}/cancel:
+    patch:
+      description: |-
+        Endpoint for Cancelling a Job by its id.
+
+        Args:
+            organization: Authenticated organization
+            job_id(int): Job id to be cancelled.
+
+        Returns:
+            DefaultSuccess
+
+        Raises:
+            NoJobFoundError: if the requested Job is not found,
+            JobAlreadyDoneError: if the requested Job is already done.
+      operationId: cancel_job
+      parameters:
+      - explode: false
+        in: path
+        name: job_id
+        required: true
+        schema:
+          format: uuid
+          title: Job Id
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultSuccess'
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response_400_Cancel_Job'
+          description: Possible client errors
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultServerError'
+          description: Possible server errors
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Cancel Job
+      tags:
+      - job
+  /organization/logs:
+    get:
+      description: Endpoint to get organization audit logs.
+      operationId: get_organization_audit_logs_organization_logs_get
+      parameters:
+      - description: "Page number, starting from 1"
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: "Page number, starting from 1"
+          title: Page
+          type: integer
+        style: form
+      - description: Number of items per page
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          default: 10
+          description: Number of items per page
+          maximum: 50
+          minimum: 1
+          title: Page Size
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationAuditLogsSuccess'
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response_400_Get_Organization_Audit_Logs_Organization_Logs_Get'
+          description: Possible client errors
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultServerError'
+          description: Possible server errors
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Organization Audit Logs
+      tags:
+      - organization
+  /organization/user:
+    post:
+      description: Endpoint for creating an organization user.
+      operationId: create_user_organization_user_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUserSuccess'
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response_400_Create_User_Organization_User_Post'
+          description: Possible client errors
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultServerError'
+          description: Possible server errors
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create User
+      tags:
+      - organization
+  /accelerator-type/{accelerator_type_id}:
+    get:
+      description: Endpoint to get an accelerator type by its ID.
+      operationId: get_accelerator_type_by_id
+      parameters:
+      - explode: false
+        in: path
+        name: accelerator_type_id
+        required: true
+        schema:
+          format: uuid
+          title: Accelerator Type Id
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAcceleratorTypesSuccess'
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response_400_Get_Accelerator_Type_By_Id'
+          description: Possible client errors
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultServerError'
+          description: Possible server errors
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Accelerator Type By Id
+      tags:
+      - accelerator-type
+  /accelerator-type:
+    get:
+      description: Endpoint to get all accelerator types.
+      operationId: get_all_accelerator_types
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAcceleratorTypesSuccess'
+          description: Successful Response
+      summary: Get All Accelerator Types
+      tags:
+      - accelerator-type
+    post:
+      description: Endpoint to get an accelerator type by its requirements.
+      operationId: get_accelerator_type_by_requirements
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAcceleratorTypeRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAcceleratorTypesSuccess'
+          description: Successful Response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response_400_Get_Accelerator_Type_By_Requirements'
+          description: Possible client errors
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultServerError'
+          description: Possible server errors
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Accelerator Type By Requirements
+      tags:
+      - accelerator-type
+  /billing/generate:
+    get:
+      description: |-
+        Endpoint to generate a bill for the organization.
+
+        Args:
+            organization: current authenticated organization.
+            organization_name (str): Name of the organization.
+            currency (Optional[str]): Currency. Defaults to Currency.EUR.
+            start_time (Optional[datetime]): Start time - defaults to the beginning of the last month.
+            end_time (Optional[datetime]): End time - defaults to the end of the last month.
+
+        Returns:
+            The generated bill for the organization.
+
+        Raises:
+            UnknownCurrencyError: If the currency is not valid.
+            InvalidDateOrderError: If the start time is greater than the end time.
+            OrganizationNotFoundError: If the organization is not found.
+      operationId: generate_bill
+      parameters:
+      - description: Name of the organization
+        explode: true
+        in: query
+        name: organization
+        required: true
+        schema:
+          description: Name of the organization
+          title: Organization
+          type: string
+        style: form
+      - description: Currency
+        explode: true
+        in: query
+        name: currency
+        required: false
+        schema:
+          default: EUR
+          description: Currency
+          title: Currency
+          type: string
+        style: form
+      - description: Start time - defaults to the beginning of the last month
+        explode: true
+        in: query
+        name: start_time
+        required: false
+        schema:
+          format: date-time
+          nullable: true
+          type: string
+        style: form
+      - description: End time - defaults to the end of the last month
+        explode: true
+        in: query
+        name: end_time
+        required: false
+        schema:
+          format: date-time
+          nullable: true
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bill'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Generate Bill
+      tags:
+      - billing
+  /billing/remaining-credits:
+    get:
+      description: |-
+        Get the remaining credits for the organization.
+
+        Args:
+            organization: Authenticated organization.
+
+        Returns:
+            dict: A dictionary containing the remaining credits for the organization.
+
+        Raises:
+            HTTPException: If the organization is on an unlimited plan and does not have a credits account.
+      operationId: get_remaining_credits
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemainingCreditsResponse'
+          description: Successful Response
+      summary: Get Remaining Credits
+      tags:
+      - billing
+  /billing/top-up:
+    post:
+      description: |-
+        Endpoint for organization credit topup.
+
+        Args:
+            organization: Authenticated organization.
+            topup_request(CreditTopupRequest).
+
+        Returns:
+            CreditTopupResponse.
+      operationId: credit_top_up
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditTopUpRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditTopUpResponse'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Credit Top Up
+      tags:
+      - billing
+components:
+  schemas:
+    AcceleratorDataView:
+      properties:
+        "no":
+          default: 0
+          title: "No"
+          type: integer
+        memory:
+          allOf:
+          - $ref: '#/components/schemas/Memory'
+          default:
+            size: "0.0"
+            unit: Gb
+            bandwidth:
+              limit: Undefined
+              maximum: "0.0"
+              minimum: "0.0"
+              sla: Undefined
+              speed: "0.0"
+              unit: Undefined
+            interface: Undefined
+        accelerator_types:
+          default: []
+          items:
+            $ref: '#/components/schemas/AcceleratorTypeView'
+          type: array
+      title: AcceleratorDataView
+    AcceleratorName:
+      description: Enum class representing the accelerator name.
+      enum:
+      - NVIDIA_H100_80
+      - NVIDIA_L4_24
+      - NVIDIA_A100_40
+      - NVIDIA_A100_80
+      - NVIDIA_T4_16
+      - NVIDIA_V100_16
+      - NVIDIA_V100_32
+      - NVIDIA_P100_16
+      - NVIDIA_P4_8
+      - NVIDIA_K80_12
+      - NVIDIA_L40_48
+      - NVIDIA_L40S_48
+      - NVIDIA_A40_48
+      - NVIDIA_A6000_48
+      - NVIDIA_RTX6000_48
+      - AMD_7900XTX_24
+      - AMD_RX7900XTX_24
+      title: AcceleratorName
+      type: string
+    AcceleratorQuery-Input:
+      description: Subquery for the accelerator attribute.
+      example:
+        "no": 5
+        memory:
+          all: false
+          size: Size
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          operator: null
+        provider_specific_name: "{}"
+        vendor: vendor
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        name: Name
+        description:
+        - ""
+        - ""
+        operator: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        "no":
+          nullable: true
+          type: integer
+        memory:
+          $ref: '#/components/schemas/MemoryQuery-Input'
+        vendor:
+          nullable: true
+          type: string
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        provider_specific_name:
+          nullable: true
+          type: object
+      title: AcceleratorQuery
+    AcceleratorQuery-Output:
+      description: Subquery for the accelerator attribute.
+      example:
+        "no": 3
+        memory:
+          all: false
+          size: size
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          operator: null
+        provider_specific_name: "{}"
+        vendor: vendor
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        name: Name
+        description:
+        - ""
+        - ""
+        operator: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        "no":
+          nullable: true
+          type: integer
+        memory:
+          $ref: '#/components/schemas/MemoryQuery-Output'
+        vendor:
+          nullable: true
+          type: string
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        provider_specific_name:
+          nullable: true
+          type: object
+      title: AcceleratorQuery
+    AcceleratorTypeNotFoundError:
+      description: Error when the accelerator type is not found.
+      properties:
+        status:
+          default: Error
+          title: Status
+          type: string
+        message:
+          default: Operation failed due to a client error
+          title: Message
+          type: string
+        detail:
+          default: No accelerator type found
+          title: Detail
+          type: string
+        status_code:
+          default: 400
+          title: Status Code
+          type: integer
+      title: AcceleratorTypeNotFoundError
+    AcceleratorTypeQuery:
+      description: Subquery for the accelerator type attribute.
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        "no":
+          nullable: true
+          type: integer
+        memory:
+          $ref: '#/components/schemas/MemoryQuery-Input'
+        vendor:
+          nullable: true
+          type: string
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        provider_specific_name:
+          nullable: true
+          type: object
+        id:
+          $ref: '#/components/schemas/Id'
+      title: AcceleratorTypeQuery
+    AcceleratorTypeView:
+      example:
+        memory: ""
+        vendor: ""
+        name: ""
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        display_name: display_name
+      properties:
+        name:
+          allOf:
+          - $ref: '#/components/schemas/AcceleratorName'
+        display_name:
+          title: Display Name
+          type: string
+        id:
+          format: uuid
+          title: Id
+          type: string
+        vendor:
+          allOf:
+          - $ref: '#/components/schemas/AcceleratorVendor'
+          default: UNDEFINED
+        memory:
+          allOf:
+          - $ref: '#/components/schemas/Memory'
+          default:
+            size: "0.0"
+            unit: Gb
+            bandwidth:
+              limit: Undefined
+              maximum: "0.0"
+              minimum: "0.0"
+              sla: Undefined
+              speed: "0.0"
+              unit: Undefined
+            interface: Undefined
+      title: AcceleratorTypeView
+    AcceleratorVendor:
+      description: Enum class representing the accelerator vendor.
+      enum:
+      - NVIDIA
+      - INTEL
+      - AMD
+      - UNDEFINED
+      title: AcceleratorVendor
+      type: string
+    Availability:
+      description: Represents the availability of a resource.
+      properties:
+        available:
+          default: true
+          title: Available
+          type: boolean
+        source:
+          allOf:
+          - $ref: '#/components/schemas/AvailabilitySource'
+          default: Undefined
+      title: Availability
+    AvailabilityQuery-Input:
+      description: Query for the availability attribute.
+      example:
+        all: false
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        available: true
+        operator: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        available:
+          nullable: true
+          type: boolean
+      title: AvailabilityQuery
+    AvailabilityQuery-Output:
+      description: Query for the availability attribute.
+      example:
+        all: false
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        available: true
+        operator: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        available:
+          nullable: true
+          type: boolean
+      title: AvailabilityQuery
+    AvailabilitySource:
+      description: Enum class representing the availability sources.
+      enum:
+      - Provider
+      - Optimizer
+      - Provider_Quota
+      - Undefined
+      title: AvailabilitySource
+      type: string
+    Bandwidth:
+      description: Bandwidth class representing the bandwidth information.
+      properties:
+        speed:
+          title: Speed
+          type: string
+        maximum:
+          title: Maximum
+          type: string
+        minimum:
+          title: Minimum
+          type: string
+        unit:
+          allOf:
+          - $ref: '#/components/schemas/BandwidthUnits'
+          default: Undefined
+        sla:
+          allOf:
+          - $ref: '#/components/schemas/BandwidthSla'
+          default: Undefined
+        limit:
+          allOf:
+          - $ref: '#/components/schemas/BandwidthLimits'
+          default: Undefined
+      title: Bandwidth
+    BandwidthLimits:
+      description: Enum class representing the bandwidth limits.
+      enum:
+      - Limited
+      - Unlimited
+      - Undefined
+      title: BandwidthLimits
+      type: string
+    BandwidthSla:
+      description: Enum class representing different types of bandwidth SLA.
+      enum:
+      - Guaranteed
+      - Not_Guaranteed
+      - Minimum_Guaranteed
+      - Undefined
+      title: BandwidthSla
+      type: string
+    BandwidthUnits:
+      description: Enum class representing different units of bandwidth.
+      enum:
+      - Mbits
+      - Gbits
+      - Gbs
+      - Mbs
+      - Ghz
+      - Mhz
+      - Iops
+      - Undefined
+      title: BandwidthUnits
+      type: string
+    Bill:
+      description: A total bill for a single organization.
+      example:
+        margin_multiplier: margin_multiplier
+        start_time: 2000-01-23T04:56:07.000+00:00
+        total_price: total_price
+        organization_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        end_time: 2000-01-23T04:56:07.000+00:00
+        currency: null
+        items:
+        - original_price: original_price
+          original_currency: null
+          exchange_rate: exchange_rate
+          job_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          price: price
+          granularity: null
+          currency: null
+        - original_price: original_price
+          original_currency: null
+          exchange_rate: exchange_rate
+          job_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          price: price
+          granularity: null
+          currency: null
+      properties:
+        organization_id:
+          format: uuid
+          title: Organization Id
+          type: string
+        start_time:
+          format: date-time
+          title: Start Time
+          type: string
+        end_time:
+          format: date-time
+          title: End Time
+          type: string
+        total_price:
+          title: Total Price
+          type: string
+        currency:
+          $ref: '#/components/schemas/Currency'
+        margin_multiplier:
+          title: Margin Multiplier
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/BillItem'
+          type: array
+      required:
+      - currency
+      - end_time
+      - items
+      - margin_multiplier
+      - organization_id
+      - start_time
+      - total_price
+      title: Bill
+    BillItem:
+      description: A single item on a bill corresponding to one Job.
+      example:
+        original_price: original_price
+        original_currency: null
+        exchange_rate: exchange_rate
+        job_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        price: price
+        granularity: null
+        currency: null
+      properties:
+        job_id:
+          format: uuid
+          title: Job Id
+          type: string
+        price:
+          title: Price
+          type: string
+        currency:
+          $ref: '#/components/schemas/Currency'
+        original_price:
+          title: Original Price
+          type: string
+        original_currency:
+          $ref: '#/components/schemas/Currency'
+        exchange_rate:
+          title: Exchange Rate
+          type: string
+        granularity:
+          $ref: '#/components/schemas/BillingGranularity'
+      required:
+      - currency
+      - exchange_rate
+      - granularity
+      - job_id
+      - original_currency
+      - original_price
+      - price
+      title: BillItem
+    BillingGranularity:
+      description: "Get the number of units of granularity in the given time range,\
+        \ rounded up."
+      enum:
+      - PER_SECOND
+      - PER_MINUTE
+      - PER_HOUR
+      - PER_10_MINUTES
+      - UNDEFINED
+      title: BillingGranularity
+      type: string
+    ComputeInstanceType:
+      description: Represents the type of a compute instance.
+      enum:
+      - Virtual
+      - Virtual_Shared
+      - Virtual_Dedicated
+      - Metal
+      - Undefined
+      title: ComputeInstanceType
+      type: string
+    ContainerFile:
+      description: Model representation of a file to be mounted in a docker container.
+      properties:
+        path:
+          title: Path
+          type: string
+        read_only:
+          default: false
+          title: Read Only
+          type: boolean
+        base64_content:
+          title: Base64 Content
+          type: string
+      required:
+      - base64_content
+      - path
+      title: ContainerFile
+    Cpu:
+      properties:
+        threads:
+          default: 0
+          title: Threads
+          type: integer
+        cores:
+          default: 0
+          title: Cores
+          type: integer
+        speed:
+          allOf:
+          - $ref: '#/components/schemas/Bandwidth'
+          default:
+            speed: "0.0"
+            maximum: "0.0"
+            minimum: "0.0"
+            unit: Undefined
+            sla: Undefined
+            limit: Undefined
+      title: Cpu
+    CpuData:
+      properties:
+        "no":
+          default: 0
+          title: "No"
+          type: integer
+        cores:
+          default: 0
+          title: Cores
+          type: integer
+        threads:
+          default: 0
+          title: Threads
+          type: integer
+        cpus:
+          default: []
+          items:
+            $ref: '#/components/schemas/Cpu'
+          type: array
+      title: CpuData
+    CpuQuery-Input:
+      description: Query for the CPU attribute.
+      example:
+        all: false
+        "no": 6
+        cores: 1
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        threads: 5
+        operator: null
+        speed: Speed
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        "no":
+          nullable: true
+          type: integer
+        cores:
+          nullable: true
+          type: integer
+        threads:
+          nullable: true
+          type: integer
+        speed:
+          $ref: '#/components/schemas/Speed'
+      title: CpuQuery
+    CpuQuery-Output:
+      description: Query for the CPU attribute.
+      example:
+        all: false
+        "no": 2
+        cores: 7
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        threads: 9
+        operator: null
+        speed: speed
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        "no":
+          nullable: true
+          type: integer
+        cores:
+          nullable: true
+          type: integer
+        threads:
+          nullable: true
+          type: integer
+        speed:
+          nullable: true
+          type: string
+      title: CpuQuery
+    CreateJobRequest:
+      description: JSON schema for the CreateJobRequest api request body.
+      example:
+        auto_failover_instance_type: false
+        requirements:
+          all: false
+          billing_granularity: billing_granularity
+          accelerator:
+            "no": 5
+            memory:
+              all: false
+              size: Size
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              operator: null
+            provider_specific_name: "{}"
+            vendor: vendor
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            name: Name
+            description:
+            - ""
+            - ""
+            operator: null
+          attributes_hash: Attributes_Hash
+          reference_id:
+            all: false
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            id: id
+            operator: null
+          cpu:
+            all: false
+            "no": 6
+            cores: 1
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            threads: 5
+            operator: null
+            speed: Speed
+          storage:
+            all: false
+            "no": 2
+            size: null
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            type: type
+            included: included
+            operator: null
+            speed: null
+          availability:
+            all: false
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            available: true
+            operator: null
+          type: type
+          operator: null
+          network:
+            all: false
+            inbound_speed: Inbound_Speed
+            outbound_speed: Outbound_Speed
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            operator: null
+          zone:
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            name: name
+            id: null
+            operator: null
+            status: status
+          provider:
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            name: name
+            location: location
+            id: null
+            name_short: name_short
+            operator: null
+            status: status
+          price:
+            all: false
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            unit_price: Unit_Price
+            operator: null
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          name: name
+          id: Id
+          region:
+            sustainable: true
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            name: name
+            location: location
+            id: null
+            operator: null
+            status: status
+          ram:
+            all: false
+            size: Size
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            operator: null
+        docker_run_parameters: ""
+        docker_registry_credentials:
+          password: ""
+          url: ""
+          username: ""
+        os_storage_config: ""
+        instance_type_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        timeout_seconds: 0
+      properties:
+        instance_type_id:
+          format: uuid
+          nullable: true
+          type: string
+        auto_failover_instance_type:
+          default: false
+          title: Auto Failover Instance Type
+          type: boolean
+        timeout_seconds:
+          nullable: true
+          type: integer
+        os_storage_config:
+          allOf:
+          - $ref: '#/components/schemas/OSStorageConfig'
+          default:
+            size: 50
+        requirements:
+          $ref: '#/components/schemas/InstanceTypeQuery-Input'
+        docker_run_parameters:
+          allOf:
+          - $ref: '#/components/schemas/DockerRunParameters'
+          default:
+            image_name: ""
+        docker_registry_credentials:
+          $ref: '#/components/schemas/DockerRegistryCredentials'
+      title: CreateJobRequest
+    CreateJobSuccess:
+      description: Model for successful job creation.
+      example:
+        status_code: 0
+        detail: ""
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        message: Job created successfully
+        status: Success
+      properties:
+        status:
+          default: Success
+          title: Status
+          type: string
+        message:
+          default: Job created successfully
+          title: Message
+          type: string
+        detail:
+          default: ""
+          title: Detail
+          type: string
+        status_code:
+          default: 200
+          title: Status Code
+          type: integer
+        id:
+          format: uuid
+          title: Id
+          type: string
+      required:
+      - id
+      title: CreateJobSuccess
+    CreateUserRequest:
+      description: Json schema for create organization user request body.
+      example:
+        last_name: last_name
+        first_name: first_name
+        email: email
+      properties:
+        first_name:
+          nullable: true
+          type: string
+        last_name:
+          nullable: true
+          type: string
+        email:
+          nullable: true
+          type: string
+      title: CreateUserRequest
+    CreateUserSuccess:
+      description: Models the successful response for user creation.
+      example:
+        status_code: 0
+        detail: User created successfully
+        message: Operation was successful
+        status: Success
+      properties:
+        status:
+          default: Success
+          title: Status
+          type: string
+        message:
+          default: Operation was successful
+          title: Message
+          type: string
+        detail:
+          default: User created successfully
+          title: Detail
+          type: string
+        status_code:
+          default: 200
+          title: Status Code
+          type: integer
+      title: CreateUserSuccess
+    CreditTopUpRequest:
+      description: JSON schema for credit topup request.
+      example:
+        amount: 0.8008281904610115
+      properties:
+        amount:
+          $ref: '#/components/schemas/Amount'
+      required:
+      - amount
+      title: CreditTopUpRequest
+    CreditTopUpResponse:
+      description: JSON schema for credit topup endpoint.
+      example:
+        payment_url: payment_url
+        status_code: 0
+        detail: ""
+        message: Operation was successful
+        status: Success
+      properties:
+        status:
+          default: Success
+          title: Status
+          type: string
+        message:
+          default: Operation was successful
+          title: Message
+          type: string
+        detail:
+          default: ""
+          title: Detail
+          type: string
+        status_code:
+          default: 200
+          title: Status Code
+          type: integer
+        payment_url:
+          title: Payment Url
+          type: string
+      required:
+      - payment_url
+      title: CreditTopUpResponse
+    Currency:
+      description: Enum class representing different currency types.
+      enum:
+      - EUR
+      - USD
+      - CHF
+      - Undefined
+      title: Currency
+      type: string
+    DefaultClientError:
+      description: Default client error response.
+      example:
+        status_code: 5
+        detail: ""
+        message: Operation failed due to a client error
+        status: Error
+      properties:
+        status:
+          default: Error
+          title: Status
+          type: string
+        message:
+          default: Operation failed due to a client error
+          title: Message
+          type: string
+        detail:
+          default: ""
+          title: Detail
+          type: string
+        status_code:
+          default: 400
+          title: Status Code
+          type: integer
+      title: DefaultClientError
+    DefaultServerError:
+      description: Default server error response.
+      example:
+        status_code: 5
+        detail: ""
+        message: Operation failed due to a server error
+        status: Error
+      properties:
+        status:
+          default: Error
+          title: Status
+          type: string
+        message:
+          default: Operation failed due to a server error
+          title: Message
+          type: string
+        detail:
+          default: ""
+          title: Detail
+          type: string
+        status_code:
+          default: 500
+          title: Status Code
+          type: integer
+      title: DefaultServerError
+    DefaultSuccess:
+      description: Default success response.
+      example:
+        status_code: 0
+        detail: ""
+        message: Operation was successful
+        status: Success
+      properties:
+        status:
+          default: Success
+          title: Status
+          type: string
+        message:
+          default: Operation was successful
+          title: Message
+          type: string
+        detail:
+          default: ""
+          title: Detail
+          type: string
+        status_code:
+          default: 200
+          title: Status Code
+          type: integer
+      title: DefaultSuccess
+    DockerMetadata:
+      description: Class holding the JSON schema for docker_run_parameters and docker_registry_credentials
+        columns.
+      example:
+        docker_run_parameters: ""
+        docker_registry_credentials:
+          password: ""
+          url: ""
+          username: ""
+      properties:
+        docker_run_parameters:
+          allOf:
+          - $ref: '#/components/schemas/DockerRunParameters'
+          default:
+            image_name: ""
+        docker_registry_credentials:
+          $ref: '#/components/schemas/DockerRegistryCredentials'
+      title: DockerMetadata
+    DockerRegistryCredentials:
+      description: DockerRegistryCredentials JSON schema for the docker_registry_credentials
+        field in the          docker_run_parameters JSON field.
+      example:
+        password: ""
+        url: ""
+        username: ""
+      properties:
+        url:
+          default: ""
+          title: Url
+          type: string
+        username:
+          default: ""
+          title: Username
+          type: string
+        password:
+          default: ""
+          title: Password
+          type: string
+      title: DockerRegistryCredentials
+    DockerRunParameters:
+      description: DockerRunParameters JSON schema for the docker_run_parameters JSON
+        column.
+      properties:
+        image_name:
+          default: ""
+          title: Image Name
+          type: string
+        image_tag:
+          nullable: true
+          type: string
+        command:
+          nullable: true
+          type: string
+        env_variables:
+          nullable: true
+          type: object
+        secrets:
+          nullable: true
+          type: object
+        container_files:
+          items:
+            $ref: '#/components/schemas/ContainerFile'
+          nullable: true
+      title: DockerRunParameters
+    GetAcceleratorTypeRequest:
+      description: Request model for getting accelerator types.
+      example:
+        accelerator_type_query: ""
+      properties:
+        accelerator_type_query:
+          allOf:
+          - $ref: '#/components/schemas/AcceleratorTypeQuery'
+      title: GetAcceleratorTypeRequest
+    GetAcceleratorTypesSuccess:
+      description: Response model for successful accelerator type request.
+      example:
+        "no": 6
+        status_code: 0
+        pagination: ""
+        detail: ""
+        message: Operation was successful
+        accelerator_types:
+        - memory: ""
+          vendor: ""
+          name: ""
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          display_name: display_name
+        - memory: ""
+          vendor: ""
+          name: ""
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          display_name: display_name
+        status: Success
+      properties:
+        status:
+          default: Success
+          title: Status
+          type: string
+        message:
+          default: Operation was successful
+          title: Message
+          type: string
+        detail:
+          default: ""
+          title: Detail
+          type: string
+        status_code:
+          default: 200
+          title: Status Code
+          type: integer
+        "no":
+          default: 0
+          title: "No"
+          type: integer
+        accelerator_types:
+          default: []
+          items:
+            $ref: '#/components/schemas/AcceleratorTypeView'
+          type: array
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/PaginationMetadata'
+          default:
+            total_items: 0
+            items_per_page: 25
+            current_page: 1
+            total_pages: 1
+            next_page: 1
+      title: GetAcceleratorTypesSuccess
+    GetInstanceTypeRequest:
+      description: Request model for getting instance types.
+      example:
+        instance_type_query: ""
+      properties:
+        instance_type_query:
+          allOf:
+          - $ref: '#/components/schemas/InstanceTyperQueryView'
+      title: GetInstanceTypeRequest
+    GetInstanceTypesSuccess:
+      description: Response model for successful instance type request.
+      example:
+        instance_types:
+        - accelerator: ""
+          attributes_hash: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          cpu: ""
+          created_at: 2000-01-23T04:56:07.000+00:00
+          storage: ""
+          availability: ""
+          type: ""
+          network: ""
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          provider:
+            regions:
+            - city: city
+              sustainable: false
+              name: name
+              location: ""
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              zones:
+              - name: name
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                status: ""
+              - name: name
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                status: ""
+              status: ""
+            - city: city
+              sustainable: false
+              name: name
+              location: ""
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              zones:
+              - name: name
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                status: ""
+              - name: name
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                status: ""
+              status: ""
+            capabilities:
+            - null
+            - null
+            updated_at: 2000-01-23T04:56:07.000+00:00
+            name: null
+            created_at: 2000-01-23T04:56:07.000+00:00
+            location: ""
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            name_short: name_short
+            properties: ""
+            status: ""
+          zone:
+            name: name
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            status: ""
+          price: ""
+          name: name
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          region:
+            city: city
+            sustainable: false
+            name: name
+            location: ""
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            zones:
+            - name: name
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              status: ""
+            - name: name
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              status: ""
+            status: ""
+          ram: ""
+        - accelerator: ""
+          attributes_hash: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          cpu: ""
+          created_at: 2000-01-23T04:56:07.000+00:00
+          storage: ""
+          availability: ""
+          type: ""
+          network: ""
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          provider:
+            regions:
+            - city: city
+              sustainable: false
+              name: name
+              location: ""
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              zones:
+              - name: name
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                status: ""
+              - name: name
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                status: ""
+              status: ""
+            - city: city
+              sustainable: false
+              name: name
+              location: ""
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              zones:
+              - name: name
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                status: ""
+              - name: name
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                status: ""
+              status: ""
+            capabilities:
+            - null
+            - null
+            updated_at: 2000-01-23T04:56:07.000+00:00
+            name: null
+            created_at: 2000-01-23T04:56:07.000+00:00
+            location: ""
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            name_short: name_short
+            properties: ""
+            status: ""
+          zone:
+            name: name
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            status: ""
+          price: ""
+          name: name
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          region:
+            city: city
+            sustainable: false
+            name: name
+            location: ""
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            zones:
+            - name: name
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              status: ""
+            - name: name
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              status: ""
+            status: ""
+          ram: ""
+        "no": 1
+        status_code: 0
+        pagination: ""
+        limit: 6
+        detail: ""
+        message: Operation was successful
+        status: Success
+      properties:
+        status:
+          default: Success
+          title: Status
+          type: string
+        message:
+          default: Operation was successful
+          title: Message
+          type: string
+        detail:
+          default: ""
+          title: Detail
+          type: string
+        status_code:
+          default: 200
+          title: Status Code
+          type: integer
+        limit:
+          default: 0
+          title: Limit
+          type: integer
+        "no":
+          default: 0
+          title: "No"
+          type: integer
+        instance_types:
+          default: []
+          items:
+            $ref: '#/components/schemas/InstanceTypeView'
+          type: array
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/PaginationMetadata'
+          default:
+            total_items: 0
+            items_per_page: 25
+            current_page: 1
+            total_pages: 1
+            next_page: 1
+      title: GetInstanceTypesSuccess
+    GetJobsSuccess:
+      description: Success response for Job creation.
+      example:
+        "no": 1
+        status_code: 0
+        pagination: ""
+        jobs:
+        - requirement_metadata:
+            requirements:
+              all: false
+              billing_granularity: billing_granularity
+              accelerator:
+                "no": 3
+                memory:
+                  all: false
+                  size: size
+                  options:
+                    lazy_loading: false
+                    offset: 5
+                    limit: 5
+                    order: ""
+                  operator: null
+                provider_specific_name: "{}"
+                vendor: vendor
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                name: Name
+                description:
+                - ""
+                - ""
+                operator: null
+              attributes_hash: Attributes_Hash
+              reference_id:
+                all: false
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                id: id
+                operator: null
+              cpu:
+                all: false
+                "no": 2
+                cores: 7
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                threads: 9
+                operator: null
+                speed: speed
+              storage:
+                all: false
+                "no": 2
+                size: size
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                type: type
+                included: included
+                operator: null
+                speed: speed
+              availability:
+                all: false
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                available: true
+                operator: null
+              type: type
+              operator: null
+              network:
+                all: false
+                inbound_speed: inbound_speed
+                outbound_speed: outbound_speed
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                operator: null
+              zone:
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                name: name
+                id: null
+                operator: null
+                status: status
+              provider:
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                name: name
+                location: location
+                id: null
+                name_short: name_short
+                operator: null
+                status: status
+              price:
+                all: false
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                unit_price: unit_price
+                operator: null
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              name: name
+              id: Id
+              region:
+                sustainable: true
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                name: name
+                location: location
+                id: null
+                operator: null
+                status: status
+              ram:
+                all: false
+                size: size
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                operator: null
+            os_storage_config: ""
+          docker_metadata:
+            docker_run_parameters: ""
+            docker_registry_credentials:
+              password: ""
+              url: ""
+              username: ""
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          done_at: 2000-01-23T04:56:07.000+00:00
+          price: ""
+          runtime_metadata: ""
+          started_at: 2000-01-23T04:56:07.000+00:00
+          created_at: 2000-01-23T04:56:07.000+00:00
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          logs: logs
+          errors: errors
+          status: ""
+        - requirement_metadata:
+            requirements:
+              all: false
+              billing_granularity: billing_granularity
+              accelerator:
+                "no": 3
+                memory:
+                  all: false
+                  size: size
+                  options:
+                    lazy_loading: false
+                    offset: 5
+                    limit: 5
+                    order: ""
+                  operator: null
+                provider_specific_name: "{}"
+                vendor: vendor
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                name: Name
+                description:
+                - ""
+                - ""
+                operator: null
+              attributes_hash: Attributes_Hash
+              reference_id:
+                all: false
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                id: id
+                operator: null
+              cpu:
+                all: false
+                "no": 2
+                cores: 7
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                threads: 9
+                operator: null
+                speed: speed
+              storage:
+                all: false
+                "no": 2
+                size: size
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                type: type
+                included: included
+                operator: null
+                speed: speed
+              availability:
+                all: false
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                available: true
+                operator: null
+              type: type
+              operator: null
+              network:
+                all: false
+                inbound_speed: inbound_speed
+                outbound_speed: outbound_speed
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                operator: null
+              zone:
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                name: name
+                id: null
+                operator: null
+                status: status
+              provider:
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                name: name
+                location: location
+                id: null
+                name_short: name_short
+                operator: null
+                status: status
+              price:
+                all: false
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                unit_price: unit_price
+                operator: null
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              name: name
+              id: Id
+              region:
+                sustainable: true
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                name: name
+                location: location
+                id: null
+                operator: null
+                status: status
+              ram:
+                all: false
+                size: size
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                operator: null
+            os_storage_config: ""
+          docker_metadata:
+            docker_run_parameters: ""
+            docker_registry_credentials:
+              password: ""
+              url: ""
+              username: ""
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          done_at: 2000-01-23T04:56:07.000+00:00
+          price: ""
+          runtime_metadata: ""
+          started_at: 2000-01-23T04:56:07.000+00:00
+          created_at: 2000-01-23T04:56:07.000+00:00
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          logs: logs
+          errors: errors
+          status: ""
+        limit: 6
+        detail: ""
+        message: Operation was successful
+        status: Success
+      properties:
+        status:
+          default: Success
+          title: Status
+          type: string
+        message:
+          default: Operation was successful
+          title: Message
+          type: string
+        detail:
+          default: ""
+          title: Detail
+          type: string
+        status_code:
+          default: 200
+          title: Status Code
+          type: integer
+        limit:
+          default: 0
+          title: Limit
+          type: integer
+        "no":
+          default: 0
+          title: "No"
+          type: integer
+        jobs:
+          default: []
+          items:
+            $ref: '#/components/schemas/JobView'
+          type: array
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/PaginationMetadata'
+          default:
+            total_items: 0
+            items_per_page: 25
+            current_page: 1
+            total_pages: 1
+            next_page: 1
+      title: GetJobsSuccess
+    GetOrganizationAuditLogsSuccess:
+      description: Module for defining the GetOrganizationAuditLogsSuccess class.
+      example:
+        status_code: 0
+        detail: ""
+        message: Operation was successful
+        audit_logs:
+        - organization_id: organization_id
+          ip: ip
+          response_body: response_body
+          id: id
+          request_method: request_method
+          request_payload: request_payload
+          request_url: request_url
+          outcome: outcome
+          user_agent: user_agent
+          timestamp: 2000-01-23T04:56:07.000+00:00
+          response_status_code: 6
+        - organization_id: organization_id
+          ip: ip
+          response_body: response_body
+          id: id
+          request_method: request_method
+          request_payload: request_payload
+          request_url: request_url
+          outcome: outcome
+          user_agent: user_agent
+          timestamp: 2000-01-23T04:56:07.000+00:00
+          response_status_code: 6
+        status: Success
+      properties:
+        status:
+          default: Success
+          title: Status
+          type: string
+        message:
+          default: Operation was successful
+          title: Message
+          type: string
+        detail:
+          default: ""
+          title: Detail
+          type: string
+        status_code:
+          default: 200
+          title: Status Code
+          type: integer
+        audit_logs:
+          default: []
+          items:
+            $ref: '#/components/schemas/RequestLog'
+          type: array
+      title: GetOrganizationAuditLogsSuccess
+    HTTPValidationError:
+      example:
+        detail:
+        - msg: msg
+          loc:
+          - ValidationError_loc_inner
+          - ValidationError_loc_inner
+          type: type
+        - msg: msg
+          loc:
+          - ValidationError_loc_inner
+          - ValidationError_loc_inner
+          type: type
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+      title: HTTPValidationError
+    IncorrectCreateJobParameterError:
+      description: Model for an error when incorrect parameters are provided for job
+        creation.
+      properties:
+        status:
+          default: Error
+          title: Status
+          type: string
+        message:
+          default: Operation failed due to a client error
+          title: Message
+          type: string
+        detail:
+          default: Please either provide a specific instance type ID or requirements
+            for the job
+          title: Detail
+          type: string
+        status_code:
+          default: 400
+          title: Status Code
+          type: integer
+      title: IncorrectCreateJobParameterError
+    InstanceTypeQuery-Input:
+      description: Query for the instance type attribute.
+      example:
+        all: false
+        billing_granularity: billing_granularity
+        accelerator:
+          "no": 5
+          memory:
+            all: false
+            size: Size
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            operator: null
+          provider_specific_name: "{}"
+          vendor: vendor
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          name: Name
+          description:
+          - ""
+          - ""
+          operator: null
+        attributes_hash: Attributes_Hash
+        reference_id:
+          all: false
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          id: id
+          operator: null
+        cpu:
+          all: false
+          "no": 6
+          cores: 1
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          threads: 5
+          operator: null
+          speed: Speed
+        storage:
+          all: false
+          "no": 2
+          size: null
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          type: type
+          included: included
+          operator: null
+          speed: null
+        availability:
+          all: false
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          available: true
+          operator: null
+        type: type
+        operator: null
+        network:
+          all: false
+          inbound_speed: Inbound_Speed
+          outbound_speed: Outbound_Speed
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          operator: null
+        zone:
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          name: name
+          id: null
+          operator: null
+          status: status
+        provider:
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          name: name
+          location: location
+          id: null
+          name_short: name_short
+          operator: null
+          status: status
+        price:
+          all: false
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          unit_price: Unit_Price
+          operator: null
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        name: name
+        id: Id
+        region:
+          sustainable: true
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          name: name
+          location: location
+          id: null
+          operator: null
+          status: status
+        ram:
+          all: false
+          size: Size
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          operator: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        id:
+          $ref: '#/components/schemas/Id'
+        region:
+          $ref: '#/components/schemas/RegionQuery-Input'
+        zone:
+          $ref: '#/components/schemas/ZoneQuery-Input'
+        name:
+          nullable: true
+          type: string
+        cpu:
+          $ref: '#/components/schemas/CpuQuery-Input'
+        accelerator:
+          $ref: '#/components/schemas/AcceleratorQuery-Input'
+        ram:
+          $ref: '#/components/schemas/MemoryQuery-Input'
+        storage:
+          $ref: '#/components/schemas/StorageQuery-Input'
+        network:
+          $ref: '#/components/schemas/NetworkQuery-Input'
+        price:
+          $ref: '#/components/schemas/PriceQuery-Input'
+        availability:
+          $ref: '#/components/schemas/AvailabilityQuery-Input'
+        type:
+          nullable: true
+          type: string
+        billing_granularity:
+          nullable: true
+          type: string
+        provider:
+          $ref: '#/components/schemas/ProviderQuery-Input'
+        reference_id:
+          $ref: '#/components/schemas/ReferenceIdQuery-Input'
+        attributes_hash:
+          $ref: '#/components/schemas/Attributes_Hash'
+      title: InstanceTypeQuery
+    InstanceTypeQuery-Output:
+      description: Query for the instance type attribute.
+      example:
+        all: false
+        billing_granularity: billing_granularity
+        accelerator:
+          "no": 3
+          memory:
+            all: false
+            size: size
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            operator: null
+          provider_specific_name: "{}"
+          vendor: vendor
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          name: Name
+          description:
+          - ""
+          - ""
+          operator: null
+        attributes_hash: Attributes_Hash
+        reference_id:
+          all: false
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          id: id
+          operator: null
+        cpu:
+          all: false
+          "no": 2
+          cores: 7
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          threads: 9
+          operator: null
+          speed: speed
+        storage:
+          all: false
+          "no": 2
+          size: size
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          type: type
+          included: included
+          operator: null
+          speed: speed
+        availability:
+          all: false
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          available: true
+          operator: null
+        type: type
+        operator: null
+        network:
+          all: false
+          inbound_speed: inbound_speed
+          outbound_speed: outbound_speed
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          operator: null
+        zone:
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          name: name
+          id: null
+          operator: null
+          status: status
+        provider:
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          name: name
+          location: location
+          id: null
+          name_short: name_short
+          operator: null
+          status: status
+        price:
+          all: false
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          unit_price: unit_price
+          operator: null
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        name: name
+        id: Id
+        region:
+          sustainable: true
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          name: name
+          location: location
+          id: null
+          operator: null
+          status: status
+        ram:
+          all: false
+          size: size
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          operator: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        id:
+          $ref: '#/components/schemas/Id'
+        region:
+          $ref: '#/components/schemas/RegionQuery-Output'
+        zone:
+          $ref: '#/components/schemas/ZoneQuery-Output'
+        name:
+          nullable: true
+          type: string
+        cpu:
+          $ref: '#/components/schemas/CpuQuery-Output'
+        accelerator:
+          $ref: '#/components/schemas/AcceleratorQuery-Output'
+        ram:
+          $ref: '#/components/schemas/MemoryQuery-Output'
+        storage:
+          $ref: '#/components/schemas/StorageQuery-Output'
+        network:
+          $ref: '#/components/schemas/NetworkQuery-Output'
+        price:
+          $ref: '#/components/schemas/PriceQuery-Output'
+        availability:
+          $ref: '#/components/schemas/AvailabilityQuery-Output'
+        type:
+          nullable: true
+          type: string
+        billing_granularity:
+          nullable: true
+          type: string
+        provider:
+          $ref: '#/components/schemas/ProviderQuery-Output'
+        reference_id:
+          $ref: '#/components/schemas/ReferenceIdQuery-Output'
+        attributes_hash:
+          $ref: '#/components/schemas/Attributes_Hash'
+      title: InstanceTypeQuery
+    InstanceTypeView:
+      description: Limited View on Model representation of a cloud provider instance
+        type.
+      example:
+        accelerator: ""
+        attributes_hash: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        cpu: ""
+        created_at: 2000-01-23T04:56:07.000+00:00
+        storage: ""
+        availability: ""
+        type: ""
+        network: ""
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        provider:
+          regions:
+          - city: city
+            sustainable: false
+            name: name
+            location: ""
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            zones:
+            - name: name
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              status: ""
+            - name: name
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              status: ""
+            status: ""
+          - city: city
+            sustainable: false
+            name: name
+            location: ""
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            zones:
+            - name: name
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              status: ""
+            - name: name
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              status: ""
+            status: ""
+          capabilities:
+          - null
+          - null
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          name: null
+          created_at: 2000-01-23T04:56:07.000+00:00
+          location: ""
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          name_short: name_short
+          properties: ""
+          status: ""
+        zone:
+          name: name
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: ""
+        price: ""
+        name: name
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        region:
+          city: city
+          sustainable: false
+          name: name
+          location: ""
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          zones:
+          - name: name
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            status: ""
+          - name: name
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            status: ""
+          status: ""
+        ram: ""
+      properties:
+        id:
+          format: uuid
+          title: Id
+          type: string
+        name:
+          nullable: true
+          type: string
+        provider:
+          $ref: '#/components/schemas/Provider'
+        region:
+          $ref: '#/components/schemas/Region'
+        zone:
+          $ref: '#/components/schemas/Zone'
+        type:
+          allOf:
+          - $ref: '#/components/schemas/ComputeInstanceType'
+          default: Undefined
+        cpu:
+          allOf:
+          - $ref: '#/components/schemas/CpuData'
+          default:
+            "no": 0
+            cores: 0
+            threads: 0
+            cpus: []
+        accelerator:
+          allOf:
+          - $ref: '#/components/schemas/AcceleratorDataView'
+          default:
+            "no": 0
+            memory:
+              bandwidth:
+                limit: Undefined
+                maximum: "0.0"
+                minimum: "0.0"
+                sla: Undefined
+                speed: "0.0"
+                unit: Undefined
+              interface: Undefined
+              size: "0.0"
+              unit: Gb
+            accelerator_types: []
+        ram:
+          allOf:
+          - $ref: '#/components/schemas/Memory'
+          default:
+            size: "0.0"
+            unit: Gb
+            bandwidth:
+              limit: Undefined
+              maximum: "0.0"
+              minimum: "0.0"
+              sla: Undefined
+              speed: "0.0"
+              unit: Undefined
+            interface: Undefined
+        storage:
+          allOf:
+          - $ref: '#/components/schemas/StorageData'
+          default:
+            "no": 0
+            size:
+              bandwidth:
+                limit: Undefined
+                maximum: "0.0"
+                minimum: "0.0"
+                sla: Undefined
+                speed: "0.0"
+                unit: Undefined
+              interface: Undefined
+              size: "0.0"
+              unit: Gb
+            included: UNDEFINED
+            storages: []
+        network:
+          allOf:
+          - $ref: '#/components/schemas/Network'
+          default:
+            inbound:
+              limit: Undefined
+              maximum: "0.0"
+              minimum: "0.0"
+              sla: Undefined
+              speed: "0.0"
+              unit: Undefined
+            outbound:
+              limit: Undefined
+              maximum: "0.0"
+              minimum: "0.0"
+              sla: Undefined
+              speed: "0.0"
+              unit: Undefined
+        price:
+          allOf:
+          - $ref: '#/components/schemas/PriceData'
+          default:
+            unit_price: "0"
+            currency: Undefined
+            granularity: UNDEFINED
+            provider_billing_granularity: UNDEFINED
+        availability:
+          allOf:
+          - $ref: '#/components/schemas/Availability'
+          default:
+            available: true
+            source: Undefined
+        created_at:
+          format: date-time
+          title: Created At
+          type: string
+        updated_at:
+          format: date-time
+          title: Updated At
+          type: string
+        attributes_hash:
+          format: uuid
+          nullable: true
+          type: string
+      title: InstanceTypeView
+    InstanceTyperQueryView:
+      description: Query for the instance type view attribute.
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        id:
+          $ref: '#/components/schemas/Id'
+        region:
+          $ref: '#/components/schemas/RegionQuery-Input'
+        zone:
+          $ref: '#/components/schemas/ZoneQuery-Input'
+        name:
+          nullable: true
+          type: string
+        cpu:
+          $ref: '#/components/schemas/CpuQuery-Input'
+        accelerator:
+          $ref: '#/components/schemas/AcceleratorQuery-Input'
+        ram:
+          $ref: '#/components/schemas/MemoryQuery-Input'
+        storage:
+          $ref: '#/components/schemas/StorageQuery-Input'
+        network:
+          $ref: '#/components/schemas/NetworkQuery-Input'
+        price:
+          $ref: '#/components/schemas/PriceQuery-Input'
+        availability:
+          $ref: '#/components/schemas/AvailabilityQuery-Input'
+        type:
+          nullable: true
+          type: string
+        billing_granularity:
+          nullable: true
+          type: string
+      title: InstanceTyperQueryView
+    JobAlreadyDoneError:
+      description: Error response for when user try to cancel a completed Job.
+      properties:
+        status:
+          default: Error
+          title: Status
+          type: string
+        message:
+          default: Operation failed due to a client error
+          title: Message
+          type: string
+        detail:
+          default: The job you are trying to cancel is already complete.
+          title: Detail
+          type: string
+        status_code:
+          default: 400
+          title: Status Code
+          type: integer
+      title: JobAlreadyDoneError
+    JobStatus:
+      description: Enum class representing the status of a job.
+      enum:
+      - Queued
+      - Initializing
+      - Running
+      - Done
+      - ServerError
+      - UserError
+      - Cancelled
+      - Timeout
+      - Undefined
+      title: JobStatus
+      type: string
+    JobView:
+      description: Limited View on Model representation of a perian job.
+      example:
+        requirement_metadata:
+          requirements:
+            all: false
+            billing_granularity: billing_granularity
+            accelerator:
+              "no": 3
+              memory:
+                all: false
+                size: size
+                options:
+                  lazy_loading: false
+                  offset: 5
+                  limit: 5
+                  order: ""
+                operator: null
+              provider_specific_name: "{}"
+              vendor: vendor
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              name: Name
+              description:
+              - ""
+              - ""
+              operator: null
+            attributes_hash: Attributes_Hash
+            reference_id:
+              all: false
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              id: id
+              operator: null
+            cpu:
+              all: false
+              "no": 2
+              cores: 7
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              threads: 9
+              operator: null
+              speed: speed
+            storage:
+              all: false
+              "no": 2
+              size: size
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              type: type
+              included: included
+              operator: null
+              speed: speed
+            availability:
+              all: false
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              available: true
+              operator: null
+            type: type
+            operator: null
+            network:
+              all: false
+              inbound_speed: inbound_speed
+              outbound_speed: outbound_speed
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              operator: null
+            zone:
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              name: name
+              id: null
+              operator: null
+              status: status
+            provider:
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              name: name
+              location: location
+              id: null
+              name_short: name_short
+              operator: null
+              status: status
+            price:
+              all: false
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              unit_price: unit_price
+              operator: null
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            name: name
+            id: Id
+            region:
+              sustainable: true
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              name: name
+              location: location
+              id: null
+              operator: null
+              status: status
+            ram:
+              all: false
+              size: size
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              operator: null
+          os_storage_config: ""
+        docker_metadata:
+          docker_run_parameters: ""
+          docker_registry_credentials:
+            password: ""
+            url: ""
+            username: ""
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        done_at: 2000-01-23T04:56:07.000+00:00
+        price: ""
+        runtime_metadata: ""
+        started_at: 2000-01-23T04:56:07.000+00:00
+        created_at: 2000-01-23T04:56:07.000+00:00
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        logs: logs
+        errors: errors
+        status: ""
+      properties:
+        id:
+          format: uuid
+          title: Id
+          type: string
+        status:
+          allOf:
+          - $ref: '#/components/schemas/JobStatus'
+          default: Undefined
+        started_at:
+          format: date-time
+          nullable: true
+          type: string
+        done_at:
+          format: date-time
+          nullable: true
+          type: string
+        logs:
+          nullable: true
+          type: string
+        errors:
+          nullable: true
+          type: string
+        price:
+          allOf:
+          - $ref: '#/components/schemas/PriceData'
+          default:
+            unit_price: "0"
+            currency: Undefined
+            granularity: UNDEFINED
+            provider_billing_granularity: UNDEFINED
+        docker_metadata:
+          $ref: '#/components/schemas/DockerMetadata'
+        requirement_metadata:
+          $ref: '#/components/schemas/RequirementMetadata'
+        runtime_metadata:
+          allOf:
+          - $ref: '#/components/schemas/RuntimeMetadata'
+          default:
+            auto_failover_instance_type: false
+        created_at:
+          format: date-time
+          title: Created At
+          type: string
+        updated_at:
+          format: date-time
+          title: Updated At
+          type: string
+      title: JobView
+    Location:
+      description: Enum class representing different locations.
+      enum:
+      - DE
+      - RU
+      - GB
+      - FR
+      - IT
+      - ES
+      - UA
+      - FI
+      - CH
+      - PL
+      - CA
+      - PH
+      - US
+      - BE
+      - IE
+      - UK
+      - AU
+      - SG
+      - NL
+      - AT
+      - BG
+      - SE
+      - "NO"
+      - CN
+      - IND
+      - ID
+      - HK
+      - JP
+      - KR
+      - BR
+      - TW
+      - IL
+      - QA
+      - SA
+      - UNDEFINED
+      title: Location
+      type: string
+    Memory:
+      description: Represents a memory object.
+      properties:
+        size:
+          title: Size
+          type: string
+        unit:
+          allOf:
+          - $ref: '#/components/schemas/MemoryUnit'
+          default: Gb
+        bandwidth:
+          allOf:
+          - $ref: '#/components/schemas/Bandwidth'
+          default:
+            speed: "0.0"
+            maximum: "0.0"
+            minimum: "0.0"
+            unit: Undefined
+            sla: Undefined
+            limit: Undefined
+        interface:
+          allOf:
+          - $ref: '#/components/schemas/MemoryInterface'
+          default: Undefined
+      title: Memory
+    MemoryInterface:
+      description: Enum class representing memory interfaces.
+      enum:
+      - Hbm2
+      - Undefined
+      title: MemoryInterface
+      type: string
+    MemoryQuery-Input:
+      description: Query for the memory attribute.
+      example:
+        all: false
+        size: Size
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        operator: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        size:
+          $ref: '#/components/schemas/Size'
+      title: MemoryQuery
+    MemoryQuery-Output:
+      description: Query for the memory attribute.
+      example:
+        all: false
+        size: size
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        operator: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        size:
+          nullable: true
+          type: string
+      title: MemoryQuery
+    MemoryUnit:
+      description: Enum class representing memory units.
+      enum:
+      - Gb
+      - Mb
+      - Kb
+      title: MemoryUnit
+      type: string
+    MissingHeaderError:
+      description: Raised when a required header is missing.
+      properties:
+        status:
+          default: Error
+          title: Status
+          type: string
+        message:
+          default: Operation failed due to a client error
+          title: Message
+          type: string
+        detail:
+          default: ""
+          title: Detail
+          type: string
+        status_code:
+          default: 400
+          title: Status Code
+          type: integer
+      title: MissingHeaderError
+    Network:
+      description: Network class representing the network data model.
+      properties:
+        inbound:
+          allOf:
+          - $ref: '#/components/schemas/Bandwidth'
+          default:
+            speed: "0.0"
+            maximum: "0.0"
+            minimum: "0.0"
+            unit: Undefined
+            sla: Undefined
+            limit: Undefined
+        outbound:
+          allOf:
+          - $ref: '#/components/schemas/Bandwidth'
+          default:
+            speed: "0.0"
+            maximum: "0.0"
+            minimum: "0.0"
+            unit: Undefined
+            sla: Undefined
+            limit: Undefined
+      title: Network
+    NetworkQuery-Input:
+      description: Query for the network attribute.
+      example:
+        all: false
+        inbound_speed: Inbound_Speed
+        outbound_speed: Outbound_Speed
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        operator: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        inbound_speed:
+          $ref: '#/components/schemas/Inbound_Speed'
+        outbound_speed:
+          $ref: '#/components/schemas/Outbound_Speed'
+      title: NetworkQuery
+    NetworkQuery-Output:
+      description: Query for the network attribute.
+      example:
+        all: false
+        inbound_speed: inbound_speed
+        outbound_speed: outbound_speed
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        operator: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        inbound_speed:
+          nullable: true
+          type: string
+        outbound_speed:
+          nullable: true
+          type: string
+      title: NetworkQuery
+    NoJobFoundError:
+      description: Error response for not finding fetched Job.
+      properties:
+        status:
+          default: Error
+          title: Status
+          type: string
+        message:
+          default: Operation failed due to a client error
+          title: Message
+          type: string
+        detail:
+          default: No job found with specified ID
+          title: Detail
+          type: string
+        status_code:
+          default: 400
+          title: Status Code
+          type: integer
+      title: NoJobFoundError
+    NoParameterError:
+      description: Error response for missing Job id.
+      properties:
+        status:
+          default: Error
+          title: Status
+          type: string
+        message:
+          default: Operation failed due to a client error
+          title: Message
+          type: string
+        detail:
+          default: Please provide a specific job ID.
+          title: Detail
+          type: string
+        status_code:
+          default: 400
+          title: Status Code
+          type: integer
+      title: NoParameterError
+    OSStorageConfig:
+      description: JSON schema for the storage field in the docker_run_parameters
+        json column.
+      properties:
+        size:
+          default: 50
+          title: Size
+          type: integer
+      title: OSStorageConfig
+    Operator:
+      description: Enum for operators.
+      enum:
+      - EQUALS
+      - INCLUDES
+      - UNDEFINED
+      title: Operator
+      type: string
+    OptimizationCriterion:
+      description: Enum class representing the optimization criterion.
+      title: OptimizationCriterion
+      type: string
+    OrderCriterion:
+      description: Enum for ordering criterion.
+      enum:
+      - PRICE
+      - CREATED_AT
+      title: OrderCriterion
+      type: string
+    OrganizationNameError:
+      description: Error for invalid organization name.
+      properties:
+        status:
+          default: Error
+          title: Status
+          type: string
+        message:
+          default: Operation failed due to a client error
+          title: Message
+          type: string
+        detail:
+          default: The provided organization name is not valid
+          title: Detail
+          type: string
+        status_code:
+          default: 400
+          title: Status Code
+          type: integer
+      title: OrganizationNameError
+    PaginationMetadata:
+      description: Model for pagination metadata.
+      properties:
+        total_items:
+          default: 0
+          title: Total Items
+          type: integer
+        items_per_page:
+          default: 25
+          title: Items Per Page
+          type: integer
+        current_page:
+          default: 1
+          title: Current Page
+          type: integer
+        total_pages:
+          default: 1
+          title: Total Pages
+          type: integer
+        next_page:
+          nullable: true
+          type: integer
+        previous_page:
+          nullable: true
+          type: integer
+      title: PaginationMetadata
+    PriceData:
+      description: Represents price data for a specific item.
+      properties:
+        unit_price:
+          title: Unit Price
+          type: string
+        currency:
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+          default: Undefined
+        granularity:
+          allOf:
+          - $ref: '#/components/schemas/BillingGranularity'
+          default: UNDEFINED
+        provider_billing_granularity:
+          allOf:
+          - $ref: '#/components/schemas/BillingGranularity'
+          default: UNDEFINED
+      title: PriceData
+    PriceQuery-Input:
+      description: Query for the price attribute.
+      example:
+        all: false
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        unit_price: Unit_Price
+        operator: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        unit_price:
+          $ref: '#/components/schemas/Unit_Price'
+      title: PriceQuery
+    PriceQuery-Output:
+      description: Query for the price attribute.
+      example:
+        all: false
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        unit_price: unit_price
+        operator: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        unit_price:
+          nullable: true
+          type: string
+      title: PriceQuery
+    Provider:
+      description: Provider database model.
+      example:
+        regions:
+        - city: city
+          sustainable: false
+          name: name
+          location: ""
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          zones:
+          - name: name
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            status: ""
+          - name: name
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            status: ""
+          status: ""
+        - city: city
+          sustainable: false
+          name: name
+          location: ""
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          zones:
+          - name: name
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            status: ""
+          - name: name
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            status: ""
+          status: ""
+        capabilities:
+        - null
+        - null
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        name: null
+        created_at: 2000-01-23T04:56:07.000+00:00
+        location: ""
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        name_short: name_short
+        properties: ""
+        status: ""
+      properties:
+        id:
+          format: uuid
+          title: Id
+          type: string
+        name:
+          $ref: '#/components/schemas/ProviderName'
+        name_short:
+          nullable: true
+          type: string
+        regions:
+          default: []
+          items:
+            $ref: '#/components/schemas/Region'
+          type: array
+        location:
+          allOf:
+          - $ref: '#/components/schemas/Location'
+          default: UNDEFINED
+        status:
+          allOf:
+          - $ref: '#/components/schemas/Status'
+          default: Undefined
+        capabilities:
+          default: []
+          items:
+            $ref: '#/components/schemas/ProviderCapabilities'
+          type: array
+        properties:
+          allOf:
+          - $ref: '#/components/schemas/ProviderProperties'
+          default:
+            compute_billing_granularity: UNDEFINED
+        created_at:
+          format: date-time
+          title: Created At
+          type: string
+        updated_at:
+          format: date-time
+          title: Updated At
+          type: string
+      title: Provider
+    ProviderCapabilities:
+      description: Enum class representing the capabilities of a provider.
+      enum:
+      - PricingAPI
+      - JobAPI
+      title: ProviderCapabilities
+      type: string
+    ProviderName:
+      description: Provider names enum.
+      enum:
+      - Open Telekom Cloud
+      - OVH Cloud
+      - Exoscale
+      - DataCrunch
+      - Gridscale
+      - Taiga Cloud
+      - Google Cloud Platform
+      - UNDEFINED
+      title: ProviderName
+      type: string
+    ProviderProperties:
+      description: Provider properties database model.
+      properties:
+        compute_billing_granularity:
+          allOf:
+          - $ref: '#/components/schemas/BillingGranularity'
+          default: UNDEFINED
+      title: ProviderProperties
+    ProviderQuery-Input:
+      description: Subquery for the provider attribute.
+      example:
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        name: name
+        location: location
+        id: null
+        name_short: name_short
+        operator: null
+        status: status
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          nullable: true
+          type: string
+        name_short:
+          nullable: true
+          type: string
+        location:
+          nullable: true
+          type: string
+        status:
+          nullable: true
+          type: string
+      title: ProviderQuery
+    ProviderQuery-Output:
+      description: Subquery for the provider attribute.
+      example:
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        name: name
+        location: location
+        id: null
+        name_short: name_short
+        operator: null
+        status: status
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          nullable: true
+          type: string
+        name_short:
+          nullable: true
+          type: string
+        location:
+          nullable: true
+          type: string
+        status:
+          nullable: true
+          type: string
+      title: ProviderQuery
+    QueryOptions:
+      description: Model for SQL query options.
+      example:
+        lazy_loading: false
+        offset: 5
+        limit: 5
+        order: ""
+      properties:
+        limit:
+          nullable: true
+          type: integer
+        offset:
+          nullable: true
+          type: integer
+        order:
+          allOf:
+          - $ref: '#/components/schemas/OrderCriterion'
+          default: PRICE
+        lazy_loading:
+          default: false
+          title: Lazy Loading
+          type: boolean
+      title: QueryOptions
+    ReferenceIdQuery-Input:
+      description: Query for the reference id attribute.
+      example:
+        all: false
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        id: id
+        operator: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        id:
+          nullable: true
+          type: string
+      title: ReferenceIdQuery
+    ReferenceIdQuery-Output:
+      description: Query for the reference id attribute.
+      example:
+        all: false
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        id: id
+        operator: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        id:
+          nullable: true
+          type: string
+      title: ReferenceIdQuery
+    Region:
+      description: Region database model.
+      example:
+        city: city
+        sustainable: false
+        name: name
+        location: ""
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        zones:
+        - name: name
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: ""
+        - name: name
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: ""
+        status: ""
+      properties:
+        id:
+          format: uuid
+          title: Id
+          type: string
+        name:
+          nullable: true
+          type: string
+        city:
+          nullable: true
+          type: string
+        location:
+          allOf:
+          - $ref: '#/components/schemas/Location'
+          default: UNDEFINED
+        sustainable:
+          default: false
+          title: Sustainable
+          type: boolean
+        status:
+          allOf:
+          - $ref: '#/components/schemas/Status'
+          default: Undefined
+        zones:
+          default: []
+          items:
+            $ref: '#/components/schemas/Zone'
+          type: array
+      title: Region
+    RegionQuery-Input:
+      description: Subquery for the region attribute.
+      example:
+        sustainable: true
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        name: name
+        location: location
+        id: null
+        operator: null
+        status: status
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          nullable: true
+          type: string
+        location:
+          nullable: true
+          type: string
+        sustainable:
+          nullable: true
+          type: boolean
+        status:
+          nullable: true
+          type: string
+      title: RegionQuery
+    RegionQuery-Output:
+      description: Subquery for the region attribute.
+      example:
+        sustainable: true
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        name: name
+        location: location
+        id: null
+        operator: null
+        status: status
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          nullable: true
+          type: string
+        location:
+          nullable: true
+          type: string
+        sustainable:
+          nullable: true
+          type: boolean
+        status:
+          nullable: true
+          type: string
+      title: RegionQuery
+    RemainingCreditsResponse:
+      description: Response model for the remaining credits endpoint.
+      example:
+        current_amount: current_amount
+        last_calculated: last_calculated
+        status_code: 0
+        original_amount: original_amount
+        currency: null
+        detail: Remaining credits information retrieved successfully
+        message: Operation was successful
+        status: Success
+      properties:
+        status:
+          default: Success
+          title: Status
+          type: string
+        message:
+          default: Operation was successful
+          title: Message
+          type: string
+        detail:
+          default: Remaining credits information retrieved successfully
+          title: Detail
+          type: string
+        status_code:
+          default: 200
+          title: Status Code
+          type: integer
+        current_amount:
+          title: Current Amount
+          type: string
+        currency:
+          $ref: '#/components/schemas/Currency'
+        original_amount:
+          title: Original Amount
+          type: string
+        last_calculated:
+          nullable: true
+          type: string
+      required:
+      - currency
+      - current_amount
+      - last_calculated
+      - original_amount
+      title: RemainingCreditsResponse
+    RequestLog:
+      example:
+        organization_id: organization_id
+        ip: ip
+        response_body: response_body
+        id: id
+        request_method: request_method
+        request_payload: request_payload
+        request_url: request_url
+        outcome: outcome
+        user_agent: user_agent
+        timestamp: 2000-01-23T04:56:07.000+00:00
+        response_status_code: 6
+      properties:
+        id:
+          format: uuid4
+          nullable: true
+          type: string
+        organization_id:
+          format: uuid4
+          title: Organization Id
+          type: string
+        timestamp:
+          format: date-time
+          title: Timestamp
+          type: string
+        outcome:
+          nullable: true
+          type: string
+        ip:
+          nullable: true
+          type: string
+        user_agent:
+          nullable: true
+          type: string
+        request_url:
+          nullable: true
+          type: string
+        request_method:
+          nullable: true
+          type: string
+        request_payload:
+          nullable: true
+          type: string
+        response_status_code:
+          nullable: true
+          type: integer
+        response_body:
+          nullable: true
+          type: string
+      required:
+      - organization_id
+      - timestamp
+      title: RequestLog
+    RequirementMetadata:
+      description: JSON schema for the requirements_metadata column.
+      example:
+        requirements:
+          all: false
+          billing_granularity: billing_granularity
+          accelerator:
+            "no": 3
+            memory:
+              all: false
+              size: size
+              options:
+                lazy_loading: false
+                offset: 5
+                limit: 5
+                order: ""
+              operator: null
+            provider_specific_name: "{}"
+            vendor: vendor
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            name: Name
+            description:
+            - ""
+            - ""
+            operator: null
+          attributes_hash: Attributes_Hash
+          reference_id:
+            all: false
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            id: id
+            operator: null
+          cpu:
+            all: false
+            "no": 2
+            cores: 7
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            threads: 9
+            operator: null
+            speed: speed
+          storage:
+            all: false
+            "no": 2
+            size: size
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            type: type
+            included: included
+            operator: null
+            speed: speed
+          availability:
+            all: false
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            available: true
+            operator: null
+          type: type
+          operator: null
+          network:
+            all: false
+            inbound_speed: inbound_speed
+            outbound_speed: outbound_speed
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            operator: null
+          zone:
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            name: name
+            id: null
+            operator: null
+            status: status
+          provider:
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            name: name
+            location: location
+            id: null
+            name_short: name_short
+            operator: null
+            status: status
+          price:
+            all: false
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            unit_price: unit_price
+            operator: null
+          options:
+            lazy_loading: false
+            offset: 5
+            limit: 5
+            order: ""
+          name: name
+          id: Id
+          region:
+            sustainable: true
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            name: name
+            location: location
+            id: null
+            operator: null
+            status: status
+          ram:
+            all: false
+            size: size
+            options:
+              lazy_loading: false
+              offset: 5
+              limit: 5
+              order: ""
+            operator: null
+        os_storage_config: ""
+      properties:
+        os_storage_config:
+          allOf:
+          - $ref: '#/components/schemas/OSStorageConfig'
+          default:
+            size: 50
+        requirements:
+          $ref: '#/components/schemas/InstanceTypeQuery-Output'
+      title: RequirementMetadata
+    RuntimeMetadata:
+      description: JSON schema for the runtime_metadata json column.
+      properties:
+        instance_type_id:
+          nullable: true
+          type: string
+        auto_failover_instance_type:
+          default: false
+          title: Auto Failover Instance Type
+          type: boolean
+        timeout_seconds:
+          nullable: true
+          type: integer
+      title: RuntimeMetadata
+    Status:
+      description: Represents the status of an entity.
+      enum:
+      - Active
+      - Inactive
+      - Undefined
+      title: Status
+      type: string
+    Storage:
+      properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/StorageType'
+          default: UNDEFINED
+        size:
+          allOf:
+          - $ref: '#/components/schemas/Memory'
+          default:
+            size: "0.0"
+            unit: Gb
+            bandwidth:
+              limit: Undefined
+              maximum: "0.0"
+              minimum: "0.0"
+              sla: Undefined
+              speed: "0.0"
+              unit: Undefined
+            interface: Undefined
+        speed:
+          allOf:
+          - $ref: '#/components/schemas/Bandwidth'
+          default:
+            speed: "0.0"
+            maximum: "0.0"
+            minimum: "0.0"
+            unit: Undefined
+            sla: Undefined
+            limit: Undefined
+      title: Storage
+    StorageData:
+      properties:
+        "no":
+          default: 0
+          title: "No"
+          type: integer
+        size:
+          allOf:
+          - $ref: '#/components/schemas/Memory'
+          default:
+            size: "0.0"
+            unit: Gb
+            bandwidth:
+              limit: Undefined
+              maximum: "0.0"
+              minimum: "0.0"
+              sla: Undefined
+              speed: "0.0"
+              unit: Undefined
+            interface: Undefined
+        included:
+          allOf:
+          - $ref: '#/components/schemas/StorageIncluded'
+          default: UNDEFINED
+        storages:
+          default: []
+          items:
+            $ref: '#/components/schemas/Storage'
+          type: array
+      title: StorageData
+    StorageIncluded:
+      enum:
+      - UNDEFINED
+      - INCLUDED
+      - NOT_INCLUDED
+      title: StorageIncluded
+      type: string
+    StorageQuery-Input:
+      description: Query for the storage attribute.
+      example:
+        all: false
+        "no": 2
+        size: null
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        type: type
+        included: included
+        operator: null
+        speed: null
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        "no":
+          nullable: true
+          type: integer
+        size:
+          $ref: '#/components/schemas/Size'
+        type:
+          nullable: true
+          type: string
+        speed:
+          $ref: '#/components/schemas/Speed'
+        included:
+          nullable: true
+          type: string
+      title: StorageQuery
+    StorageQuery-Output:
+      description: Query for the storage attribute.
+      example:
+        all: false
+        "no": 2
+        size: size
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        type: type
+        included: included
+        operator: null
+        speed: speed
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        all:
+          default: false
+          title: All
+          type: boolean
+        "no":
+          nullable: true
+          type: integer
+        size:
+          nullable: true
+          type: string
+        type:
+          nullable: true
+          type: string
+        speed:
+          nullable: true
+          type: string
+        included:
+          nullable: true
+          type: string
+      title: StorageQuery
+    StorageType:
+      enum:
+      - NVME
+      - SSD
+      - HDD
+      - UNDEFINED
+      title: StorageType
+      type: string
+    ValidationError:
+      example:
+        msg: msg
+        loc:
+        - ValidationError_loc_inner
+        - ValidationError_loc_inner
+        type: type
+      properties:
+        loc:
+          items:
+            $ref: '#/components/schemas/ValidationError_loc_inner'
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    Zone:
+      description: Zone database model.
+      example:
+        name: name
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: ""
+      properties:
+        id:
+          format: uuid
+          title: Id
+          type: string
+        name:
+          nullable: true
+          type: string
+        status:
+          allOf:
+          - $ref: '#/components/schemas/Status'
+          default: Undefined
+      title: Zone
+    ZoneQuery-Input:
+      description: Subquery for the zone attribute.
+      example:
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        name: name
+        id: null
+        operator: null
+        status: status
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          nullable: true
+          type: string
+        status:
+          nullable: true
+          type: string
+      title: ZoneQuery
+    ZoneQuery-Output:
+      description: Subquery for the zone attribute.
+      example:
+        options:
+          lazy_loading: false
+          offset: 5
+          limit: 5
+          order: ""
+        name: name
+        id: null
+        operator: null
+        status: status
+      properties:
+        operator:
+          $ref: '#/components/schemas/Operator'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          nullable: true
+          type: string
+        status:
+          nullable: true
+          type: string
+      title: ZoneQuery
+    src__api__router__accelerator_type__IncorrectParameterError:
+      description: Error when the user sends an incorrect parameter.
+      properties:
+        status:
+          default: Error
+          title: Status
+          type: string
+        message:
+          default: Operation failed due to a client error
+          title: Message
+          type: string
+        detail:
+          default: ""
+          title: Detail
+          type: string
+        status_code:
+          default: 400
+          title: Status Code
+          type: integer
+      title: IncorrectParameterError
+    src__api__router__instance_type__IncorrectParameterError:
+      description: Error when the user sends an incorrect parameter.
+      properties:
+        status:
+          default: Error
+          title: Status
+          type: string
+        message:
+          default: Operation failed due to a client error
+          title: Message
+          type: string
+        detail:
+          default: Please either provide a specific instance_type ID or a query
+          title: Detail
+          type: string
+        status_code:
+          default: 400
+          title: Status Code
+          type: integer
+      title: IncorrectParameterError
+    src__api__router__instance_type__InstanceTypeNotFoundError:
+      description: Error when the instance type is not found.
+      properties:
+        status:
+          default: Error
+          title: Status
+          type: string
+        message:
+          default: Operation failed due to a client error
+          title: Message
+          type: string
+        detail:
+          default: No instance type found with specified ID
+          title: Detail
+          type: string
+        status_code:
+          default: 400
+          title: Status Code
+          type: integer
+      title: InstanceTypeNotFoundError
+    src__api__router__job__InstanceTypeNotFoundError:
+      description: Model for an error when the selected Instance Type is not found.
+      properties:
+        status:
+          default: Error
+          title: Status
+          type: string
+        message:
+          default: Operation failed due to a client error
+          title: Message
+          type: string
+        detail:
+          default: The selected Instance Type was not found
+          title: Detail
+          type: string
+        status_code:
+          default: 400
+          title: Status Code
+          type: integer
+      title: InstanceTypeNotFoundError
+    Response_400_Get_Instance_Type_By_Id:
+      anyOf:
+      - $ref: '#/components/schemas/DefaultClientError'
+      - $ref: '#/components/schemas/src__api__router__instance_type__InstanceTypeNotFoundError'
+      - $ref: '#/components/schemas/src__api__router__instance_type__IncorrectParameterError'
+      title: Response 400 Get Instance Type By Id
+    Response_400_Get_Instance_Type_By_Requirements:
+      anyOf:
+      - $ref: '#/components/schemas/DefaultClientError'
+      - $ref: '#/components/schemas/src__api__router__instance_type__IncorrectParameterError'
+      title: Response 400 Get Instance Type By Requirements
+    Response_400_Create_Job:
+      anyOf:
+      - $ref: '#/components/schemas/DefaultClientError'
+      - $ref: '#/components/schemas/src__api__router__job__InstanceTypeNotFoundError'
+      - $ref: '#/components/schemas/IncorrectCreateJobParameterError'
+      title: Response 400 Create Job
+    Response_400_Get_Job_By_Id:
+      anyOf:
+      - $ref: '#/components/schemas/DefaultClientError'
+      - $ref: '#/components/schemas/NoJobFoundError'
+      - $ref: '#/components/schemas/NoParameterError'
+      title: Response 400 Get Job By Id
+    Response_400_Cancel_Job:
+      anyOf:
+      - $ref: '#/components/schemas/DefaultClientError'
+      - $ref: '#/components/schemas/NoJobFoundError'
+      - $ref: '#/components/schemas/JobAlreadyDoneError'
+      title: Response 400 Cancel Job
+    Response_400_Get_Organization_Audit_Logs_Organization_Logs_Get:
+      anyOf:
+      - $ref: '#/components/schemas/DefaultClientError'
+      - $ref: '#/components/schemas/OrganizationNameError'
+      - $ref: '#/components/schemas/MissingHeaderError'
+      title: Response 400 Get Organization Audit Logs Organization Logs Get
+    Response_400_Create_User_Organization_User_Post:
+      anyOf:
+      - $ref: '#/components/schemas/DefaultClientError'
+      - $ref: '#/components/schemas/OrganizationNameError'
+      - $ref: '#/components/schemas/MissingHeaderError'
+      title: Response 400 Create User Organization User Post
+    Response_400_Get_Accelerator_Type_By_Id:
+      anyOf:
+      - $ref: '#/components/schemas/DefaultClientError'
+      - $ref: '#/components/schemas/src__api__router__accelerator_type__IncorrectParameterError'
+      - $ref: '#/components/schemas/AcceleratorTypeNotFoundError'
+      title: Response 400 Get Accelerator Type By Id
+    Response_400_Get_Accelerator_Type_By_Requirements:
+      anyOf:
+      - $ref: '#/components/schemas/DefaultClientError'
+      - $ref: '#/components/schemas/src__api__router__accelerator_type__IncorrectParameterError'
+      - $ref: '#/components/schemas/AcceleratorTypeNotFoundError'
+      title: Response 400 Get Accelerator Type By Requirements
+    Name:
+      anyOf:
+      - type: string
+      - items: {}
+      nullable: true
+      title: Name
+    Description:
+      anyOf:
+      - items: {}
+      - type: string
+      nullable: true
+      title: Description
+    Id:
+      anyOf:
+      - type: string
+      - format: uuid
+        type: string
+      nullable: true
+      title: Id
+    Speed:
+      anyOf:
+      - type: string
+      - type: number
+      nullable: true
+      title: Speed
+    Amount:
+      anyOf:
+      - type: number
+      - type: string
+      title: Amount
+    Attributes_Hash:
+      anyOf:
+      - type: string
+      - format: uuid
+        type: string
+      nullable: true
+      title: Attributes Hash
+    Size:
+      anyOf:
+      - type: string
+      - type: number
+      nullable: true
+      title: Size
+    Inbound_Speed:
+      anyOf:
+      - type: string
+      - type: number
+      nullable: true
+      title: Inbound Speed
+    Outbound_Speed:
+      anyOf:
+      - type: string
+      - type: number
+      nullable: true
+      title: Outbound Speed
+    Unit_Price:
+      anyOf:
+      - type: string
+      - type: number
+      nullable: true
+      title: Unit Price
+    ValidationError_loc_inner:
+      anyOf:
+      - type: string
+      - type: integer
