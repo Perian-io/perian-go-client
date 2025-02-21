@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Limit** | Pointer to **NullableInt32** |  | [optional] 
 **Offset** | Pointer to **NullableInt32** |  | [optional] 
-**Order** | Pointer to [**OrderCriterion**](OrderCriterion.md) |  | [optional] [default to PRICE]
+**Order** | Pointer to [**OrderCriterion**](OrderCriterion.md) |  | [optional] [default to ORDERCRITERION_PRICE]
 **LazyLoading** | Pointer to **bool** |  | [optional] [default to false]
 
 ## Methods

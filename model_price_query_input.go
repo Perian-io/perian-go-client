@@ -23,7 +23,10 @@ type PriceQueryInput struct {
 	Options NullableQueryOptions `json:"options,omitempty"`
 	All *bool `json:"all,omitempty"`
 	UnitPrice NullableUnitPrice `json:"unit_price,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _PriceQueryInput PriceQueryInput
 
 // NewPriceQueryInput instantiates a new PriceQueryInput object
 // This constructor will assign default values to properties that have it defined,
@@ -226,7 +229,36 @@ func (o PriceQueryInput) ToMap() (map[string]interface{}, error) {
 	if o.UnitPrice.IsSet() {
 		toSerialize["unit_price"] = o.UnitPrice.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *PriceQueryInput) UnmarshalJSON(data []byte) (err error) {
+	varPriceQueryInput := _PriceQueryInput{}
+
+	err = json.Unmarshal(data, &varPriceQueryInput)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PriceQueryInput(varPriceQueryInput)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "options")
+		delete(additionalProperties, "all")
+		delete(additionalProperties, "unit_price")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePriceQueryInput struct {

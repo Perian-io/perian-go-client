@@ -20,10 +20,10 @@ type StorageType string
 
 // List of StorageType
 const (
-	NVME StorageType = "NVME"
-	SSD StorageType = "SSD"
-	HDD StorageType = "HDD"
-	UNDEFINED StorageType = "UNDEFINED"
+	STORAGETYPE_NVME StorageType = "NVME"
+	STORAGETYPE_SSD StorageType = "SSD"
+	STORAGETYPE_HDD StorageType = "HDD"
+	STORAGETYPE_UNDEFINED StorageType = "UNDEFINED"
 )
 
 // All allowed values of StorageType enum

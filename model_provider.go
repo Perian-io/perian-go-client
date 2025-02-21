@@ -30,7 +30,10 @@ type Provider struct {
 	Properties *ProviderProperties `json:"properties,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Provider Provider
 
 // NewProvider instantiates a new Provider object
 // This constructor will assign default values to properties that have it defined,
@@ -38,11 +41,11 @@ type Provider struct {
 // will change when the set of required properties is changed
 func NewProvider() *Provider {
 	this := Provider{}
-	var location Location = UNDEFINED
+	var location Location = LOCATION_UNDEFINED
 	this.Location = &location
-	var status Status = UNDEFINED
+	var status Status = STATUS_UNDEFINED
 	this.Status = &status
-	var properties ProviderProperties = {compute_billing_granularity=UNDEFINED}
+	var properties ProviderProperties = *NewProviderProperties()
 	this.Properties = &properties
 	return &this
 }
@@ -52,11 +55,11 @@ func NewProvider() *Provider {
 // but it doesn't guarantee that properties required by API are set
 func NewProviderWithDefaults() *Provider {
 	this := Provider{}
-	var location Location = UNDEFINED
+	var location Location = LOCATION_UNDEFINED
 	this.Location = &location
-	var status Status = UNDEFINED
+	var status Status = STATUS_UNDEFINED
 	this.Status = &status
-	var properties ProviderProperties = {compute_billing_granularity=UNDEFINED}
+	var properties ProviderProperties = *NewProviderProperties()
 	this.Properties = &properties
 	return &this
 }
@@ -441,7 +444,42 @@ func (o Provider) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.UpdatedAt) {
 		toSerialize["updated_at"] = o.UpdatedAt
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Provider) UnmarshalJSON(data []byte) (err error) {
+	varProvider := _Provider{}
+
+	err = json.Unmarshal(data, &varProvider)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Provider(varProvider)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "name_short")
+		delete(additionalProperties, "regions")
+		delete(additionalProperties, "location")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "capabilities")
+		delete(additionalProperties, "properties")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "updated_at")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableProvider struct {

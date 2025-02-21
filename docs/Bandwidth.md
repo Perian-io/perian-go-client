@@ -7,9 +7,9 @@ Name | Type | Description | Notes
 **Speed** | Pointer to **string** |  | [optional] 
 **Maximum** | Pointer to **string** |  | [optional] 
 **Minimum** | Pointer to **string** |  | [optional] 
-**Unit** | Pointer to [**BandwidthUnits**](BandwidthUnits.md) |  | [optional] [default to UNDEFINED]
-**Sla** | Pointer to [**BandwidthSla**](BandwidthSla.md) |  | [optional] [default to UNDEFINED]
-**Limit** | Pointer to [**BandwidthLimits**](BandwidthLimits.md) |  | [optional] [default to UNDEFINED]
+**Unit** | Pointer to [**BandwidthUnits**](BandwidthUnits.md) |  | [optional] [default to BANDWIDTHUNITS_UNDEFINED]
+**Sla** | Pointer to [**BandwidthSla**](BandwidthSla.md) |  | [optional] [default to BANDWIDTHSLA_UNDEFINED]
+**Limit** | Pointer to [**BandwidthLimits**](BandwidthLimits.md) |  | [optional] [default to BANDWIDTHLIMITS_UNDEFINED]
 
 ## Methods
 

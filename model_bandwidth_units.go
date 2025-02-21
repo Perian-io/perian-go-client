@@ -20,14 +20,14 @@ type BandwidthUnits string
 
 // List of BandwidthUnits
 const (
-	MBITS BandwidthUnits = "Mbits"
-	GBITS BandwidthUnits = "Gbits"
-	GBS BandwidthUnits = "Gbs"
-	MBS BandwidthUnits = "Mbs"
-	GHZ BandwidthUnits = "Ghz"
-	MHZ BandwidthUnits = "Mhz"
-	IOPS BandwidthUnits = "Iops"
-	UNDEFINED BandwidthUnits = "Undefined"
+	BANDWIDTHUNITS_MBITS BandwidthUnits = "Mbits"
+	BANDWIDTHUNITS_GBITS BandwidthUnits = "Gbits"
+	BANDWIDTHUNITS_GBS BandwidthUnits = "Gbs"
+	BANDWIDTHUNITS_MBS BandwidthUnits = "Mbs"
+	BANDWIDTHUNITS_GHZ BandwidthUnits = "Ghz"
+	BANDWIDTHUNITS_MHZ BandwidthUnits = "Mhz"
+	BANDWIDTHUNITS_IOPS BandwidthUnits = "Iops"
+	BANDWIDTHUNITS_UNDEFINED BandwidthUnits = "Undefined"
 )
 
 // All allowed values of BandwidthUnits enum

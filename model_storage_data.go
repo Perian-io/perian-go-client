@@ -23,7 +23,10 @@ type StorageData struct {
 	Size *Memory `json:"size,omitempty"`
 	Included *StorageIncluded `json:"included,omitempty"`
 	Storages []Storage `json:"storages,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _StorageData StorageData
 
 // NewStorageData instantiates a new StorageData object
 // This constructor will assign default values to properties that have it defined,
@@ -33,9 +36,9 @@ func NewStorageData() *StorageData {
 	this := StorageData{}
 	var no int32 = 0
 	this.No = &no
-	var size Memory = {size=0.0, unit=Gb, bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined}
+	var size Memory = *NewMemory()
 	this.Size = &size
-	var included StorageIncluded = UNDEFINED
+	var included StorageIncluded = STORAGEINCLUDED_UNDEFINED
 	this.Included = &included
 	return &this
 }
@@ -47,9 +50,9 @@ func NewStorageDataWithDefaults() *StorageData {
 	this := StorageData{}
 	var no int32 = 0
 	this.No = &no
-	var size Memory = {size=0.0, unit=Gb, bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined}
+	var size Memory = *NewMemory()
 	this.Size = &size
-	var included StorageIncluded = UNDEFINED
+	var included StorageIncluded = STORAGEINCLUDED_UNDEFINED
 	this.Included = &included
 	return &this
 }
@@ -204,7 +207,36 @@ func (o StorageData) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Storages) {
 		toSerialize["storages"] = o.Storages
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *StorageData) UnmarshalJSON(data []byte) (err error) {
+	varStorageData := _StorageData{}
+
+	err = json.Unmarshal(data, &varStorageData)
+
+	if err != nil {
+		return err
+	}
+
+	*o = StorageData(varStorageData)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "no")
+		delete(additionalProperties, "size")
+		delete(additionalProperties, "included")
+		delete(additionalProperties, "storages")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableStorageData struct {

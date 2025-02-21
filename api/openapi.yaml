@@ -1062,21 +1062,21 @@ components:
         total_price: total_price
         organization_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         end_time: 2000-01-23T04:56:07.000+00:00
-        currency: null
+        currency: EUR
         items:
         - original_price: original_price
           original_currency: null
           exchange_rate: exchange_rate
           job_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           price: price
-          granularity: null
+          granularity: PER_SECOND
           currency: null
         - original_price: original_price
           original_currency: null
           exchange_rate: exchange_rate
           job_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           price: price
-          granularity: null
+          granularity: PER_SECOND
           currency: null
       properties:
         organization_id:
@@ -1120,7 +1120,7 @@ components:
         exchange_rate: exchange_rate
         job_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         price: price
-        granularity: null
+        granularity: PER_SECOND
         currency: null
       properties:
         job_id:
@@ -1376,7 +1376,7 @@ components:
             available: true
             operator: null
           type: type
-          operator: null
+          operator: EQUALS
           network:
             all: false
             inbound_speed: Inbound_Speed
@@ -1743,6 +1743,7 @@ components:
           items:
             $ref: '#/components/schemas/ContainerFile'
           nullable: true
+          type: array
       title: DockerRunParameters
     GetAcceleratorTypeRequest:
       description: Request model for getting accelerator types.
@@ -1860,10 +1861,10 @@ components:
                 status: ""
               status: ""
             capabilities:
-            - null
-            - null
+            - PricingAPI
+            - PricingAPI
             updated_at: 2000-01-23T04:56:07.000+00:00
-            name: null
+            name: Open Telekom Cloud
             created_at: 2000-01-23T04:56:07.000+00:00
             location: ""
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -1930,10 +1931,10 @@ components:
                 status: ""
               status: ""
             capabilities:
-            - null
-            - null
+            - PricingAPI
+            - PricingAPI
             updated_at: 2000-01-23T04:56:07.000+00:00
-            name: null
+            name: Open Telekom Cloud
             created_at: 2000-01-23T04:56:07.000+00:00
             location: ""
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -2088,7 +2089,7 @@ components:
                 available: true
                 operator: null
               type: type
-              operator: null
+              operator: EQUALS
               network:
                 all: false
                 inbound_speed: inbound_speed
@@ -2247,7 +2248,7 @@ components:
                 available: true
                 operator: null
               type: type
-              operator: null
+              operator: EQUALS
               network:
                 all: false
                 inbound_speed: inbound_speed
@@ -2545,7 +2546,7 @@ components:
           available: true
           operator: null
         type: type
-        operator: null
+        operator: EQUALS
         network:
           all: false
           inbound_speed: Inbound_Speed
@@ -2733,7 +2734,7 @@ components:
           available: true
           operator: null
         type: type
-        operator: null
+        operator: EQUALS
         network:
           all: false
           inbound_speed: inbound_speed
@@ -2890,10 +2891,10 @@ components:
               status: ""
             status: ""
           capabilities:
-          - null
-          - null
+          - PricingAPI
+          - PricingAPI
           updated_at: 2000-01-23T04:56:07.000+00:00
-          name: null
+          name: Open Telekom Cloud
           created_at: 2000-01-23T04:56:07.000+00:00
           location: ""
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -3192,7 +3193,7 @@ components:
               available: true
               operator: null
             type: type
-            operator: null
+            operator: EQUALS
             network:
               all: false
               inbound_speed: inbound_speed
@@ -3612,6 +3613,8 @@ components:
       type: string
     OptimizationCriterion:
       description: Enum class representing the optimization criterion.
+      enum:
+      - PRICE
       title: OptimizationCriterion
       type: string
     OrderCriterion:
@@ -3764,10 +3767,10 @@ components:
             status: ""
           status: ""
         capabilities:
-        - null
-        - null
+        - PricingAPI
+        - PricingAPI
         updated_at: 2000-01-23T04:56:07.000+00:00
-        name: null
+        name: Open Telekom Cloud
         created_at: 2000-01-23T04:56:07.000+00:00
         location: ""
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -4103,7 +4106,7 @@ components:
         last_calculated: last_calculated
         status_code: 0
         original_amount: original_amount
-        currency: null
+        currency: EUR
         detail: Remaining credits information retrieved successfully
         message: Operation was successful
         status: Success
@@ -4269,7 +4272,7 @@ components:
             available: true
             operator: null
           type: type
-          operator: null
+          operator: EQUALS
           network:
             all: false
             inbound_speed: inbound_speed
@@ -4756,11 +4759,13 @@ components:
       anyOf:
       - type: string
       - items: {}
+        type: array
       nullable: true
       title: Name
     Description:
       anyOf:
       - items: {}
+        type: array
       - type: string
       nullable: true
       title: Description

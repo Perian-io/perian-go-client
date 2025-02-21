@@ -26,7 +26,10 @@ type GetAcceleratorTypesSuccess struct {
 	No *int32 `json:"no,omitempty"`
 	AcceleratorTypes []AcceleratorTypeView `json:"accelerator_types,omitempty"`
 	Pagination *PaginationMetadata `json:"pagination,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _GetAcceleratorTypesSuccess GetAcceleratorTypesSuccess
 
 // NewGetAcceleratorTypesSuccess instantiates a new GetAcceleratorTypesSuccess object
 // This constructor will assign default values to properties that have it defined,
@@ -44,7 +47,7 @@ func NewGetAcceleratorTypesSuccess() *GetAcceleratorTypesSuccess {
 	this.StatusCode = &statusCode
 	var no int32 = 0
 	this.No = &no
-	var pagination PaginationMetadata = {total_items=0, items_per_page=25, current_page=1, total_pages=1, next_page=1}
+	var pagination PaginationMetadata = *NewPaginationMetadata()
 	this.Pagination = &pagination
 	return &this
 }
@@ -64,7 +67,7 @@ func NewGetAcceleratorTypesSuccessWithDefaults() *GetAcceleratorTypesSuccess {
 	this.StatusCode = &statusCode
 	var no int32 = 0
 	this.No = &no
-	var pagination PaginationMetadata = {total_items=0, items_per_page=25, current_page=1, total_pages=1, next_page=1}
+	var pagination PaginationMetadata = *NewPaginationMetadata()
 	this.Pagination = &pagination
 	return &this
 }
@@ -324,7 +327,39 @@ func (o GetAcceleratorTypesSuccess) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Pagination) {
 		toSerialize["pagination"] = o.Pagination
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *GetAcceleratorTypesSuccess) UnmarshalJSON(data []byte) (err error) {
+	varGetAcceleratorTypesSuccess := _GetAcceleratorTypesSuccess{}
+
+	err = json.Unmarshal(data, &varGetAcceleratorTypesSuccess)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GetAcceleratorTypesSuccess(varGetAcceleratorTypesSuccess)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "message")
+		delete(additionalProperties, "detail")
+		delete(additionalProperties, "status_code")
+		delete(additionalProperties, "no")
+		delete(additionalProperties, "accelerator_types")
+		delete(additionalProperties, "pagination")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableGetAcceleratorTypesSuccess struct {

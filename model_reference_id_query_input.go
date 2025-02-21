@@ -23,7 +23,10 @@ type ReferenceIdQueryInput struct {
 	Options NullableQueryOptions `json:"options,omitempty"`
 	All *bool `json:"all,omitempty"`
 	Id NullableString `json:"id,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ReferenceIdQueryInput ReferenceIdQueryInput
 
 // NewReferenceIdQueryInput instantiates a new ReferenceIdQueryInput object
 // This constructor will assign default values to properties that have it defined,
@@ -226,7 +229,36 @@ func (o ReferenceIdQueryInput) ToMap() (map[string]interface{}, error) {
 	if o.Id.IsSet() {
 		toSerialize["id"] = o.Id.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ReferenceIdQueryInput) UnmarshalJSON(data []byte) (err error) {
+	varReferenceIdQueryInput := _ReferenceIdQueryInput{}
+
+	err = json.Unmarshal(data, &varReferenceIdQueryInput)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ReferenceIdQueryInput(varReferenceIdQueryInput)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "options")
+		delete(additionalProperties, "all")
+		delete(additionalProperties, "id")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableReferenceIdQueryInput struct {

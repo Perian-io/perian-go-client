@@ -26,7 +26,10 @@ type CpuQueryInput struct {
 	Cores NullableInt32 `json:"cores,omitempty"`
 	Threads NullableInt32 `json:"threads,omitempty"`
 	Speed NullableSpeed `json:"speed,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CpuQueryInput CpuQueryInput
 
 // NewCpuQueryInput instantiates a new CpuQueryInput object
 // This constructor will assign default values to properties that have it defined,
@@ -364,7 +367,39 @@ func (o CpuQueryInput) ToMap() (map[string]interface{}, error) {
 	if o.Speed.IsSet() {
 		toSerialize["speed"] = o.Speed.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CpuQueryInput) UnmarshalJSON(data []byte) (err error) {
+	varCpuQueryInput := _CpuQueryInput{}
+
+	err = json.Unmarshal(data, &varCpuQueryInput)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CpuQueryInput(varCpuQueryInput)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "options")
+		delete(additionalProperties, "all")
+		delete(additionalProperties, "no")
+		delete(additionalProperties, "cores")
+		delete(additionalProperties, "threads")
+		delete(additionalProperties, "speed")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCpuQueryInput struct {

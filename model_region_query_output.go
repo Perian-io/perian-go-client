@@ -26,7 +26,10 @@ type RegionQueryOutput struct {
 	Location NullableString `json:"location,omitempty"`
 	Sustainable NullableBool `json:"sustainable,omitempty"`
 	Status NullableString `json:"status,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _RegionQueryOutput RegionQueryOutput
 
 // NewRegionQueryOutput instantiates a new RegionQueryOutput object
 // This constructor will assign default values to properties that have it defined,
@@ -370,7 +373,39 @@ func (o RegionQueryOutput) ToMap() (map[string]interface{}, error) {
 	if o.Status.IsSet() {
 		toSerialize["status"] = o.Status.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *RegionQueryOutput) UnmarshalJSON(data []byte) (err error) {
+	varRegionQueryOutput := _RegionQueryOutput{}
+
+	err = json.Unmarshal(data, &varRegionQueryOutput)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RegionQueryOutput(varRegionQueryOutput)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "options")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "location")
+		delete(additionalProperties, "sustainable")
+		delete(additionalProperties, "status")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableRegionQueryOutput struct {

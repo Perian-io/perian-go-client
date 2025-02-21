@@ -20,9 +20,9 @@ type BandwidthLimits string
 
 // List of BandwidthLimits
 const (
-	LIMITED BandwidthLimits = "Limited"
-	UNLIMITED BandwidthLimits = "Unlimited"
-	UNDEFINED BandwidthLimits = "Undefined"
+	BANDWIDTHLIMITS_LIMITED BandwidthLimits = "Limited"
+	BANDWIDTHLIMITS_UNLIMITED BandwidthLimits = "Unlimited"
+	BANDWIDTHLIMITS_UNDEFINED BandwidthLimits = "Undefined"
 )
 
 // All allowed values of BandwidthLimits enum

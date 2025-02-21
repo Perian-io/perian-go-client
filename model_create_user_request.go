@@ -22,7 +22,10 @@ type CreateUserRequest struct {
 	FirstName NullableString `json:"first_name,omitempty"`
 	LastName NullableString `json:"last_name,omitempty"`
 	Email NullableString `json:"email,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CreateUserRequest CreateUserRequest
 
 // NewCreateUserRequest instantiates a new CreateUserRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -186,7 +189,35 @@ func (o CreateUserRequest) ToMap() (map[string]interface{}, error) {
 	if o.Email.IsSet() {
 		toSerialize["email"] = o.Email.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CreateUserRequest) UnmarshalJSON(data []byte) (err error) {
+	varCreateUserRequest := _CreateUserRequest{}
+
+	err = json.Unmarshal(data, &varCreateUserRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CreateUserRequest(varCreateUserRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "first_name")
+		delete(additionalProperties, "last_name")
+		delete(additionalProperties, "email")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCreateUserRequest struct {

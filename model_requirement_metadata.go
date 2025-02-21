@@ -21,7 +21,10 @@ var _ MappedNullable = &RequirementMetadata{}
 type RequirementMetadata struct {
 	OsStorageConfig *OSStorageConfig `json:"os_storage_config,omitempty"`
 	Requirements NullableInstanceTypeQueryOutput `json:"requirements,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _RequirementMetadata RequirementMetadata
 
 // NewRequirementMetadata instantiates a new RequirementMetadata object
 // This constructor will assign default values to properties that have it defined,
@@ -29,7 +32,7 @@ type RequirementMetadata struct {
 // will change when the set of required properties is changed
 func NewRequirementMetadata() *RequirementMetadata {
 	this := RequirementMetadata{}
-	var osStorageConfig OSStorageConfig = {size=50}
+	var osStorageConfig OSStorageConfig = *NewOSStorageConfig()
 	this.OsStorageConfig = &osStorageConfig
 	return &this
 }
@@ -39,7 +42,7 @@ func NewRequirementMetadata() *RequirementMetadata {
 // but it doesn't guarantee that properties required by API are set
 func NewRequirementMetadataWithDefaults() *RequirementMetadata {
 	this := RequirementMetadata{}
-	var osStorageConfig OSStorageConfig = {size=50}
+	var osStorageConfig OSStorageConfig = *NewOSStorageConfig()
 	this.OsStorageConfig = &osStorageConfig
 	return &this
 }
@@ -134,7 +137,34 @@ func (o RequirementMetadata) ToMap() (map[string]interface{}, error) {
 	if o.Requirements.IsSet() {
 		toSerialize["requirements"] = o.Requirements.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *RequirementMetadata) UnmarshalJSON(data []byte) (err error) {
+	varRequirementMetadata := _RequirementMetadata{}
+
+	err = json.Unmarshal(data, &varRequirementMetadata)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RequirementMetadata(varRequirementMetadata)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "os_storage_config")
+		delete(additionalProperties, "requirements")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableRequirementMetadata struct {

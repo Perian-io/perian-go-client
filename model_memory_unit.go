@@ -20,9 +20,9 @@ type MemoryUnit string
 
 // List of MemoryUnit
 const (
-	GB MemoryUnit = "Gb"
-	MB MemoryUnit = "Mb"
-	KB MemoryUnit = "Kb"
+	MEMORYUNIT_GB MemoryUnit = "Gb"
+	MEMORYUNIT_MB MemoryUnit = "Mb"
+	MEMORYUNIT_KB MemoryUnit = "Kb"
 )
 
 // All allowed values of MemoryUnit enum

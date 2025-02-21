@@ -26,7 +26,10 @@ type Region struct {
 	Sustainable *bool `json:"sustainable,omitempty"`
 	Status *Status `json:"status,omitempty"`
 	Zones []Zone `json:"zones,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Region Region
 
 // NewRegion instantiates a new Region object
 // This constructor will assign default values to properties that have it defined,
@@ -34,11 +37,11 @@ type Region struct {
 // will change when the set of required properties is changed
 func NewRegion() *Region {
 	this := Region{}
-	var location Location = UNDEFINED
+	var location Location = LOCATION_UNDEFINED
 	this.Location = &location
 	var sustainable bool = false
 	this.Sustainable = &sustainable
-	var status Status = UNDEFINED
+	var status Status = STATUS_UNDEFINED
 	this.Status = &status
 	return &this
 }
@@ -48,11 +51,11 @@ func NewRegion() *Region {
 // but it doesn't guarantee that properties required by API are set
 func NewRegionWithDefaults() *Region {
 	this := Region{}
-	var location Location = UNDEFINED
+	var location Location = LOCATION_UNDEFINED
 	this.Location = &location
 	var sustainable bool = false
 	this.Sustainable = &sustainable
-	var status Status = UNDEFINED
+	var status Status = STATUS_UNDEFINED
 	this.Status = &status
 	return &this
 }
@@ -332,7 +335,39 @@ func (o Region) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Zones) {
 		toSerialize["zones"] = o.Zones
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Region) UnmarshalJSON(data []byte) (err error) {
+	varRegion := _Region{}
+
+	err = json.Unmarshal(data, &varRegion)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Region(varRegion)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "city")
+		delete(additionalProperties, "location")
+		delete(additionalProperties, "sustainable")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "zones")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableRegion struct {

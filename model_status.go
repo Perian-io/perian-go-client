@@ -20,9 +20,9 @@ type Status string
 
 // List of Status
 const (
-	ACTIVE Status = "Active"
-	INACTIVE Status = "Inactive"
-	UNDEFINED Status = "Undefined"
+	STATUS_ACTIVE Status = "Active"
+	STATUS_INACTIVE Status = "Inactive"
+	STATUS_UNDEFINED Status = "Undefined"
 )
 
 // All allowed values of Status enum

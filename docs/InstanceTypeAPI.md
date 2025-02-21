@@ -165,7 +165,7 @@ func main() {
 	getInstanceTypeRequest := *openapiclient.NewGetInstanceTypeRequest() // GetInstanceTypeRequest | 
 	limit := int32(56) // int32 | Limit the number of instance types to return (optional) (default to 25)
 	page := int32(56) // int32 | Number of requested result page (optional) (default to 1)
-	criterion := TODO // string | Select a specific criterion to optimize for. Currently available options: PRICE (optional) (default to "PRICE")
+	criterion := openapiclient.OptimizationCriterion("PRICE") // OptimizationCriterion | Select a specific criterion to optimize for. Currently available options: PRICE (optional) (default to "PRICE")
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -193,7 +193,7 @@ Name | Type | Description  | Notes
  **getInstanceTypeRequest** | [**GetInstanceTypeRequest**](GetInstanceTypeRequest.md) |  | 
  **limit** | **int32** | Limit the number of instance types to return | [default to 25]
  **page** | **int32** | Number of requested result page | [default to 1]
- **criterion** | [**string**](string.md) | Select a specific criterion to optimize for. Currently available options: PRICE | [default to &quot;PRICE&quot;]
+ **criterion** | [**OptimizationCriterion**](OptimizationCriterion.md) | Select a specific criterion to optimize for. Currently available options: PRICE | [default to &quot;PRICE&quot;]
 
 ### Return type
 

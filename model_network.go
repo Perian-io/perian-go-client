@@ -21,7 +21,10 @@ var _ MappedNullable = &Network{}
 type Network struct {
 	Inbound *Bandwidth `json:"inbound,omitempty"`
 	Outbound *Bandwidth `json:"outbound,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Network Network
 
 // NewNetwork instantiates a new Network object
 // This constructor will assign default values to properties that have it defined,
@@ -29,9 +32,9 @@ type Network struct {
 // will change when the set of required properties is changed
 func NewNetwork() *Network {
 	this := Network{}
-	var inbound Bandwidth = {speed=0.0, maximum=0.0, minimum=0.0, unit=Undefined, sla=Undefined, limit=Undefined}
+	var inbound Bandwidth = *NewBandwidth()
 	this.Inbound = &inbound
-	var outbound Bandwidth = {speed=0.0, maximum=0.0, minimum=0.0, unit=Undefined, sla=Undefined, limit=Undefined}
+	var outbound Bandwidth = *NewBandwidth()
 	this.Outbound = &outbound
 	return &this
 }
@@ -41,9 +44,9 @@ func NewNetwork() *Network {
 // but it doesn't guarantee that properties required by API are set
 func NewNetworkWithDefaults() *Network {
 	this := Network{}
-	var inbound Bandwidth = {speed=0.0, maximum=0.0, minimum=0.0, unit=Undefined, sla=Undefined, limit=Undefined}
+	var inbound Bandwidth = *NewBandwidth()
 	this.Inbound = &inbound
-	var outbound Bandwidth = {speed=0.0, maximum=0.0, minimum=0.0, unit=Undefined, sla=Undefined, limit=Undefined}
+	var outbound Bandwidth = *NewBandwidth()
 	this.Outbound = &outbound
 	return &this
 }
@@ -128,7 +131,34 @@ func (o Network) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Outbound) {
 		toSerialize["outbound"] = o.Outbound
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Network) UnmarshalJSON(data []byte) (err error) {
+	varNetwork := _Network{}
+
+	err = json.Unmarshal(data, &varNetwork)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Network(varNetwork)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "inbound")
+		delete(additionalProperties, "outbound")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableNetwork struct {

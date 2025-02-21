@@ -20,8 +20,8 @@ type ProviderCapabilities string
 
 // List of ProviderCapabilities
 const (
-	PRICING_API ProviderCapabilities = "PricingAPI"
-	JOB_API ProviderCapabilities = "JobAPI"
+	PROVIDERCAPABILITIES_PRICING_API ProviderCapabilities = "PricingAPI"
+	PROVIDERCAPABILITIES_JOB_API ProviderCapabilities = "JobAPI"
 )
 
 // All allowed values of ProviderCapabilities enum

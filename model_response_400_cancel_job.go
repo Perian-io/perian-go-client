@@ -15,6 +15,7 @@ import (
 	"fmt"
 )
 
+
 // Response400CancelJob struct for Response400CancelJob
 type Response400CancelJob struct {
 	DefaultClientError *DefaultClientError
@@ -68,7 +69,7 @@ func (dst *Response400CancelJob) UnmarshalJSON(data []byte) error {
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON
-func (src *Response400CancelJob) MarshalJSON() ([]byte, error) {
+func (src Response400CancelJob) MarshalJSON() ([]byte, error) {
 	if src.DefaultClientError != nil {
 		return json.Marshal(&src.DefaultClientError)
 	}
@@ -83,6 +84,7 @@ func (src *Response400CancelJob) MarshalJSON() ([]byte, error) {
 
 	return nil, nil // no data in anyOf schemas
 }
+
 
 type NullableResponse400CancelJob struct {
 	value *Response400CancelJob

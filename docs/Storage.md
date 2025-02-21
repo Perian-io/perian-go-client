@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Type** | Pointer to [**StorageType**](StorageType.md) |  | [optional] [default to UNDEFINED]
+**Type** | Pointer to [**StorageType**](StorageType.md) |  | [optional] [default to STORAGETYPE_UNDEFINED]
 **Size** | Pointer to [**Memory**](Memory.md) |  | [optional] [default to {size=0.0, unit=Gb, bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined}]
 **Speed** | Pointer to [**Bandwidth**](Bandwidth.md) |  | [optional] [default to {speed=0.0, maximum=0.0, minimum=0.0, unit=Undefined, sla=Undefined, limit=Undefined}]
 

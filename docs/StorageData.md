@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **No** | Pointer to **int32** |  | [optional] [default to 0]
 **Size** | Pointer to [**Memory**](Memory.md) |  | [optional] [default to {size=0.0, unit=Gb, bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined}]
-**Included** | Pointer to [**StorageIncluded**](StorageIncluded.md) |  | [optional] [default to UNDEFINED]
+**Included** | Pointer to [**StorageIncluded**](StorageIncluded.md) |  | [optional] [default to STORAGEINCLUDED_UNDEFINED]
 **Storages** | Pointer to [**[]Storage**](Storage.md) |  | [optional] [default to []]
 
 ## Methods

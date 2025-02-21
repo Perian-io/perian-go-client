@@ -23,7 +23,10 @@ type Memory struct {
 	Unit *MemoryUnit `json:"unit,omitempty"`
 	Bandwidth *Bandwidth `json:"bandwidth,omitempty"`
 	Interface *MemoryInterface `json:"interface,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Memory Memory
 
 // NewMemory instantiates a new Memory object
 // This constructor will assign default values to properties that have it defined,
@@ -31,11 +34,11 @@ type Memory struct {
 // will change when the set of required properties is changed
 func NewMemory() *Memory {
 	this := Memory{}
-	var unit MemoryUnit = GB
+	var unit MemoryUnit = MEMORYUNIT_GB
 	this.Unit = &unit
-	var bandwidth Bandwidth = {speed=0.0, maximum=0.0, minimum=0.0, unit=Undefined, sla=Undefined, limit=Undefined}
+	var bandwidth Bandwidth = *NewBandwidth()
 	this.Bandwidth = &bandwidth
-	var interface_ MemoryInterface = UNDEFINED
+	var interface_ MemoryInterface = MEMORYINTERFACE_UNDEFINED
 	this.Interface = &interface_
 	return &this
 }
@@ -45,11 +48,11 @@ func NewMemory() *Memory {
 // but it doesn't guarantee that properties required by API are set
 func NewMemoryWithDefaults() *Memory {
 	this := Memory{}
-	var unit MemoryUnit = GB
+	var unit MemoryUnit = MEMORYUNIT_GB
 	this.Unit = &unit
-	var bandwidth Bandwidth = {speed=0.0, maximum=0.0, minimum=0.0, unit=Undefined, sla=Undefined, limit=Undefined}
+	var bandwidth Bandwidth = *NewBandwidth()
 	this.Bandwidth = &bandwidth
-	var interface_ MemoryInterface = UNDEFINED
+	var interface_ MemoryInterface = MEMORYINTERFACE_UNDEFINED
 	this.Interface = &interface_
 	return &this
 }
@@ -204,7 +207,36 @@ func (o Memory) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Interface) {
 		toSerialize["interface"] = o.Interface
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Memory) UnmarshalJSON(data []byte) (err error) {
+	varMemory := _Memory{}
+
+	err = json.Unmarshal(data, &varMemory)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Memory(varMemory)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "size")
+		delete(additionalProperties, "unit")
+		delete(additionalProperties, "bandwidth")
+		delete(additionalProperties, "interface")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableMemory struct {

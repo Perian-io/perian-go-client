@@ -23,7 +23,10 @@ type OrganizationNameError struct {
 	Message *string `json:"message,omitempty"`
 	Detail *string `json:"detail,omitempty"`
 	StatusCode *int32 `json:"status_code,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _OrganizationNameError OrganizationNameError
 
 // NewOrganizationNameError instantiates a new OrganizationNameError object
 // This constructor will assign default values to properties that have it defined,
@@ -208,7 +211,36 @@ func (o OrganizationNameError) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.StatusCode) {
 		toSerialize["status_code"] = o.StatusCode
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *OrganizationNameError) UnmarshalJSON(data []byte) (err error) {
+	varOrganizationNameError := _OrganizationNameError{}
+
+	err = json.Unmarshal(data, &varOrganizationNameError)
+
+	if err != nil {
+		return err
+	}
+
+	*o = OrganizationNameError(varOrganizationNameError)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "message")
+		delete(additionalProperties, "detail")
+		delete(additionalProperties, "status_code")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableOrganizationNameError struct {

@@ -26,7 +26,10 @@ type CreateJobRequest struct {
 	Requirements NullableInstanceTypeQueryInput `json:"requirements,omitempty"`
 	DockerRunParameters *DockerRunParameters `json:"docker_run_parameters,omitempty"`
 	DockerRegistryCredentials NullableDockerRegistryCredentials `json:"docker_registry_credentials,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CreateJobRequest CreateJobRequest
 
 // NewCreateJobRequest instantiates a new CreateJobRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -36,9 +39,9 @@ func NewCreateJobRequest() *CreateJobRequest {
 	this := CreateJobRequest{}
 	var autoFailoverInstanceType bool = false
 	this.AutoFailoverInstanceType = &autoFailoverInstanceType
-	var osStorageConfig OSStorageConfig = {size=50}
+	var osStorageConfig OSStorageConfig = *NewOSStorageConfig()
 	this.OsStorageConfig = &osStorageConfig
-	var dockerRunParameters DockerRunParameters = {image_name=}
+	var dockerRunParameters DockerRunParameters = *NewDockerRunParameters()
 	this.DockerRunParameters = &dockerRunParameters
 	return &this
 }
@@ -50,9 +53,9 @@ func NewCreateJobRequestWithDefaults() *CreateJobRequest {
 	this := CreateJobRequest{}
 	var autoFailoverInstanceType bool = false
 	this.AutoFailoverInstanceType = &autoFailoverInstanceType
-	var osStorageConfig OSStorageConfig = {size=50}
+	var osStorageConfig OSStorageConfig = *NewOSStorageConfig()
 	this.OsStorageConfig = &osStorageConfig
-	var dockerRunParameters DockerRunParameters = {image_name=}
+	var dockerRunParameters DockerRunParameters = *NewDockerRunParameters()
 	this.DockerRunParameters = &dockerRunParameters
 	return &this
 }
@@ -352,7 +355,39 @@ func (o CreateJobRequest) ToMap() (map[string]interface{}, error) {
 	if o.DockerRegistryCredentials.IsSet() {
 		toSerialize["docker_registry_credentials"] = o.DockerRegistryCredentials.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CreateJobRequest) UnmarshalJSON(data []byte) (err error) {
+	varCreateJobRequest := _CreateJobRequest{}
+
+	err = json.Unmarshal(data, &varCreateJobRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CreateJobRequest(varCreateJobRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "instance_type_id")
+		delete(additionalProperties, "auto_failover_instance_type")
+		delete(additionalProperties, "timeout_seconds")
+		delete(additionalProperties, "os_storage_config")
+		delete(additionalProperties, "requirements")
+		delete(additionalProperties, "docker_run_parameters")
+		delete(additionalProperties, "docker_registry_credentials")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCreateJobRequest struct {

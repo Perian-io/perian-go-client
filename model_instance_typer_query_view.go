@@ -35,7 +35,10 @@ type InstanceTyperQueryView struct {
 	Availability NullableAvailabilityQueryInput `json:"availability,omitempty"`
 	Type NullableString `json:"type,omitempty"`
 	BillingGranularity NullableString `json:"billing_granularity,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _InstanceTyperQueryView InstanceTyperQueryView
 
 // NewInstanceTyperQueryView instantiates a new InstanceTyperQueryView object
 // This constructor will assign default values to properties that have it defined,
@@ -778,7 +781,48 @@ func (o InstanceTyperQueryView) ToMap() (map[string]interface{}, error) {
 	if o.BillingGranularity.IsSet() {
 		toSerialize["billing_granularity"] = o.BillingGranularity.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *InstanceTyperQueryView) UnmarshalJSON(data []byte) (err error) {
+	varInstanceTyperQueryView := _InstanceTyperQueryView{}
+
+	err = json.Unmarshal(data, &varInstanceTyperQueryView)
+
+	if err != nil {
+		return err
+	}
+
+	*o = InstanceTyperQueryView(varInstanceTyperQueryView)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "options")
+		delete(additionalProperties, "all")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "region")
+		delete(additionalProperties, "zone")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "cpu")
+		delete(additionalProperties, "accelerator")
+		delete(additionalProperties, "ram")
+		delete(additionalProperties, "storage")
+		delete(additionalProperties, "network")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "availability")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "billing_granularity")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableInstanceTyperQueryView struct {

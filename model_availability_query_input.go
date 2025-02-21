@@ -23,7 +23,10 @@ type AvailabilityQueryInput struct {
 	Options NullableQueryOptions `json:"options,omitempty"`
 	All *bool `json:"all,omitempty"`
 	Available NullableBool `json:"available,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AvailabilityQueryInput AvailabilityQueryInput
 
 // NewAvailabilityQueryInput instantiates a new AvailabilityQueryInput object
 // This constructor will assign default values to properties that have it defined,
@@ -226,7 +229,36 @@ func (o AvailabilityQueryInput) ToMap() (map[string]interface{}, error) {
 	if o.Available.IsSet() {
 		toSerialize["available"] = o.Available.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AvailabilityQueryInput) UnmarshalJSON(data []byte) (err error) {
+	varAvailabilityQueryInput := _AvailabilityQueryInput{}
+
+	err = json.Unmarshal(data, &varAvailabilityQueryInput)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AvailabilityQueryInput(varAvailabilityQueryInput)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "options")
+		delete(additionalProperties, "all")
+		delete(additionalProperties, "available")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAvailabilityQueryInput struct {

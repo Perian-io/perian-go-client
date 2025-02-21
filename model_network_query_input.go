@@ -24,7 +24,10 @@ type NetworkQueryInput struct {
 	All *bool `json:"all,omitempty"`
 	InboundSpeed NullableInboundSpeed `json:"inbound_speed,omitempty"`
 	OutboundSpeed NullableOutboundSpeed `json:"outbound_speed,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _NetworkQueryInput NetworkQueryInput
 
 // NewNetworkQueryInput instantiates a new NetworkQueryInput object
 // This constructor will assign default values to properties that have it defined,
@@ -272,7 +275,37 @@ func (o NetworkQueryInput) ToMap() (map[string]interface{}, error) {
 	if o.OutboundSpeed.IsSet() {
 		toSerialize["outbound_speed"] = o.OutboundSpeed.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *NetworkQueryInput) UnmarshalJSON(data []byte) (err error) {
+	varNetworkQueryInput := _NetworkQueryInput{}
+
+	err = json.Unmarshal(data, &varNetworkQueryInput)
+
+	if err != nil {
+		return err
+	}
+
+	*o = NetworkQueryInput(varNetworkQueryInput)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "options")
+		delete(additionalProperties, "all")
+		delete(additionalProperties, "inbound_speed")
+		delete(additionalProperties, "outbound_speed")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableNetworkQueryInput struct {

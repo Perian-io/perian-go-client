@@ -22,7 +22,10 @@ type Storage struct {
 	Type *StorageType `json:"type,omitempty"`
 	Size *Memory `json:"size,omitempty"`
 	Speed *Bandwidth `json:"speed,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Storage Storage
 
 // NewStorage instantiates a new Storage object
 // This constructor will assign default values to properties that have it defined,
@@ -30,11 +33,11 @@ type Storage struct {
 // will change when the set of required properties is changed
 func NewStorage() *Storage {
 	this := Storage{}
-	var type_ StorageType = UNDEFINED
+	var type_ StorageType = STORAGETYPE_UNDEFINED
 	this.Type = &type_
-	var size Memory = {size=0.0, unit=Gb, bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined}
+	var size Memory = *NewMemory()
 	this.Size = &size
-	var speed Bandwidth = {speed=0.0, maximum=0.0, minimum=0.0, unit=Undefined, sla=Undefined, limit=Undefined}
+	var speed Bandwidth = *NewBandwidth()
 	this.Speed = &speed
 	return &this
 }
@@ -44,11 +47,11 @@ func NewStorage() *Storage {
 // but it doesn't guarantee that properties required by API are set
 func NewStorageWithDefaults() *Storage {
 	this := Storage{}
-	var type_ StorageType = UNDEFINED
+	var type_ StorageType = STORAGETYPE_UNDEFINED
 	this.Type = &type_
-	var size Memory = {size=0.0, unit=Gb, bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined}
+	var size Memory = *NewMemory()
 	this.Size = &size
-	var speed Bandwidth = {speed=0.0, maximum=0.0, minimum=0.0, unit=Undefined, sla=Undefined, limit=Undefined}
+	var speed Bandwidth = *NewBandwidth()
 	this.Speed = &speed
 	return &this
 }
@@ -168,7 +171,35 @@ func (o Storage) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Speed) {
 		toSerialize["speed"] = o.Speed
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Storage) UnmarshalJSON(data []byte) (err error) {
+	varStorage := _Storage{}
+
+	err = json.Unmarshal(data, &varStorage)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Storage(varStorage)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "size")
+		delete(additionalProperties, "speed")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableStorage struct {

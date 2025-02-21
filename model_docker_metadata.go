@@ -21,7 +21,10 @@ var _ MappedNullable = &DockerMetadata{}
 type DockerMetadata struct {
 	DockerRunParameters *DockerRunParameters `json:"docker_run_parameters,omitempty"`
 	DockerRegistryCredentials NullableDockerRegistryCredentials `json:"docker_registry_credentials,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _DockerMetadata DockerMetadata
 
 // NewDockerMetadata instantiates a new DockerMetadata object
 // This constructor will assign default values to properties that have it defined,
@@ -29,7 +32,7 @@ type DockerMetadata struct {
 // will change when the set of required properties is changed
 func NewDockerMetadata() *DockerMetadata {
 	this := DockerMetadata{}
-	var dockerRunParameters DockerRunParameters = {image_name=}
+	var dockerRunParameters DockerRunParameters = *NewDockerRunParameters()
 	this.DockerRunParameters = &dockerRunParameters
 	return &this
 }
@@ -39,7 +42,7 @@ func NewDockerMetadata() *DockerMetadata {
 // but it doesn't guarantee that properties required by API are set
 func NewDockerMetadataWithDefaults() *DockerMetadata {
 	this := DockerMetadata{}
-	var dockerRunParameters DockerRunParameters = {image_name=}
+	var dockerRunParameters DockerRunParameters = *NewDockerRunParameters()
 	this.DockerRunParameters = &dockerRunParameters
 	return &this
 }
@@ -134,7 +137,34 @@ func (o DockerMetadata) ToMap() (map[string]interface{}, error) {
 	if o.DockerRegistryCredentials.IsSet() {
 		toSerialize["docker_registry_credentials"] = o.DockerRegistryCredentials.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *DockerMetadata) UnmarshalJSON(data []byte) (err error) {
+	varDockerMetadata := _DockerMetadata{}
+
+	err = json.Unmarshal(data, &varDockerMetadata)
+
+	if err != nil {
+		return err
+	}
+
+	*o = DockerMetadata(varDockerMetadata)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "docker_run_parameters")
+		delete(additionalProperties, "docker_registry_credentials")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableDockerMetadata struct {

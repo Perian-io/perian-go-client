@@ -5,9 +5,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **UnitPrice** | Pointer to **string** |  | [optional] 
-**Currency** | Pointer to [**Currency**](Currency.md) |  | [optional] [default to UNDEFINED]
-**Granularity** | Pointer to [**BillingGranularity**](BillingGranularity.md) |  | [optional] [default to UNDEFINED]
-**ProviderBillingGranularity** | Pointer to [**BillingGranularity**](BillingGranularity.md) |  | [optional] [default to UNDEFINED]
+**Currency** | Pointer to [**Currency**](Currency.md) |  | [optional] [default to CURRENCY_UNDEFINED]
+**Granularity** | Pointer to [**BillingGranularity**](BillingGranularity.md) |  | [optional] [default to BILLINGGRANULARITY_UNDEFINED]
+**ProviderBillingGranularity** | Pointer to [**BillingGranularity**](BillingGranularity.md) |  | [optional] [default to BILLINGGRANULARITY_UNDEFINED]
 
 ## Methods
 

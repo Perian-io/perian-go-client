@@ -22,7 +22,10 @@ type DockerRegistryCredentials struct {
 	Url *string `json:"url,omitempty"`
 	Username *string `json:"username,omitempty"`
 	Password *string `json:"password,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _DockerRegistryCredentials DockerRegistryCredentials
 
 // NewDockerRegistryCredentials instantiates a new DockerRegistryCredentials object
 // This constructor will assign default values to properties that have it defined,
@@ -168,7 +171,35 @@ func (o DockerRegistryCredentials) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Password) {
 		toSerialize["password"] = o.Password
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *DockerRegistryCredentials) UnmarshalJSON(data []byte) (err error) {
+	varDockerRegistryCredentials := _DockerRegistryCredentials{}
+
+	err = json.Unmarshal(data, &varDockerRegistryCredentials)
+
+	if err != nil {
+		return err
+	}
+
+	*o = DockerRegistryCredentials(varDockerRegistryCredentials)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "url")
+		delete(additionalProperties, "username")
+		delete(additionalProperties, "password")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableDockerRegistryCredentials struct {

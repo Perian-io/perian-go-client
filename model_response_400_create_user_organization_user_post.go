@@ -15,6 +15,7 @@ import (
 	"fmt"
 )
 
+
 // Response400CreateUserOrganizationUserPost struct for Response400CreateUserOrganizationUserPost
 type Response400CreateUserOrganizationUserPost struct {
 	DefaultClientError *DefaultClientError
@@ -68,7 +69,7 @@ func (dst *Response400CreateUserOrganizationUserPost) UnmarshalJSON(data []byte)
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON
-func (src *Response400CreateUserOrganizationUserPost) MarshalJSON() ([]byte, error) {
+func (src Response400CreateUserOrganizationUserPost) MarshalJSON() ([]byte, error) {
 	if src.DefaultClientError != nil {
 		return json.Marshal(&src.DefaultClientError)
 	}
@@ -83,6 +84,7 @@ func (src *Response400CreateUserOrganizationUserPost) MarshalJSON() ([]byte, err
 
 	return nil, nil // no data in anyOf schemas
 }
+
 
 type NullableResponse400CreateUserOrganizationUserPost struct {
 	value *Response400CreateUserOrganizationUserPost

@@ -23,7 +23,10 @@ type SrcApiRouterAcceleratorTypeIncorrectParameterError struct {
 	Message *string `json:"message,omitempty"`
 	Detail *string `json:"detail,omitempty"`
 	StatusCode *int32 `json:"status_code,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _SrcApiRouterAcceleratorTypeIncorrectParameterError SrcApiRouterAcceleratorTypeIncorrectParameterError
 
 // NewSrcApiRouterAcceleratorTypeIncorrectParameterError instantiates a new SrcApiRouterAcceleratorTypeIncorrectParameterError object
 // This constructor will assign default values to properties that have it defined,
@@ -208,7 +211,36 @@ func (o SrcApiRouterAcceleratorTypeIncorrectParameterError) ToMap() (map[string]
 	if !IsNil(o.StatusCode) {
 		toSerialize["status_code"] = o.StatusCode
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *SrcApiRouterAcceleratorTypeIncorrectParameterError) UnmarshalJSON(data []byte) (err error) {
+	varSrcApiRouterAcceleratorTypeIncorrectParameterError := _SrcApiRouterAcceleratorTypeIncorrectParameterError{}
+
+	err = json.Unmarshal(data, &varSrcApiRouterAcceleratorTypeIncorrectParameterError)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SrcApiRouterAcceleratorTypeIncorrectParameterError(varSrcApiRouterAcceleratorTypeIncorrectParameterError)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "message")
+		delete(additionalProperties, "detail")
+		delete(additionalProperties, "status_code")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableSrcApiRouterAcceleratorTypeIncorrectParameterError struct {

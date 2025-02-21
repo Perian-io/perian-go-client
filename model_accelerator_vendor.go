@@ -20,10 +20,10 @@ type AcceleratorVendor string
 
 // List of AcceleratorVendor
 const (
-	NVIDIA AcceleratorVendor = "NVIDIA"
-	INTEL AcceleratorVendor = "INTEL"
-	AMD AcceleratorVendor = "AMD"
-	UNDEFINED AcceleratorVendor = "UNDEFINED"
+	ACCELERATORVENDOR_NVIDIA AcceleratorVendor = "NVIDIA"
+	ACCELERATORVENDOR_INTEL AcceleratorVendor = "INTEL"
+	ACCELERATORVENDOR_AMD AcceleratorVendor = "AMD"
+	ACCELERATORVENDOR_UNDEFINED AcceleratorVendor = "UNDEFINED"
 )
 
 // All allowed values of AcceleratorVendor enum

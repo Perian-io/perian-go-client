@@ -23,7 +23,10 @@ type QueryOptions struct {
 	Offset NullableInt32 `json:"offset,omitempty"`
 	Order *OrderCriterion `json:"order,omitempty"`
 	LazyLoading *bool `json:"lazy_loading,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _QueryOptions QueryOptions
 
 // NewQueryOptions instantiates a new QueryOptions object
 // This constructor will assign default values to properties that have it defined,
@@ -31,7 +34,7 @@ type QueryOptions struct {
 // will change when the set of required properties is changed
 func NewQueryOptions() *QueryOptions {
 	this := QueryOptions{}
-	var order OrderCriterion = PRICE
+	var order OrderCriterion = ORDERCRITERION_PRICE
 	this.Order = &order
 	var lazyLoading bool = false
 	this.LazyLoading = &lazyLoading
@@ -43,7 +46,7 @@ func NewQueryOptions() *QueryOptions {
 // but it doesn't guarantee that properties required by API are set
 func NewQueryOptionsWithDefaults() *QueryOptions {
 	this := QueryOptions{}
-	var order OrderCriterion = PRICE
+	var order OrderCriterion = ORDERCRITERION_PRICE
 	this.Order = &order
 	var lazyLoading bool = false
 	this.LazyLoading = &lazyLoading
@@ -220,7 +223,36 @@ func (o QueryOptions) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.LazyLoading) {
 		toSerialize["lazy_loading"] = o.LazyLoading
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *QueryOptions) UnmarshalJSON(data []byte) (err error) {
+	varQueryOptions := _QueryOptions{}
+
+	err = json.Unmarshal(data, &varQueryOptions)
+
+	if err != nil {
+		return err
+	}
+
+	*o = QueryOptions(varQueryOptions)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "limit")
+		delete(additionalProperties, "offset")
+		delete(additionalProperties, "order")
+		delete(additionalProperties, "lazy_loading")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableQueryOptions struct {

@@ -7,9 +7,9 @@ Name | Type | Description | Notes
 **Id** | Pointer to **string** |  | [optional] 
 **Name** | Pointer to **NullableString** |  | [optional] 
 **City** | Pointer to **NullableString** |  | [optional] 
-**Location** | Pointer to [**Location**](Location.md) |  | [optional] [default to UNDEFINED]
+**Location** | Pointer to [**Location**](Location.md) |  | [optional] [default to LOCATION_UNDEFINED]
 **Sustainable** | Pointer to **bool** |  | [optional] [default to false]
-**Status** | Pointer to [**Status**](Status.md) |  | [optional] [default to UNDEFINED]
+**Status** | Pointer to [**Status**](Status.md) |  | [optional] [default to STATUS_UNDEFINED]
 **Zones** | Pointer to [**[]Zone**](Zone.md) |  | [optional] [default to []]
 
 ## Methods

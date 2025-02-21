@@ -23,7 +23,10 @@ type CpuData struct {
 	Cores *int32 `json:"cores,omitempty"`
 	Threads *int32 `json:"threads,omitempty"`
 	Cpus []Cpu `json:"cpus,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CpuData CpuData
 
 // NewCpuData instantiates a new CpuData object
 // This constructor will assign default values to properties that have it defined,
@@ -204,7 +207,36 @@ func (o CpuData) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Cpus) {
 		toSerialize["cpus"] = o.Cpus
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CpuData) UnmarshalJSON(data []byte) (err error) {
+	varCpuData := _CpuData{}
+
+	err = json.Unmarshal(data, &varCpuData)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CpuData(varCpuData)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "no")
+		delete(additionalProperties, "cores")
+		delete(additionalProperties, "threads")
+		delete(additionalProperties, "cpus")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCpuData struct {

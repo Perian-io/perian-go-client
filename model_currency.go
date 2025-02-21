@@ -20,10 +20,10 @@ type Currency string
 
 // List of Currency
 const (
-	EUR Currency = "EUR"
-	USD Currency = "USD"
-	CHF Currency = "CHF"
-	UNDEFINED Currency = "Undefined"
+	CURRENCY_EUR Currency = "EUR"
+	CURRENCY_USD Currency = "USD"
+	CURRENCY_CHF Currency = "CHF"
+	CURRENCY_UNDEFINED Currency = "Undefined"
 )
 
 // All allowed values of Currency enum

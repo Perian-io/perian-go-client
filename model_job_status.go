@@ -20,15 +20,15 @@ type JobStatus string
 
 // List of JobStatus
 const (
-	QUEUED JobStatus = "Queued"
-	INITIALIZING JobStatus = "Initializing"
-	RUNNING JobStatus = "Running"
-	DONE JobStatus = "Done"
-	SERVER_ERROR JobStatus = "ServerError"
-	USER_ERROR JobStatus = "UserError"
-	CANCELLED JobStatus = "Cancelled"
-	TIMEOUT JobStatus = "Timeout"
-	UNDEFINED JobStatus = "Undefined"
+	JOBSTATUS_QUEUED JobStatus = "Queued"
+	JOBSTATUS_INITIALIZING JobStatus = "Initializing"
+	JOBSTATUS_RUNNING JobStatus = "Running"
+	JOBSTATUS_DONE JobStatus = "Done"
+	JOBSTATUS_SERVER_ERROR JobStatus = "ServerError"
+	JOBSTATUS_USER_ERROR JobStatus = "UserError"
+	JOBSTATUS_CANCELLED JobStatus = "Cancelled"
+	JOBSTATUS_TIMEOUT JobStatus = "Timeout"
+	JOBSTATUS_UNDEFINED JobStatus = "Undefined"
 )
 
 // All allowed values of JobStatus enum

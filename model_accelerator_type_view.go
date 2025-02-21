@@ -24,7 +24,10 @@ type AcceleratorTypeView struct {
 	Id *string `json:"id,omitempty"`
 	Vendor *AcceleratorVendor `json:"vendor,omitempty"`
 	Memory *Memory `json:"memory,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AcceleratorTypeView AcceleratorTypeView
 
 // NewAcceleratorTypeView instantiates a new AcceleratorTypeView object
 // This constructor will assign default values to properties that have it defined,
@@ -32,9 +35,9 @@ type AcceleratorTypeView struct {
 // will change when the set of required properties is changed
 func NewAcceleratorTypeView() *AcceleratorTypeView {
 	this := AcceleratorTypeView{}
-	var vendor AcceleratorVendor = UNDEFINED
+	var vendor AcceleratorVendor = ACCELERATORVENDOR_UNDEFINED
 	this.Vendor = &vendor
-	var memory Memory = {size=0.0, unit=Gb, bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined}
+	var memory Memory = *NewMemory()
 	this.Memory = &memory
 	return &this
 }
@@ -44,9 +47,9 @@ func NewAcceleratorTypeView() *AcceleratorTypeView {
 // but it doesn't guarantee that properties required by API are set
 func NewAcceleratorTypeViewWithDefaults() *AcceleratorTypeView {
 	this := AcceleratorTypeView{}
-	var vendor AcceleratorVendor = UNDEFINED
+	var vendor AcceleratorVendor = ACCELERATORVENDOR_UNDEFINED
 	this.Vendor = &vendor
-	var memory Memory = {size=0.0, unit=Gb, bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined}
+	var memory Memory = *NewMemory()
 	this.Memory = &memory
 	return &this
 }
@@ -236,7 +239,37 @@ func (o AcceleratorTypeView) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Memory) {
 		toSerialize["memory"] = o.Memory
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AcceleratorTypeView) UnmarshalJSON(data []byte) (err error) {
+	varAcceleratorTypeView := _AcceleratorTypeView{}
+
+	err = json.Unmarshal(data, &varAcceleratorTypeView)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AcceleratorTypeView(varAcceleratorTypeView)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "display_name")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "vendor")
+		delete(additionalProperties, "memory")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAcceleratorTypeView struct {

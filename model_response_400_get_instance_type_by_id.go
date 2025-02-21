@@ -15,6 +15,7 @@ import (
 	"fmt"
 )
 
+
 // Response400GetInstanceTypeById struct for Response400GetInstanceTypeById
 type Response400GetInstanceTypeById struct {
 	DefaultClientError *DefaultClientError
@@ -68,7 +69,7 @@ func (dst *Response400GetInstanceTypeById) UnmarshalJSON(data []byte) error {
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON
-func (src *Response400GetInstanceTypeById) MarshalJSON() ([]byte, error) {
+func (src Response400GetInstanceTypeById) MarshalJSON() ([]byte, error) {
 	if src.DefaultClientError != nil {
 		return json.Marshal(&src.DefaultClientError)
 	}
@@ -83,6 +84,7 @@ func (src *Response400GetInstanceTypeById) MarshalJSON() ([]byte, error) {
 
 	return nil, nil // no data in anyOf schemas
 }
+
 
 type NullableResponse400GetInstanceTypeById struct {
 	value *Response400GetInstanceTypeById

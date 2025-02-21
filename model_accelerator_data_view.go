@@ -22,7 +22,10 @@ type AcceleratorDataView struct {
 	No *int32 `json:"no,omitempty"`
 	Memory *Memory `json:"memory,omitempty"`
 	AcceleratorTypes []AcceleratorTypeView `json:"accelerator_types,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AcceleratorDataView AcceleratorDataView
 
 // NewAcceleratorDataView instantiates a new AcceleratorDataView object
 // This constructor will assign default values to properties that have it defined,
@@ -32,7 +35,7 @@ func NewAcceleratorDataView() *AcceleratorDataView {
 	this := AcceleratorDataView{}
 	var no int32 = 0
 	this.No = &no
-	var memory Memory = {size=0.0, unit=Gb, bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined}
+	var memory Memory = *NewMemory()
 	this.Memory = &memory
 	return &this
 }
@@ -44,7 +47,7 @@ func NewAcceleratorDataViewWithDefaults() *AcceleratorDataView {
 	this := AcceleratorDataView{}
 	var no int32 = 0
 	this.No = &no
-	var memory Memory = {size=0.0, unit=Gb, bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined}
+	var memory Memory = *NewMemory()
 	this.Memory = &memory
 	return &this
 }
@@ -164,7 +167,35 @@ func (o AcceleratorDataView) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AcceleratorTypes) {
 		toSerialize["accelerator_types"] = o.AcceleratorTypes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AcceleratorDataView) UnmarshalJSON(data []byte) (err error) {
+	varAcceleratorDataView := _AcceleratorDataView{}
+
+	err = json.Unmarshal(data, &varAcceleratorDataView)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AcceleratorDataView(varAcceleratorDataView)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "no")
+		delete(additionalProperties, "memory")
+		delete(additionalProperties, "accelerator_types")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAcceleratorDataView struct {

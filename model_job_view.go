@@ -32,7 +32,10 @@ type JobView struct {
 	RuntimeMetadata *RuntimeMetadata `json:"runtime_metadata,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _JobView JobView
 
 // NewJobView instantiates a new JobView object
 // This constructor will assign default values to properties that have it defined,
@@ -40,11 +43,11 @@ type JobView struct {
 // will change when the set of required properties is changed
 func NewJobView() *JobView {
 	this := JobView{}
-	var status JobStatus = UNDEFINED
+	var status JobStatus = JOBSTATUS_UNDEFINED
 	this.Status = &status
-	var price PriceData = {unit_price=0, currency=Undefined, granularity=UNDEFINED, provider_billing_granularity=UNDEFINED}
+	var price PriceData = *NewPriceData()
 	this.Price = &price
-	var runtimeMetadata RuntimeMetadata = {auto_failover_instance_type=false}
+	var runtimeMetadata RuntimeMetadata = *NewRuntimeMetadata()
 	this.RuntimeMetadata = &runtimeMetadata
 	return &this
 }
@@ -54,11 +57,11 @@ func NewJobView() *JobView {
 // but it doesn't guarantee that properties required by API are set
 func NewJobViewWithDefaults() *JobView {
 	this := JobView{}
-	var status JobStatus = UNDEFINED
+	var status JobStatus = JOBSTATUS_UNDEFINED
 	this.Status = &status
-	var price PriceData = {unit_price=0, currency=Undefined, granularity=UNDEFINED, provider_billing_granularity=UNDEFINED}
+	var price PriceData = *NewPriceData()
 	this.Price = &price
-	var runtimeMetadata RuntimeMetadata = {auto_failover_instance_type=false}
+	var runtimeMetadata RuntimeMetadata = *NewRuntimeMetadata()
 	this.RuntimeMetadata = &runtimeMetadata
 	return &this
 }
@@ -553,7 +556,44 @@ func (o JobView) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.UpdatedAt) {
 		toSerialize["updated_at"] = o.UpdatedAt
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *JobView) UnmarshalJSON(data []byte) (err error) {
+	varJobView := _JobView{}
+
+	err = json.Unmarshal(data, &varJobView)
+
+	if err != nil {
+		return err
+	}
+
+	*o = JobView(varJobView)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "started_at")
+		delete(additionalProperties, "done_at")
+		delete(additionalProperties, "logs")
+		delete(additionalProperties, "errors")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "docker_metadata")
+		delete(additionalProperties, "requirement_metadata")
+		delete(additionalProperties, "runtime_metadata")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "updated_at")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableJobView struct {

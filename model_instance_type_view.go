@@ -36,7 +36,10 @@ type InstanceTypeView struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 	AttributesHash NullableString `json:"attributes_hash,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _InstanceTypeView InstanceTypeView
 
 // NewInstanceTypeView instantiates a new InstanceTypeView object
 // This constructor will assign default values to properties that have it defined,
@@ -44,21 +47,21 @@ type InstanceTypeView struct {
 // will change when the set of required properties is changed
 func NewInstanceTypeView() *InstanceTypeView {
 	this := InstanceTypeView{}
-	var type_ ComputeInstanceType = UNDEFINED
+	var type_ ComputeInstanceType = COMPUTEINSTANCETYPE_UNDEFINED
 	this.Type = &type_
-	var cpu CpuData = {no=0, cores=0, threads=0, cpus=[]}
+	var cpu CpuData = *NewCpuData()
 	this.Cpu = &cpu
-	var accelerator AcceleratorDataView = {no=0, memory={bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined, size=0.0, unit=Gb}, accelerator_types=[]}
+	var accelerator AcceleratorDataView = *NewAcceleratorDataView()
 	this.Accelerator = &accelerator
-	var ram Memory = {size=0.0, unit=Gb, bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined}
+	var ram Memory = *NewMemory()
 	this.Ram = &ram
-	var storage StorageData = {no=0, size={bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined, size=0.0, unit=Gb}, included=UNDEFINED, storages=[]}
+	var storage StorageData = *NewStorageData()
 	this.Storage = &storage
-	var network Network = {inbound={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, outbound={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}}
+	var network Network = *NewNetwork()
 	this.Network = &network
-	var price PriceData = {unit_price=0, currency=Undefined, granularity=UNDEFINED, provider_billing_granularity=UNDEFINED}
+	var price PriceData = *NewPriceData()
 	this.Price = &price
-	var availability Availability = {available=true, source=Undefined}
+	var availability Availability = *NewAvailability()
 	this.Availability = &availability
 	return &this
 }
@@ -68,21 +71,21 @@ func NewInstanceTypeView() *InstanceTypeView {
 // but it doesn't guarantee that properties required by API are set
 func NewInstanceTypeViewWithDefaults() *InstanceTypeView {
 	this := InstanceTypeView{}
-	var type_ ComputeInstanceType = UNDEFINED
+	var type_ ComputeInstanceType = COMPUTEINSTANCETYPE_UNDEFINED
 	this.Type = &type_
-	var cpu CpuData = {no=0, cores=0, threads=0, cpus=[]}
+	var cpu CpuData = *NewCpuData()
 	this.Cpu = &cpu
-	var accelerator AcceleratorDataView = {no=0, memory={bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined, size=0.0, unit=Gb}, accelerator_types=[]}
+	var accelerator AcceleratorDataView = *NewAcceleratorDataView()
 	this.Accelerator = &accelerator
-	var ram Memory = {size=0.0, unit=Gb, bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined}
+	var ram Memory = *NewMemory()
 	this.Ram = &ram
-	var storage StorageData = {no=0, size={bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined, size=0.0, unit=Gb}, included=UNDEFINED, storages=[]}
+	var storage StorageData = *NewStorageData()
 	this.Storage = &storage
-	var network Network = {inbound={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, outbound={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}}
+	var network Network = *NewNetwork()
 	this.Network = &network
-	var price PriceData = {unit_price=0, currency=Undefined, granularity=UNDEFINED, provider_billing_granularity=UNDEFINED}
+	var price PriceData = *NewPriceData()
 	this.Price = &price
-	var availability Availability = {available=true, source=Undefined}
+	var availability Availability = *NewAvailability()
 	this.Availability = &availability
 	return &this
 }
@@ -707,7 +710,48 @@ func (o InstanceTypeView) ToMap() (map[string]interface{}, error) {
 	if o.AttributesHash.IsSet() {
 		toSerialize["attributes_hash"] = o.AttributesHash.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *InstanceTypeView) UnmarshalJSON(data []byte) (err error) {
+	varInstanceTypeView := _InstanceTypeView{}
+
+	err = json.Unmarshal(data, &varInstanceTypeView)
+
+	if err != nil {
+		return err
+	}
+
+	*o = InstanceTypeView(varInstanceTypeView)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "provider")
+		delete(additionalProperties, "region")
+		delete(additionalProperties, "zone")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "cpu")
+		delete(additionalProperties, "accelerator")
+		delete(additionalProperties, "ram")
+		delete(additionalProperties, "storage")
+		delete(additionalProperties, "network")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "availability")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "updated_at")
+		delete(additionalProperties, "attributes_hash")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableInstanceTypeView struct {

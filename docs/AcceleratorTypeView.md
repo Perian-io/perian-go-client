@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Name** | Pointer to [**AcceleratorName**](AcceleratorName.md) |  | [optional] 
 **DisplayName** | Pointer to **string** |  | [optional] 
 **Id** | Pointer to **string** |  | [optional] 
-**Vendor** | Pointer to [**AcceleratorVendor**](AcceleratorVendor.md) |  | [optional] [default to UNDEFINED]
+**Vendor** | Pointer to [**AcceleratorVendor**](AcceleratorVendor.md) |  | [optional] [default to ACCELERATORVENDOR_UNDEFINED]
 **Memory** | Pointer to [**Memory**](Memory.md) |  | [optional] [default to {size=0.0, unit=Gb, bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined}]
 
 ## Methods

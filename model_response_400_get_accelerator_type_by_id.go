@@ -15,6 +15,7 @@ import (
 	"fmt"
 )
 
+
 // Response400GetAcceleratorTypeById struct for Response400GetAcceleratorTypeById
 type Response400GetAcceleratorTypeById struct {
 	AcceleratorTypeNotFoundError *AcceleratorTypeNotFoundError
@@ -68,7 +69,7 @@ func (dst *Response400GetAcceleratorTypeById) UnmarshalJSON(data []byte) error {
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON
-func (src *Response400GetAcceleratorTypeById) MarshalJSON() ([]byte, error) {
+func (src Response400GetAcceleratorTypeById) MarshalJSON() ([]byte, error) {
 	if src.AcceleratorTypeNotFoundError != nil {
 		return json.Marshal(&src.AcceleratorTypeNotFoundError)
 	}
@@ -83,6 +84,7 @@ func (src *Response400GetAcceleratorTypeById) MarshalJSON() ([]byte, error) {
 
 	return nil, nil // no data in anyOf schemas
 }
+
 
 type NullableResponse400GetAcceleratorTypeById struct {
 	value *Response400GetAcceleratorTypeById

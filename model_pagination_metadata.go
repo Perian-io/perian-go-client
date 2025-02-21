@@ -25,7 +25,10 @@ type PaginationMetadata struct {
 	TotalPages *int32 `json:"total_pages,omitempty"`
 	NextPage NullableInt32 `json:"next_page,omitempty"`
 	PreviousPage NullableInt32 `json:"previous_page,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _PaginationMetadata PaginationMetadata
 
 // NewPaginationMetadata instantiates a new PaginationMetadata object
 // This constructor will assign default values to properties that have it defined,
@@ -300,7 +303,38 @@ func (o PaginationMetadata) ToMap() (map[string]interface{}, error) {
 	if o.PreviousPage.IsSet() {
 		toSerialize["previous_page"] = o.PreviousPage.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *PaginationMetadata) UnmarshalJSON(data []byte) (err error) {
+	varPaginationMetadata := _PaginationMetadata{}
+
+	err = json.Unmarshal(data, &varPaginationMetadata)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PaginationMetadata(varPaginationMetadata)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "total_items")
+		delete(additionalProperties, "items_per_page")
+		delete(additionalProperties, "current_page")
+		delete(additionalProperties, "total_pages")
+		delete(additionalProperties, "next_page")
+		delete(additionalProperties, "previous_page")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePaginationMetadata struct {

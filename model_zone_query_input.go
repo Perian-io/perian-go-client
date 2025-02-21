@@ -24,7 +24,10 @@ type ZoneQueryInput struct {
 	Id NullableId `json:"id,omitempty"`
 	Name NullableString `json:"name,omitempty"`
 	Status NullableString `json:"status,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ZoneQueryInput ZoneQueryInput
 
 // NewZoneQueryInput instantiates a new ZoneQueryInput object
 // This constructor will assign default values to properties that have it defined,
@@ -278,7 +281,37 @@ func (o ZoneQueryInput) ToMap() (map[string]interface{}, error) {
 	if o.Status.IsSet() {
 		toSerialize["status"] = o.Status.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ZoneQueryInput) UnmarshalJSON(data []byte) (err error) {
+	varZoneQueryInput := _ZoneQueryInput{}
+
+	err = json.Unmarshal(data, &varZoneQueryInput)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ZoneQueryInput(varZoneQueryInput)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "options")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "status")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableZoneQueryInput struct {

@@ -23,7 +23,10 @@ type IncorrectCreateJobParameterError struct {
 	Message *string `json:"message,omitempty"`
 	Detail *string `json:"detail,omitempty"`
 	StatusCode *int32 `json:"status_code,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _IncorrectCreateJobParameterError IncorrectCreateJobParameterError
 
 // NewIncorrectCreateJobParameterError instantiates a new IncorrectCreateJobParameterError object
 // This constructor will assign default values to properties that have it defined,
@@ -208,7 +211,36 @@ func (o IncorrectCreateJobParameterError) ToMap() (map[string]interface{}, error
 	if !IsNil(o.StatusCode) {
 		toSerialize["status_code"] = o.StatusCode
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *IncorrectCreateJobParameterError) UnmarshalJSON(data []byte) (err error) {
+	varIncorrectCreateJobParameterError := _IncorrectCreateJobParameterError{}
+
+	err = json.Unmarshal(data, &varIncorrectCreateJobParameterError)
+
+	if err != nil {
+		return err
+	}
+
+	*o = IncorrectCreateJobParameterError(varIncorrectCreateJobParameterError)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "message")
+		delete(additionalProperties, "detail")
+		delete(additionalProperties, "status_code")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableIncorrectCreateJobParameterError struct {

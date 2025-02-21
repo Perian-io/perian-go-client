@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **Provider** | Pointer to [**NullableProvider**](Provider.md) |  | [optional] 
 **Region** | Pointer to [**NullableRegion**](Region.md) |  | [optional] 
 **Zone** | Pointer to [**NullableZone**](Zone.md) |  | [optional] 
-**Type** | Pointer to [**ComputeInstanceType**](ComputeInstanceType.md) |  | [optional] [default to UNDEFINED]
+**Type** | Pointer to [**ComputeInstanceType**](ComputeInstanceType.md) |  | [optional] [default to COMPUTEINSTANCETYPE_UNDEFINED]
 **Cpu** | Pointer to [**CpuData**](CpuData.md) |  | [optional] [default to {no=0, cores=0, threads=0, cpus=[]}]
 **Accelerator** | Pointer to [**AcceleratorDataView**](AcceleratorDataView.md) |  | [optional] [default to {no=0, memory={bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined, size=0.0, unit=Gb}, accelerator_types=[]}]
 **Ram** | Pointer to [**Memory**](Memory.md) |  | [optional] [default to {size=0.0, unit=Gb, bandwidth={limit=Undefined, maximum=0.0, minimum=0.0, sla=Undefined, speed=0.0, unit=Undefined}, interface=Undefined}]

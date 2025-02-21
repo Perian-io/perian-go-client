@@ -20,14 +20,14 @@ type ProviderName string
 
 // List of ProviderName
 const (
-	OPEN_TELEKOM_CLOUD ProviderName = "Open Telekom Cloud"
-	OVH_CLOUD ProviderName = "OVH Cloud"
-	EXOSCALE ProviderName = "Exoscale"
-	DATA_CRUNCH ProviderName = "DataCrunch"
-	GRIDSCALE ProviderName = "Gridscale"
-	TAIGA_CLOUD ProviderName = "Taiga Cloud"
-	GOOGLE_CLOUD_PLATFORM ProviderName = "Google Cloud Platform"
-	UNDEFINED ProviderName = "UNDEFINED"
+	PROVIDERNAME_OPEN_TELEKOM_CLOUD ProviderName = "Open Telekom Cloud"
+	PROVIDERNAME_OVH_CLOUD ProviderName = "OVH Cloud"
+	PROVIDERNAME_EXOSCALE ProviderName = "Exoscale"
+	PROVIDERNAME_DATA_CRUNCH ProviderName = "DataCrunch"
+	PROVIDERNAME_GRIDSCALE ProviderName = "Gridscale"
+	PROVIDERNAME_TAIGA_CLOUD ProviderName = "Taiga Cloud"
+	PROVIDERNAME_GOOGLE_CLOUD_PLATFORM ProviderName = "Google Cloud Platform"
+	PROVIDERNAME_UNDEFINED ProviderName = "UNDEFINED"
 )
 
 // All allowed values of ProviderName enum

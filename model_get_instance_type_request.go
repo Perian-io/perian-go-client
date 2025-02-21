@@ -20,7 +20,10 @@ var _ MappedNullable = &GetInstanceTypeRequest{}
 // GetInstanceTypeRequest Request model for getting instance types.
 type GetInstanceTypeRequest struct {
 	InstanceTypeQuery *InstanceTyperQueryView `json:"instance_type_query,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _GetInstanceTypeRequest GetInstanceTypeRequest
 
 // NewGetInstanceTypeRequest instantiates a new GetInstanceTypeRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -84,7 +87,33 @@ func (o GetInstanceTypeRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.InstanceTypeQuery) {
 		toSerialize["instance_type_query"] = o.InstanceTypeQuery
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *GetInstanceTypeRequest) UnmarshalJSON(data []byte) (err error) {
+	varGetInstanceTypeRequest := _GetInstanceTypeRequest{}
+
+	err = json.Unmarshal(data, &varGetInstanceTypeRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GetInstanceTypeRequest(varGetInstanceTypeRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "instance_type_query")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableGetInstanceTypeRequest struct {

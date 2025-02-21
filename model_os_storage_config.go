@@ -20,7 +20,10 @@ var _ MappedNullable = &OSStorageConfig{}
 // OSStorageConfig JSON schema for the storage field in the docker_run_parameters json column.
 type OSStorageConfig struct {
 	Size *int32 `json:"size,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _OSStorageConfig OSStorageConfig
 
 // NewOSStorageConfig instantiates a new OSStorageConfig object
 // This constructor will assign default values to properties that have it defined,
@@ -88,7 +91,33 @@ func (o OSStorageConfig) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Size) {
 		toSerialize["size"] = o.Size
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *OSStorageConfig) UnmarshalJSON(data []byte) (err error) {
+	varOSStorageConfig := _OSStorageConfig{}
+
+	err = json.Unmarshal(data, &varOSStorageConfig)
+
+	if err != nil {
+		return err
+	}
+
+	*o = OSStorageConfig(varOSStorageConfig)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "size")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableOSStorageConfig struct {

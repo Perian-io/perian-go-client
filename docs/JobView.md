@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | Pointer to **string** |  | [optional] 
-**Status** | Pointer to [**JobStatus**](JobStatus.md) |  | [optional] [default to UNDEFINED]
+**Status** | Pointer to [**JobStatus**](JobStatus.md) |  | [optional] [default to JOBSTATUS_UNDEFINED]
 **StartedAt** | Pointer to **NullableTime** |  | [optional] 
 **DoneAt** | Pointer to **NullableTime** |  | [optional] 
 **Logs** | Pointer to **NullableString** |  | [optional] 

@@ -20,10 +20,10 @@ type AvailabilitySource string
 
 // List of AvailabilitySource
 const (
-	PROVIDER AvailabilitySource = "Provider"
-	OPTIMIZER AvailabilitySource = "Optimizer"
-	PROVIDER_QUOTA AvailabilitySource = "Provider_Quota"
-	UNDEFINED AvailabilitySource = "Undefined"
+	AVAILABILITYSOURCE_PROVIDER AvailabilitySource = "Provider"
+	AVAILABILITYSOURCE_OPTIMIZER AvailabilitySource = "Optimizer"
+	AVAILABILITYSOURCE_PROVIDER_QUOTA AvailabilitySource = "Provider_Quota"
+	AVAILABILITYSOURCE_UNDEFINED AvailabilitySource = "Undefined"
 )
 
 // All allowed values of AvailabilitySource enum

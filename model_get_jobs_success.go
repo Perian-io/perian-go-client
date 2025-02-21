@@ -27,7 +27,10 @@ type GetJobsSuccess struct {
 	No *int32 `json:"no,omitempty"`
 	Jobs []JobView `json:"jobs,omitempty"`
 	Pagination *PaginationMetadata `json:"pagination,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _GetJobsSuccess GetJobsSuccess
 
 // NewGetJobsSuccess instantiates a new GetJobsSuccess object
 // This constructor will assign default values to properties that have it defined,
@@ -47,7 +50,7 @@ func NewGetJobsSuccess() *GetJobsSuccess {
 	this.Limit = &limit
 	var no int32 = 0
 	this.No = &no
-	var pagination PaginationMetadata = {total_items=0, items_per_page=25, current_page=1, total_pages=1, next_page=1}
+	var pagination PaginationMetadata = *NewPaginationMetadata()
 	this.Pagination = &pagination
 	return &this
 }
@@ -69,7 +72,7 @@ func NewGetJobsSuccessWithDefaults() *GetJobsSuccess {
 	this.Limit = &limit
 	var no int32 = 0
 	this.No = &no
-	var pagination PaginationMetadata = {total_items=0, items_per_page=25, current_page=1, total_pages=1, next_page=1}
+	var pagination PaginationMetadata = *NewPaginationMetadata()
 	this.Pagination = &pagination
 	return &this
 }
@@ -364,7 +367,40 @@ func (o GetJobsSuccess) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Pagination) {
 		toSerialize["pagination"] = o.Pagination
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *GetJobsSuccess) UnmarshalJSON(data []byte) (err error) {
+	varGetJobsSuccess := _GetJobsSuccess{}
+
+	err = json.Unmarshal(data, &varGetJobsSuccess)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GetJobsSuccess(varGetJobsSuccess)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "message")
+		delete(additionalProperties, "detail")
+		delete(additionalProperties, "status_code")
+		delete(additionalProperties, "limit")
+		delete(additionalProperties, "no")
+		delete(additionalProperties, "jobs")
+		delete(additionalProperties, "pagination")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableGetJobsSuccess struct {

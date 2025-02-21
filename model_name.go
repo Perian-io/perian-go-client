@@ -15,10 +15,11 @@ import (
 	"fmt"
 )
 
+
 // Name struct for Name
 type Name struct {
-	[]interface{} *[]interface{}
-	string *string
+	ArrayOfAny *[]interface{}
+	String *string
 }
 
 // Unmarshal JSON data into any of the pointers in the struct
@@ -29,47 +30,48 @@ func (dst *Name) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	// try to unmarshal JSON data into []interface{}
-	err = json.Unmarshal(data, &dst.[]interface{});
+	// try to unmarshal JSON data into ArrayOfAny
+	err = json.Unmarshal(data, &dst.ArrayOfAny);
 	if err == nil {
-		json[]interface{}, _ := json.Marshal(dst.[]interface{})
-		if string(json[]interface{}) == "{}" { // empty struct
-			dst.[]interface{} = nil
+		jsonArrayOfAny, _ := json.Marshal(dst.ArrayOfAny)
+		if string(jsonArrayOfAny) == "{}" { // empty struct
+			dst.ArrayOfAny = nil
 		} else {
-			return nil // data stored in dst.[]interface{}, return on the first match
+			return nil // data stored in dst.ArrayOfAny, return on the first match
 		}
 	} else {
-		dst.[]interface{} = nil
+		dst.ArrayOfAny = nil
 	}
 
-	// try to unmarshal JSON data into string
-	err = json.Unmarshal(data, &dst.string);
+	// try to unmarshal JSON data into String
+	err = json.Unmarshal(data, &dst.String);
 	if err == nil {
-		jsonstring, _ := json.Marshal(dst.string)
-		if string(jsonstring) == "{}" { // empty struct
-			dst.string = nil
+		jsonString, _ := json.Marshal(dst.String)
+		if string(jsonString) == "{}" { // empty struct
+			dst.String = nil
 		} else {
-			return nil // data stored in dst.string, return on the first match
+			return nil // data stored in dst.String, return on the first match
 		}
 	} else {
-		dst.string = nil
+		dst.String = nil
 	}
 
 	return fmt.Errorf("data failed to match schemas in anyOf(Name)")
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON
-func (src *Name) MarshalJSON() ([]byte, error) {
-	if src.[]interface{} != nil {
-		return json.Marshal(&src.[]interface{})
+func (src Name) MarshalJSON() ([]byte, error) {
+	if src.ArrayOfAny != nil {
+		return json.Marshal(&src.ArrayOfAny)
 	}
 
-	if src.string != nil {
-		return json.Marshal(&src.string)
+	if src.String != nil {
+		return json.Marshal(&src.String)
 	}
 
 	return nil, nil // no data in anyOf schemas
 }
+
 
 type NullableName struct {
 	value *Name

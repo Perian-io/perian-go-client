@@ -22,7 +22,10 @@ type Cpu struct {
 	Threads *int32 `json:"threads,omitempty"`
 	Cores *int32 `json:"cores,omitempty"`
 	Speed *Bandwidth `json:"speed,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Cpu Cpu
 
 // NewCpu instantiates a new Cpu object
 // This constructor will assign default values to properties that have it defined,
@@ -34,7 +37,7 @@ func NewCpu() *Cpu {
 	this.Threads = &threads
 	var cores int32 = 0
 	this.Cores = &cores
-	var speed Bandwidth = {speed=0.0, maximum=0.0, minimum=0.0, unit=Undefined, sla=Undefined, limit=Undefined}
+	var speed Bandwidth = *NewBandwidth()
 	this.Speed = &speed
 	return &this
 }
@@ -48,7 +51,7 @@ func NewCpuWithDefaults() *Cpu {
 	this.Threads = &threads
 	var cores int32 = 0
 	this.Cores = &cores
-	var speed Bandwidth = {speed=0.0, maximum=0.0, minimum=0.0, unit=Undefined, sla=Undefined, limit=Undefined}
+	var speed Bandwidth = *NewBandwidth()
 	this.Speed = &speed
 	return &this
 }
@@ -168,7 +171,35 @@ func (o Cpu) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Speed) {
 		toSerialize["speed"] = o.Speed
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Cpu) UnmarshalJSON(data []byte) (err error) {
+	varCpu := _Cpu{}
+
+	err = json.Unmarshal(data, &varCpu)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Cpu(varCpu)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "threads")
+		delete(additionalProperties, "cores")
+		delete(additionalProperties, "speed")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCpu struct {

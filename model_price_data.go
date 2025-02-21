@@ -23,7 +23,10 @@ type PriceData struct {
 	Currency *Currency `json:"currency,omitempty"`
 	Granularity *BillingGranularity `json:"granularity,omitempty"`
 	ProviderBillingGranularity *BillingGranularity `json:"provider_billing_granularity,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _PriceData PriceData
 
 // NewPriceData instantiates a new PriceData object
 // This constructor will assign default values to properties that have it defined,
@@ -31,11 +34,11 @@ type PriceData struct {
 // will change when the set of required properties is changed
 func NewPriceData() *PriceData {
 	this := PriceData{}
-	var currency Currency = UNDEFINED
+	var currency Currency = CURRENCY_UNDEFINED
 	this.Currency = &currency
-	var granularity BillingGranularity = UNDEFINED
+	var granularity BillingGranularity = BILLINGGRANULARITY_UNDEFINED
 	this.Granularity = &granularity
-	var providerBillingGranularity BillingGranularity = UNDEFINED
+	var providerBillingGranularity BillingGranularity = BILLINGGRANULARITY_UNDEFINED
 	this.ProviderBillingGranularity = &providerBillingGranularity
 	return &this
 }
@@ -45,11 +48,11 @@ func NewPriceData() *PriceData {
 // but it doesn't guarantee that properties required by API are set
 func NewPriceDataWithDefaults() *PriceData {
 	this := PriceData{}
-	var currency Currency = UNDEFINED
+	var currency Currency = CURRENCY_UNDEFINED
 	this.Currency = &currency
-	var granularity BillingGranularity = UNDEFINED
+	var granularity BillingGranularity = BILLINGGRANULARITY_UNDEFINED
 	this.Granularity = &granularity
-	var providerBillingGranularity BillingGranularity = UNDEFINED
+	var providerBillingGranularity BillingGranularity = BILLINGGRANULARITY_UNDEFINED
 	this.ProviderBillingGranularity = &providerBillingGranularity
 	return &this
 }
@@ -204,7 +207,36 @@ func (o PriceData) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ProviderBillingGranularity) {
 		toSerialize["provider_billing_granularity"] = o.ProviderBillingGranularity
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *PriceData) UnmarshalJSON(data []byte) (err error) {
+	varPriceData := _PriceData{}
+
+	err = json.Unmarshal(data, &varPriceData)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PriceData(varPriceData)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "unit_price")
+		delete(additionalProperties, "currency")
+		delete(additionalProperties, "granularity")
+		delete(additionalProperties, "provider_billing_granularity")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePriceData struct {

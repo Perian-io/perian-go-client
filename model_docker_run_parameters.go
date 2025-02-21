@@ -25,7 +25,10 @@ type DockerRunParameters struct {
 	EnvVariables map[string]interface{} `json:"env_variables,omitempty"`
 	Secrets map[string]interface{} `json:"secrets,omitempty"`
 	ContainerFiles []ContainerFile `json:"container_files,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _DockerRunParameters DockerRunParameters
 
 // NewDockerRunParameters instantiates a new DockerRunParameters object
 // This constructor will assign default values to properties that have it defined,
@@ -291,7 +294,38 @@ func (o DockerRunParameters) ToMap() (map[string]interface{}, error) {
 	if o.ContainerFiles != nil {
 		toSerialize["container_files"] = o.ContainerFiles
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *DockerRunParameters) UnmarshalJSON(data []byte) (err error) {
+	varDockerRunParameters := _DockerRunParameters{}
+
+	err = json.Unmarshal(data, &varDockerRunParameters)
+
+	if err != nil {
+		return err
+	}
+
+	*o = DockerRunParameters(varDockerRunParameters)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "image_name")
+		delete(additionalProperties, "image_tag")
+		delete(additionalProperties, "command")
+		delete(additionalProperties, "env_variables")
+		delete(additionalProperties, "secrets")
+		delete(additionalProperties, "container_files")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableDockerRunParameters struct {

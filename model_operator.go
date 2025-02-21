@@ -20,9 +20,9 @@ type Operator string
 
 // List of Operator
 const (
-	EQUALS Operator = "EQUALS"
-	INCLUDES Operator = "INCLUDES"
-	UNDEFINED Operator = "UNDEFINED"
+	OPERATOR_EQUALS Operator = "EQUALS"
+	OPERATOR_INCLUDES Operator = "INCLUDES"
+	OPERATOR_UNDEFINED Operator = "UNDEFINED"
 )
 
 // All allowed values of Operator enum

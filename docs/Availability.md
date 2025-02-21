@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Available** | Pointer to **bool** |  | [optional] [default to true]
-**Source** | Pointer to [**AvailabilitySource**](AvailabilitySource.md) |  | [optional] [default to UNDEFINED]
+**Source** | Pointer to [**AvailabilitySource**](AvailabilitySource.md) |  | [optional] [default to AVAILABILITYSOURCE_UNDEFINED]
 
 ## Methods
 

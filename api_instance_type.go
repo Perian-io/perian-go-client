@@ -284,7 +284,7 @@ type ApiGetInstanceTypeByRequirementsRequest struct {
 	getInstanceTypeRequest *GetInstanceTypeRequest
 	limit *int32
 	page *int32
-	criterion *string
+	criterion *OptimizationCriterion
 }
 
 func (r ApiGetInstanceTypeByRequirementsRequest) GetInstanceTypeRequest(getInstanceTypeRequest GetInstanceTypeRequest) ApiGetInstanceTypeByRequirementsRequest {
@@ -305,7 +305,7 @@ func (r ApiGetInstanceTypeByRequirementsRequest) Page(page int32) ApiGetInstance
 }
 
 // Select a specific criterion to optimize for. Currently available options: PRICE
-func (r ApiGetInstanceTypeByRequirementsRequest) Criterion(criterion string) ApiGetInstanceTypeByRequirementsRequest {
+func (r ApiGetInstanceTypeByRequirementsRequest) Criterion(criterion OptimizationCriterion) ApiGetInstanceTypeByRequirementsRequest {
 	r.criterion = &criterion
 	return r
 }
@@ -354,21 +354,21 @@ func (a *InstanceTypeAPIService) GetInstanceTypeByRequirementsExecute(r ApiGetIn
 	}
 
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	} else {
 		var defaultValue int32 = 25
 		r.limit = &defaultValue
 	}
 	if r.page != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
 	} else {
 		var defaultValue int32 = 1
 		r.page = &defaultValue
 	}
 	if r.criterion != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "criterion", r.criterion, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "criterion", r.criterion, "form", "")
 	} else {
-		var defaultValue string = "PRICE"
+		var defaultValue OptimizationCriterion = "PRICE"
 		r.criterion = &defaultValue
 	}
 	// to determine the Content-Type header

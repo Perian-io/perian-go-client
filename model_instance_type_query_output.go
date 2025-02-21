@@ -38,7 +38,10 @@ type InstanceTypeQueryOutput struct {
 	Provider NullableProviderQueryOutput `json:"provider,omitempty"`
 	ReferenceId NullableReferenceIdQueryOutput `json:"reference_id,omitempty"`
 	AttributesHash NullableAttributesHash `json:"attributes_hash,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _InstanceTypeQueryOutput InstanceTypeQueryOutput
 
 // NewInstanceTypeQueryOutput instantiates a new InstanceTypeQueryOutput object
 // This constructor will assign default values to properties that have it defined,
@@ -916,7 +919,51 @@ func (o InstanceTypeQueryOutput) ToMap() (map[string]interface{}, error) {
 	if o.AttributesHash.IsSet() {
 		toSerialize["attributes_hash"] = o.AttributesHash.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *InstanceTypeQueryOutput) UnmarshalJSON(data []byte) (err error) {
+	varInstanceTypeQueryOutput := _InstanceTypeQueryOutput{}
+
+	err = json.Unmarshal(data, &varInstanceTypeQueryOutput)
+
+	if err != nil {
+		return err
+	}
+
+	*o = InstanceTypeQueryOutput(varInstanceTypeQueryOutput)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "options")
+		delete(additionalProperties, "all")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "region")
+		delete(additionalProperties, "zone")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "cpu")
+		delete(additionalProperties, "accelerator")
+		delete(additionalProperties, "ram")
+		delete(additionalProperties, "storage")
+		delete(additionalProperties, "network")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "availability")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "billing_granularity")
+		delete(additionalProperties, "provider")
+		delete(additionalProperties, "reference_id")
+		delete(additionalProperties, "attributes_hash")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableInstanceTypeQueryOutput struct {

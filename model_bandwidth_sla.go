@@ -20,10 +20,10 @@ type BandwidthSla string
 
 // List of BandwidthSla
 const (
-	GUARANTEED BandwidthSla = "Guaranteed"
-	NOT_GUARANTEED BandwidthSla = "Not_Guaranteed"
-	MINIMUM_GUARANTEED BandwidthSla = "Minimum_Guaranteed"
-	UNDEFINED BandwidthSla = "Undefined"
+	BANDWIDTHSLA_GUARANTEED BandwidthSla = "Guaranteed"
+	BANDWIDTHSLA_NOT_GUARANTEED BandwidthSla = "Not_Guaranteed"
+	BANDWIDTHSLA_MINIMUM_GUARANTEED BandwidthSla = "Minimum_Guaranteed"
+	BANDWIDTHSLA_UNDEFINED BandwidthSla = "Undefined"
 )
 
 // All allowed values of BandwidthSla enum

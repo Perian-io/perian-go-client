@@ -24,7 +24,10 @@ type GetOrganizationAuditLogsSuccess struct {
 	Detail *string `json:"detail,omitempty"`
 	StatusCode *int32 `json:"status_code,omitempty"`
 	AuditLogs []RequestLog `json:"audit_logs,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _GetOrganizationAuditLogsSuccess GetOrganizationAuditLogsSuccess
 
 // NewGetOrganizationAuditLogsSuccess instantiates a new GetOrganizationAuditLogsSuccess object
 // This constructor will assign default values to properties that have it defined,
@@ -244,7 +247,37 @@ func (o GetOrganizationAuditLogsSuccess) ToMap() (map[string]interface{}, error)
 	if !IsNil(o.AuditLogs) {
 		toSerialize["audit_logs"] = o.AuditLogs
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *GetOrganizationAuditLogsSuccess) UnmarshalJSON(data []byte) (err error) {
+	varGetOrganizationAuditLogsSuccess := _GetOrganizationAuditLogsSuccess{}
+
+	err = json.Unmarshal(data, &varGetOrganizationAuditLogsSuccess)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GetOrganizationAuditLogsSuccess(varGetOrganizationAuditLogsSuccess)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "message")
+		delete(additionalProperties, "detail")
+		delete(additionalProperties, "status_code")
+		delete(additionalProperties, "audit_logs")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableGetOrganizationAuditLogsSuccess struct {

@@ -22,7 +22,10 @@ type Zone struct {
 	Id *string `json:"id,omitempty"`
 	Name NullableString `json:"name,omitempty"`
 	Status *Status `json:"status,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Zone Zone
 
 // NewZone instantiates a new Zone object
 // This constructor will assign default values to properties that have it defined,
@@ -30,7 +33,7 @@ type Zone struct {
 // will change when the set of required properties is changed
 func NewZone() *Zone {
 	this := Zone{}
-	var status Status = UNDEFINED
+	var status Status = STATUS_UNDEFINED
 	this.Status = &status
 	return &this
 }
@@ -40,7 +43,7 @@ func NewZone() *Zone {
 // but it doesn't guarantee that properties required by API are set
 func NewZoneWithDefaults() *Zone {
 	this := Zone{}
-	var status Status = UNDEFINED
+	var status Status = STATUS_UNDEFINED
 	this.Status = &status
 	return &this
 }
@@ -170,7 +173,35 @@ func (o Zone) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Status) {
 		toSerialize["status"] = o.Status
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Zone) UnmarshalJSON(data []byte) (err error) {
+	varZone := _Zone{}
+
+	err = json.Unmarshal(data, &varZone)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Zone(varZone)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "status")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableZone struct {

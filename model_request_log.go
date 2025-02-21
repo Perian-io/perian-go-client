@@ -13,7 +13,6 @@ package perian
 import (
 	"encoding/json"
 	"time"
-	"bytes"
 	"fmt"
 )
 
@@ -33,6 +32,7 @@ type RequestLog struct {
 	RequestPayload NullableString `json:"request_payload,omitempty"`
 	ResponseStatusCode NullableInt32 `json:"response_status_code,omitempty"`
 	ResponseBody NullableString `json:"response_body,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RequestLog RequestLog
@@ -521,6 +521,11 @@ func (o RequestLog) ToMap() (map[string]interface{}, error) {
 	if o.ResponseBody.IsSet() {
 		toSerialize["response_body"] = o.ResponseBody.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -549,15 +554,30 @@ func (o *RequestLog) UnmarshalJSON(data []byte) (err error) {
 
 	varRequestLog := _RequestLog{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRequestLog)
+	err = json.Unmarshal(data, &varRequestLog)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RequestLog(varRequestLog)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "organization_id")
+		delete(additionalProperties, "timestamp")
+		delete(additionalProperties, "outcome")
+		delete(additionalProperties, "ip")
+		delete(additionalProperties, "user_agent")
+		delete(additionalProperties, "request_url")
+		delete(additionalProperties, "request_method")
+		delete(additionalProperties, "request_payload")
+		delete(additionalProperties, "response_status_code")
+		delete(additionalProperties, "response_body")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

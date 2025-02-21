@@ -12,7 +12,6 @@ package perian
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -26,6 +25,7 @@ type CreateJobSuccess struct {
 	Detail *string `json:"detail,omitempty"`
 	StatusCode *int32 `json:"status_code,omitempty"`
 	Id string `json:"id"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateJobSuccess CreateJobSuccess
@@ -239,6 +239,11 @@ func (o CreateJobSuccess) ToMap() (map[string]interface{}, error) {
 		toSerialize["status_code"] = o.StatusCode
 	}
 	toSerialize["id"] = o.Id
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -266,15 +271,24 @@ func (o *CreateJobSuccess) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateJobSuccess := _CreateJobSuccess{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateJobSuccess)
+	err = json.Unmarshal(data, &varCreateJobSuccess)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateJobSuccess(varCreateJobSuccess)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "message")
+		delete(additionalProperties, "detail")
+		delete(additionalProperties, "status_code")
+		delete(additionalProperties, "id")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

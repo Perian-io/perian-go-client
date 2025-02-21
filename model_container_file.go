@@ -12,7 +12,6 @@ package perian
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -24,6 +23,7 @@ type ContainerFile struct {
 	Path string `json:"path"`
 	ReadOnly *bool `json:"read_only,omitempty"`
 	Base64Content string `json:"base64_content"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerFile ContainerFile
@@ -146,6 +146,11 @@ func (o ContainerFile) ToMap() (map[string]interface{}, error) {
 		toSerialize["read_only"] = o.ReadOnly
 	}
 	toSerialize["base64_content"] = o.Base64Content
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -174,15 +179,22 @@ func (o *ContainerFile) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerFile := _ContainerFile{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerFile)
+	err = json.Unmarshal(data, &varContainerFile)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerFile(varContainerFile)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "path")
+		delete(additionalProperties, "read_only")
+		delete(additionalProperties, "base64_content")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

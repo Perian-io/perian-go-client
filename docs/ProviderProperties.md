@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ComputeBillingGranularity** | Pointer to [**BillingGranularity**](BillingGranularity.md) |  | [optional] [default to UNDEFINED]
+**ComputeBillingGranularity** | Pointer to [**BillingGranularity**](BillingGranularity.md) |  | [optional] [default to BILLINGGRANULARITY_UNDEFINED]
 
 ## Methods
 

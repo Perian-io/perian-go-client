@@ -20,8 +20,8 @@ type MemoryInterface string
 
 // List of MemoryInterface
 const (
-	HBM2 MemoryInterface = "Hbm2"
-	UNDEFINED MemoryInterface = "Undefined"
+	MEMORYINTERFACE_HBM2 MemoryInterface = "Hbm2"
+	MEMORYINTERFACE_UNDEFINED MemoryInterface = "Undefined"
 )
 
 // All allowed values of MemoryInterface enum

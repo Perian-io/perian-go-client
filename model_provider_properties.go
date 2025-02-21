@@ -20,7 +20,10 @@ var _ MappedNullable = &ProviderProperties{}
 // ProviderProperties Provider properties database model.
 type ProviderProperties struct {
 	ComputeBillingGranularity *BillingGranularity `json:"compute_billing_granularity,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ProviderProperties ProviderProperties
 
 // NewProviderProperties instantiates a new ProviderProperties object
 // This constructor will assign default values to properties that have it defined,
@@ -28,7 +31,7 @@ type ProviderProperties struct {
 // will change when the set of required properties is changed
 func NewProviderProperties() *ProviderProperties {
 	this := ProviderProperties{}
-	var computeBillingGranularity BillingGranularity = UNDEFINED
+	var computeBillingGranularity BillingGranularity = BILLINGGRANULARITY_UNDEFINED
 	this.ComputeBillingGranularity = &computeBillingGranularity
 	return &this
 }
@@ -38,7 +41,7 @@ func NewProviderProperties() *ProviderProperties {
 // but it doesn't guarantee that properties required by API are set
 func NewProviderPropertiesWithDefaults() *ProviderProperties {
 	this := ProviderProperties{}
-	var computeBillingGranularity BillingGranularity = UNDEFINED
+	var computeBillingGranularity BillingGranularity = BILLINGGRANULARITY_UNDEFINED
 	this.ComputeBillingGranularity = &computeBillingGranularity
 	return &this
 }
@@ -88,7 +91,33 @@ func (o ProviderProperties) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ComputeBillingGranularity) {
 		toSerialize["compute_billing_granularity"] = o.ComputeBillingGranularity
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ProviderProperties) UnmarshalJSON(data []byte) (err error) {
+	varProviderProperties := _ProviderProperties{}
+
+	err = json.Unmarshal(data, &varProviderProperties)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ProviderProperties(varProviderProperties)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "compute_billing_granularity")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableProviderProperties struct {

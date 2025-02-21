@@ -12,7 +12,6 @@ package perian
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -29,6 +28,7 @@ type RemainingCreditsResponse struct {
 	Currency Currency `json:"currency"`
 	OriginalAmount string `json:"original_amount"`
 	LastCalculated NullableString `json:"last_calculated"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RemainingCreditsResponse RemainingCreditsResponse
@@ -322,6 +322,11 @@ func (o RemainingCreditsResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize["currency"] = o.Currency
 	toSerialize["original_amount"] = o.OriginalAmount
 	toSerialize["last_calculated"] = o.LastCalculated.Get()
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -352,15 +357,27 @@ func (o *RemainingCreditsResponse) UnmarshalJSON(data []byte) (err error) {
 
 	varRemainingCreditsResponse := _RemainingCreditsResponse{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRemainingCreditsResponse)
+	err = json.Unmarshal(data, &varRemainingCreditsResponse)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RemainingCreditsResponse(varRemainingCreditsResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "message")
+		delete(additionalProperties, "detail")
+		delete(additionalProperties, "status_code")
+		delete(additionalProperties, "current_amount")
+		delete(additionalProperties, "currency")
+		delete(additionalProperties, "original_amount")
+		delete(additionalProperties, "last_calculated")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

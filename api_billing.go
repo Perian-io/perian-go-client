@@ -241,18 +241,18 @@ func (a *BillingAPIService) GenerateBillExecute(r ApiGenerateBillRequest) (*Bill
 		return localVarReturnValue, nil, reportError("organization is required and must be specified")
 	}
 
-	parameterAddToHeaderOrQuery(localVarQueryParams, "organization", r.organization, "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "organization", r.organization, "form", "")
 	if r.currency != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "currency", r.currency, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "currency", r.currency, "form", "")
 	} else {
 		var defaultValue string = "EUR"
 		r.currency = &defaultValue
 	}
 	if r.startTime != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "start_time", r.startTime, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_time", r.startTime, "form", "")
 	}
 	if r.endTime != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "end_time", r.endTime, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "end_time", r.endTime, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

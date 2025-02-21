@@ -23,7 +23,10 @@ type DefaultServerError struct {
 	Message *string `json:"message,omitempty"`
 	Detail *string `json:"detail,omitempty"`
 	StatusCode *int32 `json:"status_code,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _DefaultServerError DefaultServerError
 
 // NewDefaultServerError instantiates a new DefaultServerError object
 // This constructor will assign default values to properties that have it defined,
@@ -208,7 +211,36 @@ func (o DefaultServerError) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.StatusCode) {
 		toSerialize["status_code"] = o.StatusCode
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *DefaultServerError) UnmarshalJSON(data []byte) (err error) {
+	varDefaultServerError := _DefaultServerError{}
+
+	err = json.Unmarshal(data, &varDefaultServerError)
+
+	if err != nil {
+		return err
+	}
+
+	*o = DefaultServerError(varDefaultServerError)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "message")
+		delete(additionalProperties, "detail")
+		delete(additionalProperties, "status_code")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableDefaultServerError struct {

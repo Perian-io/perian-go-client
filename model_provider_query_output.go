@@ -26,7 +26,10 @@ type ProviderQueryOutput struct {
 	NameShort NullableString `json:"name_short,omitempty"`
 	Location NullableString `json:"location,omitempty"`
 	Status NullableString `json:"status,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ProviderQueryOutput ProviderQueryOutput
 
 // NewProviderQueryOutput instantiates a new ProviderQueryOutput object
 // This constructor will assign default values to properties that have it defined,
@@ -370,7 +373,39 @@ func (o ProviderQueryOutput) ToMap() (map[string]interface{}, error) {
 	if o.Status.IsSet() {
 		toSerialize["status"] = o.Status.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ProviderQueryOutput) UnmarshalJSON(data []byte) (err error) {
+	varProviderQueryOutput := _ProviderQueryOutput{}
+
+	err = json.Unmarshal(data, &varProviderQueryOutput)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ProviderQueryOutput(varProviderQueryOutput)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "options")
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "name_short")
+		delete(additionalProperties, "location")
+		delete(additionalProperties, "status")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableProviderQueryOutput struct {

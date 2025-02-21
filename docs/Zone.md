@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | Pointer to **string** |  | [optional] 
 **Name** | Pointer to **NullableString** |  | [optional] 
-**Status** | Pointer to [**Status**](Status.md) |  | [optional] [default to UNDEFINED]
+**Status** | Pointer to [**Status**](Status.md) |  | [optional] [default to STATUS_UNDEFINED]
 
 ## Methods
 

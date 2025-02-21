@@ -27,7 +27,10 @@ type AcceleratorQueryOutput struct {
 	Name NullableName `json:"name,omitempty"`
 	Description NullableDescription `json:"description,omitempty"`
 	ProviderSpecificName map[string]interface{} `json:"provider_specific_name,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AcceleratorQueryOutput AcceleratorQueryOutput
 
 // NewAcceleratorQueryOutput instantiates a new AcceleratorQueryOutput object
 // This constructor will assign default values to properties that have it defined,
@@ -407,7 +410,40 @@ func (o AcceleratorQueryOutput) ToMap() (map[string]interface{}, error) {
 	if o.ProviderSpecificName != nil {
 		toSerialize["provider_specific_name"] = o.ProviderSpecificName
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AcceleratorQueryOutput) UnmarshalJSON(data []byte) (err error) {
+	varAcceleratorQueryOutput := _AcceleratorQueryOutput{}
+
+	err = json.Unmarshal(data, &varAcceleratorQueryOutput)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AcceleratorQueryOutput(varAcceleratorQueryOutput)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "options")
+		delete(additionalProperties, "no")
+		delete(additionalProperties, "memory")
+		delete(additionalProperties, "vendor")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "provider_specific_name")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAcceleratorQueryOutput struct {

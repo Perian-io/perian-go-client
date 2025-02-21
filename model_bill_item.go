@@ -12,7 +12,6 @@ package perian
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -28,6 +27,7 @@ type BillItem struct {
 	OriginalCurrency Currency `json:"original_currency"`
 	ExchangeRate string `json:"exchange_rate"`
 	Granularity BillingGranularity `json:"granularity"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _BillItem BillItem
@@ -241,6 +241,11 @@ func (o BillItem) ToMap() (map[string]interface{}, error) {
 	toSerialize["original_currency"] = o.OriginalCurrency
 	toSerialize["exchange_rate"] = o.ExchangeRate
 	toSerialize["granularity"] = o.Granularity
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -274,15 +279,26 @@ func (o *BillItem) UnmarshalJSON(data []byte) (err error) {
 
 	varBillItem := _BillItem{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBillItem)
+	err = json.Unmarshal(data, &varBillItem)
 
 	if err != nil {
 		return err
 	}
 
 	*o = BillItem(varBillItem)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "job_id")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "currency")
+		delete(additionalProperties, "original_price")
+		delete(additionalProperties, "original_currency")
+		delete(additionalProperties, "exchange_rate")
+		delete(additionalProperties, "granularity")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

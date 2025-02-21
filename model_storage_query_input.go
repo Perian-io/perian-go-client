@@ -27,7 +27,10 @@ type StorageQueryInput struct {
 	Type NullableString `json:"type,omitempty"`
 	Speed NullableSpeed `json:"speed,omitempty"`
 	Included NullableString `json:"included,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _StorageQueryInput StorageQueryInput
 
 // NewStorageQueryInput instantiates a new StorageQueryInput object
 // This constructor will assign default values to properties that have it defined,
@@ -410,7 +413,40 @@ func (o StorageQueryInput) ToMap() (map[string]interface{}, error) {
 	if o.Included.IsSet() {
 		toSerialize["included"] = o.Included.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *StorageQueryInput) UnmarshalJSON(data []byte) (err error) {
+	varStorageQueryInput := _StorageQueryInput{}
+
+	err = json.Unmarshal(data, &varStorageQueryInput)
+
+	if err != nil {
+		return err
+	}
+
+	*o = StorageQueryInput(varStorageQueryInput)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "options")
+		delete(additionalProperties, "all")
+		delete(additionalProperties, "no")
+		delete(additionalProperties, "size")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "speed")
+		delete(additionalProperties, "included")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableStorageQueryInput struct {

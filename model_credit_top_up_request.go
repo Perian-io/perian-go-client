@@ -12,7 +12,6 @@ package perian
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -22,6 +21,7 @@ var _ MappedNullable = &CreditTopUpRequest{}
 // CreditTopUpRequest JSON schema for credit topup request.
 type CreditTopUpRequest struct {
 	Amount Amount `json:"amount"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreditTopUpRequest CreditTopUpRequest
@@ -79,6 +79,11 @@ func (o CreditTopUpRequest) MarshalJSON() ([]byte, error) {
 func (o CreditTopUpRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["amount"] = o.Amount
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *CreditTopUpRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varCreditTopUpRequest := _CreditTopUpRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreditTopUpRequest)
+	err = json.Unmarshal(data, &varCreditTopUpRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreditTopUpRequest(varCreditTopUpRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "amount")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

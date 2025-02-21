@@ -27,7 +27,10 @@ type GetInstanceTypesSuccess struct {
 	No *int32 `json:"no,omitempty"`
 	InstanceTypes []InstanceTypeView `json:"instance_types,omitempty"`
 	Pagination *PaginationMetadata `json:"pagination,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _GetInstanceTypesSuccess GetInstanceTypesSuccess
 
 // NewGetInstanceTypesSuccess instantiates a new GetInstanceTypesSuccess object
 // This constructor will assign default values to properties that have it defined,
@@ -47,7 +50,7 @@ func NewGetInstanceTypesSuccess() *GetInstanceTypesSuccess {
 	this.Limit = &limit
 	var no int32 = 0
 	this.No = &no
-	var pagination PaginationMetadata = {total_items=0, items_per_page=25, current_page=1, total_pages=1, next_page=1}
+	var pagination PaginationMetadata = *NewPaginationMetadata()
 	this.Pagination = &pagination
 	return &this
 }
@@ -69,7 +72,7 @@ func NewGetInstanceTypesSuccessWithDefaults() *GetInstanceTypesSuccess {
 	this.Limit = &limit
 	var no int32 = 0
 	this.No = &no
-	var pagination PaginationMetadata = {total_items=0, items_per_page=25, current_page=1, total_pages=1, next_page=1}
+	var pagination PaginationMetadata = *NewPaginationMetadata()
 	this.Pagination = &pagination
 	return &this
 }
@@ -364,7 +367,40 @@ func (o GetInstanceTypesSuccess) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Pagination) {
 		toSerialize["pagination"] = o.Pagination
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *GetInstanceTypesSuccess) UnmarshalJSON(data []byte) (err error) {
+	varGetInstanceTypesSuccess := _GetInstanceTypesSuccess{}
+
+	err = json.Unmarshal(data, &varGetInstanceTypesSuccess)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GetInstanceTypesSuccess(varGetInstanceTypesSuccess)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "message")
+		delete(additionalProperties, "detail")
+		delete(additionalProperties, "status_code")
+		delete(additionalProperties, "limit")
+		delete(additionalProperties, "no")
+		delete(additionalProperties, "instance_types")
+		delete(additionalProperties, "pagination")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableGetInstanceTypesSuccess struct {

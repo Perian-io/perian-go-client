@@ -20,7 +20,10 @@ var _ MappedNullable = &GetAcceleratorTypeRequest{}
 // GetAcceleratorTypeRequest Request model for getting accelerator types.
 type GetAcceleratorTypeRequest struct {
 	AcceleratorTypeQuery *AcceleratorTypeQuery `json:"accelerator_type_query,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _GetAcceleratorTypeRequest GetAcceleratorTypeRequest
 
 // NewGetAcceleratorTypeRequest instantiates a new GetAcceleratorTypeRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -84,7 +87,33 @@ func (o GetAcceleratorTypeRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AcceleratorTypeQuery) {
 		toSerialize["accelerator_type_query"] = o.AcceleratorTypeQuery
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *GetAcceleratorTypeRequest) UnmarshalJSON(data []byte) (err error) {
+	varGetAcceleratorTypeRequest := _GetAcceleratorTypeRequest{}
+
+	err = json.Unmarshal(data, &varGetAcceleratorTypeRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GetAcceleratorTypeRequest(varGetAcceleratorTypeRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "accelerator_type_query")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableGetAcceleratorTypeRequest struct {

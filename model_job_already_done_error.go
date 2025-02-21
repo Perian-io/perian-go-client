@@ -23,7 +23,10 @@ type JobAlreadyDoneError struct {
 	Message *string `json:"message,omitempty"`
 	Detail *string `json:"detail,omitempty"`
 	StatusCode *int32 `json:"status_code,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _JobAlreadyDoneError JobAlreadyDoneError
 
 // NewJobAlreadyDoneError instantiates a new JobAlreadyDoneError object
 // This constructor will assign default values to properties that have it defined,
@@ -208,7 +211,36 @@ func (o JobAlreadyDoneError) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.StatusCode) {
 		toSerialize["status_code"] = o.StatusCode
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *JobAlreadyDoneError) UnmarshalJSON(data []byte) (err error) {
+	varJobAlreadyDoneError := _JobAlreadyDoneError{}
+
+	err = json.Unmarshal(data, &varJobAlreadyDoneError)
+
+	if err != nil {
+		return err
+	}
+
+	*o = JobAlreadyDoneError(varJobAlreadyDoneError)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "message")
+		delete(additionalProperties, "detail")
+		delete(additionalProperties, "status_code")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableJobAlreadyDoneError struct {

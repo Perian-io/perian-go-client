@@ -12,7 +12,6 @@ package perian
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -26,6 +25,7 @@ type CreditTopUpResponse struct {
 	Detail *string `json:"detail,omitempty"`
 	StatusCode *int32 `json:"status_code,omitempty"`
 	PaymentUrl string `json:"payment_url"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreditTopUpResponse CreditTopUpResponse
@@ -239,6 +239,11 @@ func (o CreditTopUpResponse) ToMap() (map[string]interface{}, error) {
 		toSerialize["status_code"] = o.StatusCode
 	}
 	toSerialize["payment_url"] = o.PaymentUrl
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -266,15 +271,24 @@ func (o *CreditTopUpResponse) UnmarshalJSON(data []byte) (err error) {
 
 	varCreditTopUpResponse := _CreditTopUpResponse{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreditTopUpResponse)
+	err = json.Unmarshal(data, &varCreditTopUpResponse)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreditTopUpResponse(varCreditTopUpResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "message")
+		delete(additionalProperties, "detail")
+		delete(additionalProperties, "status_code")
+		delete(additionalProperties, "payment_url")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

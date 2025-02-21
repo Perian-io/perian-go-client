@@ -20,8 +20,8 @@ type OrderCriterion string
 
 // List of OrderCriterion
 const (
-	PRICE OrderCriterion = "PRICE"
-	CREATED_AT OrderCriterion = "CREATED_AT"
+	ORDERCRITERION_PRICE OrderCriterion = "PRICE"
+	ORDERCRITERION_CREATED_AT OrderCriterion = "CREATED_AT"
 )
 
 // All allowed values of OrderCriterion enum

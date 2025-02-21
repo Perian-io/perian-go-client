@@ -5,9 +5,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Size** | Pointer to **string** |  | [optional] 
-**Unit** | Pointer to [**MemoryUnit**](MemoryUnit.md) |  | [optional] [default to GB]
+**Unit** | Pointer to [**MemoryUnit**](MemoryUnit.md) |  | [optional] [default to MEMORYUNIT_GB]
 **Bandwidth** | Pointer to [**Bandwidth**](Bandwidth.md) |  | [optional] [default to {speed=0.0, maximum=0.0, minimum=0.0, unit=Undefined, sla=Undefined, limit=Undefined}]
-**Interface** | Pointer to [**MemoryInterface**](MemoryInterface.md) |  | [optional] [default to UNDEFINED]
+**Interface** | Pointer to [**MemoryInterface**](MemoryInterface.md) |  | [optional] [default to MEMORYINTERFACE_UNDEFINED]
 
 ## Methods
 

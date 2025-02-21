@@ -21,7 +21,10 @@ var _ MappedNullable = &Availability{}
 type Availability struct {
 	Available *bool `json:"available,omitempty"`
 	Source *AvailabilitySource `json:"source,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Availability Availability
 
 // NewAvailability instantiates a new Availability object
 // This constructor will assign default values to properties that have it defined,
@@ -31,7 +34,7 @@ func NewAvailability() *Availability {
 	this := Availability{}
 	var available bool = true
 	this.Available = &available
-	var source AvailabilitySource = UNDEFINED
+	var source AvailabilitySource = AVAILABILITYSOURCE_UNDEFINED
 	this.Source = &source
 	return &this
 }
@@ -43,7 +46,7 @@ func NewAvailabilityWithDefaults() *Availability {
 	this := Availability{}
 	var available bool = true
 	this.Available = &available
-	var source AvailabilitySource = UNDEFINED
+	var source AvailabilitySource = AVAILABILITYSOURCE_UNDEFINED
 	this.Source = &source
 	return &this
 }
@@ -128,7 +131,34 @@ func (o Availability) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Source) {
 		toSerialize["source"] = o.Source
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Availability) UnmarshalJSON(data []byte) (err error) {
+	varAvailability := _Availability{}
+
+	err = json.Unmarshal(data, &varAvailability)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Availability(varAvailability)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "available")
+		delete(additionalProperties, "source")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAvailability struct {

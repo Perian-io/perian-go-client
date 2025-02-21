@@ -20,11 +20,11 @@ type BillingGranularity string
 
 // List of BillingGranularity
 const (
-	PER_SECOND BillingGranularity = "PER_SECOND"
-	PER_MINUTE BillingGranularity = "PER_MINUTE"
-	PER_HOUR BillingGranularity = "PER_HOUR"
-	PER_10_MINUTES BillingGranularity = "PER_10_MINUTES"
-	UNDEFINED BillingGranularity = "UNDEFINED"
+	BILLINGGRANULARITY_PER_SECOND BillingGranularity = "PER_SECOND"
+	BILLINGGRANULARITY_PER_MINUTE BillingGranularity = "PER_MINUTE"
+	BILLINGGRANULARITY_PER_HOUR BillingGranularity = "PER_HOUR"
+	BILLINGGRANULARITY_PER_10_MINUTES BillingGranularity = "PER_10_MINUTES"
+	BILLINGGRANULARITY_UNDEFINED BillingGranularity = "UNDEFINED"
 )
 
 // All allowed values of BillingGranularity enum

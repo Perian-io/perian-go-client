@@ -25,7 +25,10 @@ type Bandwidth struct {
 	Unit *BandwidthUnits `json:"unit,omitempty"`
 	Sla *BandwidthSla `json:"sla,omitempty"`
 	Limit *BandwidthLimits `json:"limit,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Bandwidth Bandwidth
 
 // NewBandwidth instantiates a new Bandwidth object
 // This constructor will assign default values to properties that have it defined,
@@ -33,11 +36,11 @@ type Bandwidth struct {
 // will change when the set of required properties is changed
 func NewBandwidth() *Bandwidth {
 	this := Bandwidth{}
-	var unit BandwidthUnits = UNDEFINED
+	var unit BandwidthUnits = BANDWIDTHUNITS_UNDEFINED
 	this.Unit = &unit
-	var sla BandwidthSla = UNDEFINED
+	var sla BandwidthSla = BANDWIDTHSLA_UNDEFINED
 	this.Sla = &sla
-	var limit BandwidthLimits = UNDEFINED
+	var limit BandwidthLimits = BANDWIDTHLIMITS_UNDEFINED
 	this.Limit = &limit
 	return &this
 }
@@ -47,11 +50,11 @@ func NewBandwidth() *Bandwidth {
 // but it doesn't guarantee that properties required by API are set
 func NewBandwidthWithDefaults() *Bandwidth {
 	this := Bandwidth{}
-	var unit BandwidthUnits = UNDEFINED
+	var unit BandwidthUnits = BANDWIDTHUNITS_UNDEFINED
 	this.Unit = &unit
-	var sla BandwidthSla = UNDEFINED
+	var sla BandwidthSla = BANDWIDTHSLA_UNDEFINED
 	this.Sla = &sla
-	var limit BandwidthLimits = UNDEFINED
+	var limit BandwidthLimits = BANDWIDTHLIMITS_UNDEFINED
 	this.Limit = &limit
 	return &this
 }
@@ -276,7 +279,38 @@ func (o Bandwidth) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Limit) {
 		toSerialize["limit"] = o.Limit
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Bandwidth) UnmarshalJSON(data []byte) (err error) {
+	varBandwidth := _Bandwidth{}
+
+	err = json.Unmarshal(data, &varBandwidth)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Bandwidth(varBandwidth)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "speed")
+		delete(additionalProperties, "maximum")
+		delete(additionalProperties, "minimum")
+		delete(additionalProperties, "unit")
+		delete(additionalProperties, "sla")
+		delete(additionalProperties, "limit")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableBandwidth struct {

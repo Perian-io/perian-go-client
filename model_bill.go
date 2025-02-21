@@ -13,7 +13,6 @@ package perian
 import (
 	"encoding/json"
 	"time"
-	"bytes"
 	"fmt"
 )
 
@@ -29,6 +28,7 @@ type Bill struct {
 	Currency Currency `json:"currency"`
 	MarginMultiplier string `json:"margin_multiplier"`
 	Items []BillItem `json:"items"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Bill Bill
@@ -242,6 +242,11 @@ func (o Bill) ToMap() (map[string]interface{}, error) {
 	toSerialize["currency"] = o.Currency
 	toSerialize["margin_multiplier"] = o.MarginMultiplier
 	toSerialize["items"] = o.Items
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -275,15 +280,26 @@ func (o *Bill) UnmarshalJSON(data []byte) (err error) {
 
 	varBill := _Bill{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varBill)
+	err = json.Unmarshal(data, &varBill)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Bill(varBill)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "organization_id")
+		delete(additionalProperties, "start_time")
+		delete(additionalProperties, "end_time")
+		delete(additionalProperties, "total_price")
+		delete(additionalProperties, "currency")
+		delete(additionalProperties, "margin_multiplier")
+		delete(additionalProperties, "items")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

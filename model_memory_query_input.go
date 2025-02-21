@@ -23,7 +23,10 @@ type MemoryQueryInput struct {
 	Options NullableQueryOptions `json:"options,omitempty"`
 	All *bool `json:"all,omitempty"`
 	Size NullableSize `json:"size,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _MemoryQueryInput MemoryQueryInput
 
 // NewMemoryQueryInput instantiates a new MemoryQueryInput object
 // This constructor will assign default values to properties that have it defined,
@@ -226,7 +229,36 @@ func (o MemoryQueryInput) ToMap() (map[string]interface{}, error) {
 	if o.Size.IsSet() {
 		toSerialize["size"] = o.Size.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *MemoryQueryInput) UnmarshalJSON(data []byte) (err error) {
+	varMemoryQueryInput := _MemoryQueryInput{}
+
+	err = json.Unmarshal(data, &varMemoryQueryInput)
+
+	if err != nil {
+		return err
+	}
+
+	*o = MemoryQueryInput(varMemoryQueryInput)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "operator")
+		delete(additionalProperties, "options")
+		delete(additionalProperties, "all")
+		delete(additionalProperties, "size")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableMemoryQueryInput struct {

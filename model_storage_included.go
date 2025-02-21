@@ -20,9 +20,9 @@ type StorageIncluded string
 
 // List of StorageIncluded
 const (
-	UNDEFINED StorageIncluded = "UNDEFINED"
-	INCLUDED StorageIncluded = "INCLUDED"
-	NOT_INCLUDED StorageIncluded = "NOT_INCLUDED"
+	STORAGEINCLUDED_UNDEFINED StorageIncluded = "UNDEFINED"
+	STORAGEINCLUDED_INCLUDED StorageIncluded = "INCLUDED"
+	STORAGEINCLUDED_NOT_INCLUDED StorageIncluded = "NOT_INCLUDED"
 )
 
 // All allowed values of StorageIncluded enum

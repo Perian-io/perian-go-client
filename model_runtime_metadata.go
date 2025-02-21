@@ -22,7 +22,10 @@ type RuntimeMetadata struct {
 	InstanceTypeId NullableString `json:"instance_type_id,omitempty"`
 	AutoFailoverInstanceType *bool `json:"auto_failover_instance_type,omitempty"`
 	TimeoutSeconds NullableInt32 `json:"timeout_seconds,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _RuntimeMetadata RuntimeMetadata
 
 // NewRuntimeMetadata instantiates a new RuntimeMetadata object
 // This constructor will assign default values to properties that have it defined,
@@ -180,7 +183,35 @@ func (o RuntimeMetadata) ToMap() (map[string]interface{}, error) {
 	if o.TimeoutSeconds.IsSet() {
 		toSerialize["timeout_seconds"] = o.TimeoutSeconds.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *RuntimeMetadata) UnmarshalJSON(data []byte) (err error) {
+	varRuntimeMetadata := _RuntimeMetadata{}
+
+	err = json.Unmarshal(data, &varRuntimeMetadata)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RuntimeMetadata(varRuntimeMetadata)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "instance_type_id")
+		delete(additionalProperties, "auto_failover_instance_type")
+		delete(additionalProperties, "timeout_seconds")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableRuntimeMetadata struct {

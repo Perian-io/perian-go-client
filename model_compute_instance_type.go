@@ -20,11 +20,11 @@ type ComputeInstanceType string
 
 // List of ComputeInstanceType
 const (
-	VIRTUAL ComputeInstanceType = "Virtual"
-	VIRTUAL_SHARED ComputeInstanceType = "Virtual_Shared"
-	VIRTUAL_DEDICATED ComputeInstanceType = "Virtual_Dedicated"
-	METAL ComputeInstanceType = "Metal"
-	UNDEFINED ComputeInstanceType = "Undefined"
+	COMPUTEINSTANCETYPE_VIRTUAL ComputeInstanceType = "Virtual"
+	COMPUTEINSTANCETYPE_VIRTUAL_SHARED ComputeInstanceType = "Virtual_Shared"
+	COMPUTEINSTANCETYPE_VIRTUAL_DEDICATED ComputeInstanceType = "Virtual_Dedicated"
+	COMPUTEINSTANCETYPE_METAL ComputeInstanceType = "Metal"
+	COMPUTEINSTANCETYPE_UNDEFINED ComputeInstanceType = "Undefined"
 )
 
 // All allowed values of ComputeInstanceType enum
